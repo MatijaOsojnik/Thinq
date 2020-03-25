@@ -7,5 +7,9 @@ router.route('/')
 .get(postContoller.getAllPosts)
 .post(postContoller.createPost)
 
+router.route('/:id')
+.get(postContoller.getOnePost)
+.put(postContoller.updatePost)
+.delete(postContoller.deletePost)
 
 module.exports = router

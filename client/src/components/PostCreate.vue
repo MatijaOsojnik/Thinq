@@ -1,7 +1,7 @@
 <template>
-  <form action="" method="post">
-      
-  </form>
+  <v-form action="" class="center" method="post">
+      <v-btn>HELLO</v-btn>
+  </v-form>
 </template>
 
 <script>

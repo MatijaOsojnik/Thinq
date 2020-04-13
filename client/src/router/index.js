@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Posts from '../components/Posts.vue'
-import PostCreate from '../components/PostCreate.vue'
+import Posts from '../components/Posts/Posts.vue'
+import PostCreate from '../components/Posts/PostCreate.vue'
 
 Vue.use(VueRouter)
 

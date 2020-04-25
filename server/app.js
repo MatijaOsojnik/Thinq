@@ -18,8 +18,14 @@ mongoose.connect(process.env.DATABASE_URL, {
 mongoose.set('debug', true);
 
 const posts = require('./routes/post')
+const users = require('./routes/user')
 
 app.use('/posts', posts)
+app.use('/users', users)
+
+app.post('/register', (req, res) => {
+    res.send(`Hello ${req.body.email}! You have successfully registered `)
+})
 
 const port = process.env.PORT || 5000
 

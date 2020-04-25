@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Landing from '@/views/Landing'
-import Register from '../views/Register.vue'
+import Register from '@/views/Register.vue'
+import Login from '@/views/Login.vue'
 import Posts from '../components/Posts/Posts.vue'
 import PostCreate from '../components/Posts/PostCreate.vue'
 
@@ -17,6 +18,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: Register
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
   },
   {
     path: '/posts',

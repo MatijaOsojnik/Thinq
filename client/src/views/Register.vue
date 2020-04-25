@@ -1,58 +1,103 @@
 <template>
-  <v-app>
+  <div>
+      <div>
+        <label for="email">Email: </label>
+        <input type="text" name="email" id="email" v-model="email" />
+      </div>
+      <div>
+        <label for="password">Password: </label>
+        <input type="text" name="password" id="password" v-model="password" />
+      </div>
+      <div>
+        <button @click="register">REGISTER</button>
+      </div>
+  </div>
+  <!-- <v-app>
     <div height="100vh" class="main">
       <v-row class="row-container">
-        <v-col class="col-xl-5 col-lg-6 col-md-7 col-sm-12">
+        <v-col class="col-xl-5 col-lg-5 col-md-7 col-sm-12">
           <v-container class="form-container">
             <div>
               <span class="brand">Thinq</span>
             </div>
             <v-container class="form-input-container">
               <v-container>
-                <form action>
+                <form action @submit.prevent="handleSubmit">
                   <div>
-                    <v-text-field label="Display Name" prepend-inner-icon="mdi-account-outline" />
+                    <v-text-field
+                      label="Display Name"
+                      v-model="displayName"
+                      :error-messages="nameErrors"
+                      required
+                      @input="$v.displayName.$touch()"
+                      @blur="$v.displayName.$touch()"
+                      prepend-inner-icon="mdi-account-outline"
+                    />
                   </div>
                   <div>
-                    <v-text-field label="Email"  prepend-inner-icon="mdi-email-outline" />
+                    <v-text-field label="E-mail" 
+                    v-model="email"
+                    :error-messages="emailErrors"
+                    required
+                    @input="$v.email.$touch()"
+                    @blur="$v.email.$touch()"
+                    prepend-inner-icon="mdi-email-outline" />
                   </div>
                   <div>
                     <v-text-field label="Password" prepend-inner-icon="mdi-lock-outline" />
                   </div>
                   <div>
-                    <v-text-field label="Repeat Password" prepend-inner-icon="mdi-lock-outline"/>
+                    <v-text-field label="Repeat Password" prepend-inner-icon="mdi-lock-outline" />
                   </div>
                 </form>
                 <v-btn color="primary" class="submit-btn" max-width="60%" @click="submit">Register</v-btn>
-              <div class="sign-in-container">
-                  <span class="sign-in-text">Already have an account? <span><router-link class="sign-in-link" to="{name: 'login'}">Sign in</router-link></span></span>
-              </div>
+                <div class="sign-in-container">
+                  <span class="sign-in-text">
+                    Already have an account?
+                    <span>
+                      <router-link class="sign-in-link" :to="{name: 'login'}">Sign in</router-link>
+                    </span>
+                  </span>
+                </div>
               </v-container>
             </v-container>
           </v-container>
         </v-col>
-        <v-col class="col-xl-7 col-lg-6 col-md-5 d-xl-block d-lg-block d-md-block d-sm-none d-none" style="padding: 0">
-          <div class="fill-height d-flex justify-center align-center">
-              <v-img src="../assets/social-ideas.svg" class="background-image">
-              </v-img>
+        <v-col
+          class="col-xl-7 col-lg-7 col-md-5 d-xl-block d-lg-block d-md-block d-sm-none d-none"
+          style="padding: 0"
+        >
+          <div class="image-container fill-height d-flex justify-center align-center">
+            <v-img src="../assets/social-ideas.svg" class="background-image"></v-img>
           </div>
         </v-col>
       </v-row>
     </div>
-  </v-app>
+  </v-app>-->
 </template>
 
 <script>
+import AuthenticationService from "@/services/AuthenticationService";
 export default {
   data: () => ({
-    formHasErrors: true
-  })
+    email: "",
+    password: ""
+  }),
+  methods: {
+    async register() {
+      const response = await AuthenticationService.register({
+        email: this.email,
+        password: this.password
+      });
+      console.log(response);
+    }
+  }
 };
 </script>
 
 <style scoped>
 div {
-    font-family: "Lato"
+  font-family: "Lato";
 }
 .main {
   margin: 0;
@@ -64,10 +109,13 @@ div {
   background-size: cover;
 } */
 .row-container {
-    height: 100vh;
+  height: 100vh;
 }
 .background-image {
-    max-width: 80%;
+  max-width: 80%;
+}
+.image-container {
+  background-color: #ededed;
 }
 .form-container {
   text-align: center;
@@ -88,18 +136,18 @@ div {
   font-family: "Patrick Hand SC", cursive;
 }
 .submit-btn {
-    color: white;
-    margin: 10px 0;
+  color: white;
+  margin: 10px 0;
 }
 .sign-in-container {
- margin: 1.5rem 0;
+  margin: 1.5rem 0;
 }
 .sign-in-text {
-    display: inline-block;
+  display: inline-block;
 }
 .sign-in-link {
-    display: inline-block;
-    font-weight: bold;
-    text-decoration: none;
+  display: inline-block;
+  font-weight: bold;
+  text-decoration: none;
 }
 </style>

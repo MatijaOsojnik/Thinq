@@ -1,14 +1,7 @@
 <template>
   <v-app>
     <div class="header">
-      <v-app-bar flat color="transparent" style="position: absolute;">
-        <v-toolbar-title class="brand">Thinq</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <router-link :to="{name: 'register'}">
-          <v-btn outlined color="white" v-on="on">Sign in</v-btn>
-        </router-link>
-      </v-app-bar>
-
+      <Header />
       <v-container class="text-center" fill-height fluid>
         <v-row align="center" justify="center">
           <v-col cols="12">
@@ -166,11 +159,11 @@
               <div>
                 <v-hover v-slot:default="{ hover }">
                   <router-link :to="{name: 'register'}">
-                  <v-btn
-                    large
-                    :class="`${hover ? 'cta-btn-hover' : 'cta-btn-active'}`"
-                    style="margin-top: 2rem;"
-                  >Get Started</v-btn>
+                    <v-btn
+                      large
+                      :class="`${hover ? 'cta-btn-hover' : 'cta-btn-active'}`"
+                      style="margin-top: 2rem;"
+                    >Get Started</v-btn>
                   </router-link>
                 </v-hover>
               </div>
@@ -189,12 +182,14 @@
 </template>
 
 <script>
+import Header from "@/components/Header/Header";
 import CardContentComponent from "@/components/Card-Content/Card-Content-Component";
 import Footer from "@/components/Footer/Footer";
 export default {
   components: {
-    CardContentComponent,
-    Footer
+    Header,
+    Footer,
+    CardContentComponent
   },
   data: () => ({
     tab: null,
@@ -231,7 +226,7 @@ a {
   position: relative;
 }
 .brand {
-  font-family: "Patrick Hand SC", cursive;;
+  font-family: "Patrick Hand SC", cursive;
   color: white;
   font-weight: 900;
   font-size: 40px;

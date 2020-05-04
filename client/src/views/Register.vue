@@ -1,95 +1,75 @@
 <template>
-  <div>
+  <AuthenticationPanel
+    authenticationTypeText="Sign up to Thinq"
+    route-name="login"
+    link-name="Sign in"
+  >
+    <v-alert outlined elevation="2" v-if="errors.length">
+      <ul>
+        <li v-for="error in errors" :key="error">{{ error }}</li>
+      </ul>
+    </v-alert>
+    <form @submit.prevent="handleSubmit" autocomplete="off">
       <div>
-        <label for="email">Email: </label>
-        <input type="text" name="email" id="email" v-model="email" />
+        <v-text-field
+          label="Display Name"
+          v-model="display_name"
+          prepend-inner-icon="mdi-account-outline"
+        />
       </div>
       <div>
-        <label for="password">Password: </label>
-        <input type="text" name="password" id="password" v-model="password" />
+        <v-text-field label="E-mail" v-model="email" prepend-inner-icon="mdi-email-outline" />
       </div>
       <div>
-        <button @click="register">REGISTER</button>
+        <v-text-field
+          type="password"
+          autocomplete="new-password"
+          label="Password"
+          v-model="password"
+          prepend-inner-icon="mdi-lock-outline"
+        />
       </div>
-  </div>
-  <!-- <v-app>
-    <div height="100vh" class="main">
-      <v-row class="row-container">
-        <v-col class="col-xl-5 col-lg-5 col-md-7 col-sm-12">
-          <v-container class="form-container">
-            <div>
-              <span class="brand">Thinq</span>
-            </div>
-            <v-container class="form-input-container">
-              <v-container>
-                <form action @submit.prevent="handleSubmit">
-                  <div>
-                    <v-text-field
-                      label="Display Name"
-                      v-model="displayName"
-                      :error-messages="nameErrors"
-                      required
-                      @input="$v.displayName.$touch()"
-                      @blur="$v.displayName.$touch()"
-                      prepend-inner-icon="mdi-account-outline"
-                    />
-                  </div>
-                  <div>
-                    <v-text-field label="E-mail" 
-                    v-model="email"
-                    :error-messages="emailErrors"
-                    required
-                    @input="$v.email.$touch()"
-                    @blur="$v.email.$touch()"
-                    prepend-inner-icon="mdi-email-outline" />
-                  </div>
-                  <div>
-                    <v-text-field label="Password" prepend-inner-icon="mdi-lock-outline" />
-                  </div>
-                  <div>
-                    <v-text-field label="Repeat Password" prepend-inner-icon="mdi-lock-outline" />
-                  </div>
-                </form>
-                <v-btn color="primary" class="submit-btn" max-width="60%" @click="submit">Register</v-btn>
-                <div class="sign-in-container">
-                  <span class="sign-in-text">
-                    Already have an account?
-                    <span>
-                      <router-link class="sign-in-link" :to="{name: 'login'}">Sign in</router-link>
-                    </span>
-                  </span>
-                </div>
-              </v-container>
-            </v-container>
-          </v-container>
-        </v-col>
-        <v-col
-          class="col-xl-7 col-lg-7 col-md-5 d-xl-block d-lg-block d-md-block d-sm-none d-none"
-          style="padding: 0"
-        >
-          <div class="image-container fill-height d-flex justify-center align-center">
-            <v-img src="../assets/social-ideas.svg" class="background-image"></v-img>
-          </div>
-        </v-col>
-      </v-row>
-    </div>
-  </v-app>-->
+      <div>
+        <v-text-field
+          type="password"
+          label="Repeat Password"
+          v-model="repeat_password"
+          prepend-inner-icon="mdi-lock-outline"
+        />
+      </div>
+    </form>
+    <v-btn color="primary" class="submit-btn" max-width="60%" @click="register">Register</v-btn>
+  </AuthenticationPanel>
 </template>
 
 <script>
+import AuthenticationPanel from "@/components/Authentication-Panel/Authentication-Panel";
 import AuthenticationService from "@/services/AuthenticationService";
 export default {
+  components: {
+    AuthenticationPanel
+  },
   data: () => ({
+    display_name: "",
     email: "",
-    password: ""
+    password: "",
+    repeat_password: "",
+    errors: []
   }),
   methods: {
     async register() {
-      const response = await AuthenticationService.register({
-        email: this.email,
-        password: this.password
-      });
-      console.log(response);
+      try {
+        const response = await AuthenticationService.register({
+          display_name: this.display_name,
+          email: this.email,
+          password: this.password,
+          repeat_password: this.repeat_password
+        });
+        this.$store.dispatch("setToken", response.data.token);
+        this.$store.dispatch("setUser", response.data.user);
+      } catch (error) {
+        this.errors = error.response.data;
+      }
     }
   }
 };
@@ -99,9 +79,9 @@ export default {
 div {
   font-family: "Lato";
 }
-.main {
-  margin: 0;
-  padding: 0;
+ul,
+li {
+  text-align: left;
 }
 /* .image-background {
   height: 100vh;
@@ -115,7 +95,7 @@ div {
   max-width: 80%;
 }
 .image-container {
-  background-color: #ededed;
+  background-color: #f9f9f9;
 }
 .form-container {
   text-align: center;
@@ -127,13 +107,18 @@ div {
 .form-input-container {
   display: flex;
   justify-content: center;
-  width: 50%;
+  width: 60%;
 }
 .brand {
   color: black;
   font-weight: 900;
   font-size: 40px;
   font-family: "Patrick Hand SC", cursive;
+}
+.sign-in-brand {
+  font-size: 23px;
+  font-weight: 600;
+  color: black;
 }
 .submit-btn {
   color: white;

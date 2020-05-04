@@ -1,52 +1,70 @@
 <template>
-  <v-app>
-    <div height="100vh" class="main">
-      <v-row class="row-container">
-        <v-col class="col-xl-5 col-lg-5 col-md-7 col-sm-12">
-          <v-container class="form-container">
-            <div>
-              <span class="brand">Thinq</span>
-            </div>
-            <v-container class="form-input-container">
-              <v-container>
-                <form  action @submit.prevent="handleSubmit">
-                  <div>
-                    <v-text-field label="E-mail"
-                      prepend-inner-icon="mdi-email-outline" />
-                  </div>
-                  <div>
-                    <v-text-field label="Password" prepend-inner-icon="mdi-lock-outline" />
-                  </div>
-                </form>
-                <v-btn color="primary" class="submit-btn" max-width="60%" @click="submit">Login</v-btn>
-              <div class="sign-in-container">
-                  <span class="sign-in-text">Don't have an account yet? <span><router-link class="sign-in-link" :to="{name: 'register'}">Register</router-link></span></span>
-              </div>
-              </v-container>
-            </v-container>
-          </v-container>
-        </v-col>
-        <v-col class="col-xl-7 col-lg-7 col-md-5 d-xl-block d-lg-block d-md-block d-sm-none d-none" style="padding: 0">
-          <div class="image-container fill-height d-flex justify-center align-center">
-              <v-img src="../assets/social-ideas.svg" class="background-image">
-              </v-img>
-          </div>
-        </v-col>
-      </v-row>
-    </div>
-  </v-app>
+  <AuthenticationPanel
+    authenticationTypeText="Sign in to Thinq"
+    route-name="register"
+    link-name="Sign up"
+  >
+    <v-alert outlined elevation="2" v-if="error">
+      <ul>
+        <li :error="error">{{ error }}</li>
+      </ul>
+    </v-alert>
+    <form @submit.prevent="handleSubmit">
+      <div>
+        <v-text-field label="E-mail" v-model="email" prepend-inner-icon="mdi-email-outline" />
+      </div>
+      <div>
+        <v-text-field
+          type="password"
+          label="Password"
+          v-model="password"
+          prepend-inner-icon="mdi-lock-outline"
+        />
+      </div>
+    </form>
+    <v-btn color="primary" class="submit-btn" max-width="60%" @click="login">Login</v-btn>
+  </AuthenticationPanel>
 </template>
 
 <script>
-
+import AuthenticationPanel from "@/components/Authentication-Panel/Authentication-Panel"
+import AuthenticationService from "@/services/AuthenticationService";
 export default {
-  
+  components: {
+    AuthenticationPanel
+  },
+  data: () => ({
+    email: "",
+    password: "",
+    error: null
+  }),
+  methods: {
+    async login() {
+      try {
+        const response = await AuthenticationService.login({
+          email: this.email,
+          password: this.password
+        });
+        this.$store.dispatch("setToken", response.data.token);
+        this.$store.dispatch("setUser", response.data.user);
+        this.$router.push({
+          name: "main"
+        });
+      } catch (error) {
+        this.error = error.response.data.error;
+      }
+    }
+  }
 };
 </script>
 
 <style scoped>
 div {
-    font-family: "Lato"
+  font-family: "Lato";
+}
+ul,
+li {
+  text-align: left;
 }
 .main {
   margin: 0;
@@ -58,10 +76,10 @@ div {
   background-size: cover;
 } */
 .row-container {
-    height: 100vh;
+  height: 100vh;
 }
 .background-image {
-    max-width: 80%;
+  max-width: 80%;
 }
 .image-container {
   background-color: #ededed;
@@ -76,7 +94,7 @@ div {
 .form-input-container {
   display: flex;
   justify-content: center;
-  width: 50%;
+  width: 60%;
 }
 .brand {
   color: black;
@@ -84,19 +102,27 @@ div {
   font-size: 40px;
   font-family: "Patrick Hand SC", cursive;
 }
+.sign-in-brand {
+  font-size: 23px;
+  font-weight: 600;
+  color: black;
+}
 .submit-btn {
-    color: white;
-    margin: 10px 0;
+  color: white;
+  margin: 10px 0;
 }
 .sign-in-container {
- margin: 1.5rem 0;
+  margin: 1.5rem 0;
 }
 .sign-in-text {
-    display: inline-block;
+  display: inline-block;
 }
 .sign-in-link {
-    display: inline-block;
-    font-weight: bold;
-    text-decoration: none;
+  display: inline-block;
+  font-weight: bold;
+  text-decoration: none;
+}
+.error {
+  color: red;
 }
 </style>

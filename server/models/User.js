@@ -1,33 +1,49 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const bcrypt = require('bcrypt')
 
-const UserSchema = new Schema({
-    displayName: {
-        type: String,
-        required: [true, "Please include your Display Name"]
-    },
-    email: {
-        type: String,
-        required: [true, "Please include your email"],
-        unique: true
-    },
-    password: {
-        type: String,
-        required: [true, "Please include your password"],
-    },
-    registerDate: {
-        type: Date,
-        default: Date.now(),
-    },
-    token: [
-        {
-            token: {
-                type: String,
-                require: true,
-            }
+function hashPassword(user, options) {
+    SALT_FACTOR = 8
+
+    if (!user.changed('password')) {
+        return;
+    }
+
+    return bcrypt
+        .genSalt(SALT_FACTOR)
+        .then(salt => bcrypt.hash(user.password, salt, null))
+        .then(hash => {
+            user.setDataValue('password', hash)
+        })
+}
+
+module.exports = (sequelize, DataTypes) => {
+    const User = sequelize.define('User', {
+        display_name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        email: {
+            type: DataTypes.STRING,
+            unique: true,
+            allowNull: false
+        },
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        icon_url: {
+            type: DataTypes.STRING,
+        },
+        birth_date: {
+            type: DataTypes.DATE
+        },
+
+    }, {
+        hooks: {
+            beforeSave: hashPassword
         }
-    ]
-})
-
-const User = mongoose.model('User', UserSchema)
-module.exports = User
+    })
+    User.prototype.comparePassword = function (password) {
+        return bcrypt.compare(password, this.password)
+    }
+    return User;
+}

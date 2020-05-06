@@ -1,6 +1,5 @@
 <template>
-<div>
-  <v-app-bar flat color="transparent" style="position: absolute;" v-if="!$store.state.isUserLoggedIn">
+  <v-app-bar flat color="transparent" class="header-bar" v-if="!$store.state.isUserLoggedIn">
     <v-toolbar-title  v-if="$router.history.current['path'] === '/'"><router-link :to="{name: 'landing'}" class="brand" >Thinq</router-link></v-toolbar-title>
     <v-toolbar-title v-else><router-link :to="{name: 'landing'}" class="brand-black">Thinq</router-link></v-toolbar-title>
     <v-spacer></v-spacer>
@@ -8,13 +7,6 @@
       <v-btn outlined color="white" v-if="$router.history.current['name'] === 'landing'">Sign in</v-btn>
     </router-link>
   </v-app-bar>
-
-  <v-app-bar flat color="#d3fgsg" v-if="$store.state.isUserLoggedIn">
-    <v-toolbar-title><router-link :to="{name: 'main'}" class="brand-black">Thinq</router-link></v-toolbar-title>
-    <v-spacer></v-spacer>
-      <v-btn outlined @click="logout">Log out</v-btn>
-  </v-app-bar>
-</div>
 </template>
 
 <script>
@@ -32,6 +24,11 @@ export default {
 </script>
 
 <style scoped>
+
+.header-bar{
+  position: absolute;
+  z-index: 999;
+}
 
 .brand-black {
   font-family: "Patrick Hand SC", cursive;

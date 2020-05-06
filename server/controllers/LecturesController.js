@@ -7,9 +7,12 @@ module.exports = {
     async index(req, res) {
         try {
             const lectures = await Lecture.findAll({
-                where: {},
-                include: Category
+                include: [{
+                    model: Category,
+                    required: true
+                }]
             })
+            console.log(lectures)
             res.send(lectures)
         } catch (error) {
             console.log(error)

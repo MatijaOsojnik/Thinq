@@ -1,37 +1,39 @@
 <template>
-  <AuthenticationPanel
-    authenticationTypeText="Sign in to Thinq"
-    route-name="register"
-    link-name="Sign up"
-  >
-    <v-alert outlined elevation="2" v-if="error">
-      <ul>
-        <li :error="error">{{ error }}</li>
-      </ul>
-    </v-alert>
-    <form @submit.prevent="handleSubmit">
-      <div>
-        <v-text-field label="E-mail" v-model="email" prepend-inner-icon="mdi-email-outline" />
-      </div>
-      <div>
-        <v-text-field
-          type="password"
-          label="Password"
-          v-model="password"
-          prepend-inner-icon="mdi-lock-outline"
-        />
-      </div>
-    </form>
-    <v-btn color="primary" class="submit-btn" max-width="60%" @click="login">Login</v-btn>
-  </AuthenticationPanel>
+  <div>
+    <AuthenticationPanel
+      authenticationTypeText="Sign in to Thinq"
+      route-name="register"
+      link-name="Sign up"
+    >
+      <v-alert outlined elevation="2" v-if="error">
+        <ul>
+          <li :error="error">{{ error }}</li>
+        </ul>
+      </v-alert>
+      <form @submit.prevent="handleSubmit">
+        <div>
+          <v-text-field label="E-mail" v-model="email" prepend-inner-icon="mdi-email-outline" />
+        </div>
+        <div>
+          <v-text-field
+            type="password"
+            label="Password"
+            v-model="password"
+            prepend-inner-icon="mdi-lock-outline"
+          />
+        </div>
+      </form>
+      <v-btn color="primary" class="submit-btn" max-width="60%" @click="login">Login</v-btn>
+    </AuthenticationPanel>
+  </div>
 </template>
 
 <script>
-import AuthenticationPanel from "@/components/Authentication-Panel/Authentication-Panel"
+import AuthenticationPanel from "@/components/Authentication-Panel/Authentication-Panel";
 import AuthenticationService from "@/services/AuthenticationService";
 export default {
   components: {
-    AuthenticationPanel
+    AuthenticationPanel,
   },
   data: () => ({
     email: "",
@@ -48,7 +50,7 @@ export default {
         this.$store.dispatch("setToken", response.data.token);
         this.$store.dispatch("setUser", response.data.user);
         this.$router.push({
-          name: "main"
+          name: "lectures"
         });
       } catch (error) {
         this.error = error.response.data.error;

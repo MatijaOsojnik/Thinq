@@ -1,16 +1,30 @@
 module.exports = (sequelize, DataTypes) => {
     const Lecture = sequelize.define('Lecture', {
-        name: {
+        title: {
             type: DataTypes.STRING
         },
         description: {
             type: DataTypes.TEXT
         },
-    });
+        category_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: sequelize.models.Category,
+                key: 'id'
+            }
+        }
+    }, {});
 
-    Lecture.associate = function (models) {
-        Lecture.belongsTo(models.Category)
-    };
+        const Category = sequelize.models.Category;
+
+    Lecture.belongsTo(Category, {
+        foreignKey: 'category_id',
+        targetKey: 'id'
+    });
+    Category.hasMany(Lecture, {
+        foreignKey: 'category_id',
+        sourceKey: 'id'
+    });
 
     return Lecture;
 }

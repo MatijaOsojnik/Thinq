@@ -6,11 +6,8 @@ module.exports = (sequelize, DataTypes) => {
         description: {
             type: DataTypes.TEXT
         },
-    })
-
-    Category.associate = function (models) {
-        Category.hasMany(models.Lecture)
-    };
+        
+    }, {})
 
     return Category;
 }

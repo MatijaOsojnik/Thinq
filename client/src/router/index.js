@@ -3,7 +3,8 @@ import VueRouter from 'vue-router'
 import Landing from '@/views/Landing'
 import Register from '@/views/Register.vue'
 import Login from '@/views/Login.vue'
-import Main from '@/views/Main.vue'
+import Lectures from '@/views/Lectures.vue'
+import LectureCreate from '@/views/LectureCreate.vue'
 
 Vue.use(VueRouter)
 
@@ -24,11 +25,15 @@ const routes = [
     component: Login
   },
   {
-    path: '/main',
-    name: 'main',
-    component: Main
+    path: '/lectures',
+    name: 'lectures',
+    component: Lectures
   },
-
+  {
+    path: '/lectures/create',
+    name: 'lecture-create',
+    component: LectureCreate
+  }
 ]
 
 const router = new VueRouter({

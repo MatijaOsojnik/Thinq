@@ -1,15 +1,17 @@
 <template>
-  <div>
+  <div id="app">
     <main>
+      <UserHeader/>
       <router-view></router-view>
     </main>
   </div>
 </template>
 <script>
+import UserHeader from '@/components/Header/User-Header'
 export default {
   name: "App",
 
-  components: {},
+  components: {UserHeader},
 
   data: () => ({
     //
@@ -18,6 +20,10 @@ export default {
 </script>
 
 <style>
+#app {
+  font-family: "Lato", cursive;
+}
+
 a {
   text-decoration: none;
 }
@@ -25,16 +31,5 @@ a {
 .main {
   padding: 0;
   margin: 0;
-}
-
-.cta-btn-active {
-  background-color: #3f72af !important;
-  color: white !important;
-  transition: 0.2s;
-}
-.cta-btn-hover {
-  background-color: white !important;
-  color: black !important;
-  transition: 0.2s;
 }
 </style>

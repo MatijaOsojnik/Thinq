@@ -5,6 +5,7 @@ import Register from '@/views/Register.vue'
 import Login from '@/views/Login.vue'
 import Lectures from '@/views/Lectures.vue'
 import LectureCreate from '@/views/LectureCreate.vue'
+import Lecture from '@/views/Lecture.vue'
 
 Vue.use(VueRouter)
 
@@ -30,9 +31,14 @@ const routes = [
     component: Lectures
   },
   {
-    path: '/lectures/create',
+    path: '/lectures/create/:id',
     name: 'lecture-create',
     component: LectureCreate
+  },
+  {
+    path: '/lectures/:id',
+    name: 'lecture',
+    component: Lecture
   }
 ]
 

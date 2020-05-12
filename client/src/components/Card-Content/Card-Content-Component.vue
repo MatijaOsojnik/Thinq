@@ -8,23 +8,24 @@
         :key="key"
       >
         <v-hover v-slot:default="{ hover }">
-      <router-link :to="{path: 'login'}" style="text-decoration:none;">
-          <v-card
-            max-width="250"
-            :elevation="hover ? 12 : 2"
-          >
-            <v-img height="170" :src="require(`../../assets/${card.imageUrl}`)">
-            <v-row class="fill-height flex-column justify-center">
-              <div class="align-self-center">
-                <v-btn :class="{ 'show-btns': hover }" class="invisible" icon>
-                  <v-icon :class="{ 'show-btns': hover }" class="invisible" large>{{"mdi-play-circle-outline"}}</v-icon>
-                </v-btn>
-              </div>
-            </v-row>
-            </v-img>
-            <span class="card-title pa-3">{{card.title}}</span>
-          </v-card>
-      </router-link>
+          <router-link :to="{path: 'login'}" style="text-decoration:none;">
+            <v-card max-width="250" :elevation="hover ? 12 : 2">
+              <v-img height="170" :src="require(`../../assets/${card.imageUrl}`)">
+                <v-row class="fill-height flex-column justify-center">
+                  <div class="align-self-center">
+                    <v-btn :class="{ 'show-btns': hover }" class="invisible" icon>
+                      <v-icon
+                        :class="{ 'show-btns': hover }"
+                        class="invisible"
+                        large
+                      >{{"mdi-play-circle-outline"}}</v-icon>
+                    </v-btn>
+                  </div>
+                </v-row>
+              </v-img>
+              <span class="card-title pa-3">{{card.title}}</span>
+            </v-card>
+          </router-link>
         </v-hover>
       </v-col>
     </v-row>
@@ -35,7 +36,7 @@
 export default {
   props: {
     cardContent: Array
-  },
+  }
 };
 </script>
 

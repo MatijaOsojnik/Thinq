@@ -1,5 +1,5 @@
 const {
-    User
+    User, RoleUsers
 } = require('../models');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config')
@@ -17,8 +17,16 @@ module.exports = {
         try {
             const user = await User.create(req.body)
             const userJson = user.toJSON()
+            
+            const userRole = await RoleUsers.create({
+                RoleId: 1,
+                UserId: userJson.id
+            })
+            
+            const userRoleJson = userRole.toJSON()
             res.send({
-                user: userJson
+                user: userJson,
+                userRole: userRoleJson
             })
         } catch (err) {
             res.status(400).send([`Email is already in use.`])

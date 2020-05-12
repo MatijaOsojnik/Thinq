@@ -6,6 +6,9 @@ module.exports = (sequelize, DataTypes) => {
         description: {
             type: DataTypes.TEXT
         },
+        thumbnail_url: {
+            type: DataTypes.STRING
+        },
         category_id: {
             type: DataTypes.INTEGER,
             references: {

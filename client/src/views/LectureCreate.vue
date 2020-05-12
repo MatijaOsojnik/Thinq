@@ -2,7 +2,7 @@
   <v-app>
     <v-layout>
       <v-flex xs12 justify="center" align="center">
-        <v-card class="mx-auto" max-width="400px">
+        <v-card class="ma-12 mx-auto" max-width="400px">
           <v-toolbar>
             <v-toolbar-title>Create A New Lecture</v-toolbar-title>
           </v-toolbar>
@@ -32,12 +32,14 @@ export default {
     lecture: {
       title: "",
       description: "",
-      category_id: ""
+      category_id: "",
+      user_id: null
     },
     categories: [],
   }),
   mounted() {
     this.findCategories();
+    this.lecture.user_id = this.$route.params.id
   },
   methods: {
     async createLecture() {

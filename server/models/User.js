@@ -36,6 +36,9 @@ module.exports = (sequelize, DataTypes) => {
         birth_date: {
             type: DataTypes.DATE
         },
+        phone_num: {
+            type: DataTypes.STRING
+        }
 
     }, {
         hooks: {
@@ -45,5 +48,23 @@ module.exports = (sequelize, DataTypes) => {
     User.prototype.comparePassword = function (password) {
         return bcrypt.compare(password, this.password)
     }
+
+    const Role = sequelize.models.Role;
+    const Lecture = sequelize.models.Lecture;
+
+    Role.belongsToMany(User, {
+        through: 'RoleUsers'
+    });
+    User.belongsToMany(Role, {
+        through: 'RoleUsers'
+    });
+
+    Lecture.belongsToMany(User, {
+        through: 'LectureUsers'
+    })
+    User.belongsToMany(Lecture, {
+        through: 'LectureUsers'
+    })
+
     return User;
 }

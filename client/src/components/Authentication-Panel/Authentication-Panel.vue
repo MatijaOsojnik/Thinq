@@ -1,5 +1,6 @@
 <template>
-  <v-app>
+<div>
+
     <Header />
     <div height="100vh" class="main">
       <v-row class="row-container">
@@ -33,7 +34,7 @@
         </v-col>
       </v-row>
     </div>
-  </v-app>
+</div>
 </template>
 
 <script>

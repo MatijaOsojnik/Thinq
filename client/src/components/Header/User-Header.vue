@@ -1,11 +1,28 @@
 <template>
   <div>
-    <v-app-bar flat color="#d3fgsg" v-if='$store.state.isUserLoggedIn'>
+    <v-app-bar flat color="#d3fgsg" v-if="$store.state.isUserLoggedIn">
       <v-toolbar-title>
         <router-link :to="{name: 'lectures'}" class="brand-black">Thinq</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn outlined @click="logout">Log out</v-btn>
+      <v-text-field append-icon="mdi-magnify" flat hide-details v-model="search" solo style="max-width: 300px;" />
+     
+      <v-menu bottom transition="slide-y-transition">
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon color="black">mdi-dots-vertical</v-icon>
+          </v-btn> 
+        </template>
+
+        <v-list>
+          <v-list-item :to="{name: user}">
+            <v-list-item-title>User</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="logout">
+            <v-list-item-title>Log out</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
   </div>
 </template>
@@ -25,7 +42,6 @@ export default {
 </script>
 
 <style scoped>
-
 .brand-black {
   font-family: "Patrick Hand SC", cursive;
   color: #1b262c;

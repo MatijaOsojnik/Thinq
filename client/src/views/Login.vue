@@ -1,5 +1,11 @@
 <template>
   <div>
+    <v-overlay v-if="showPanel" absolute z-index="999" :opacity="0.1">
+      <v-progress-circular indeterminate color="green" :size="50" :width="5" v-if="!loginSuccess" />
+      <v-scroll-x-transition>
+        <v-alert type="success" v-if="loginSuccess">Login successful!</v-alert>
+      </v-scroll-x-transition>
+    </v-overlay>
     <AuthenticationPanel
       authenticationTypeText="Sign in to Thinq"
       route-name="register"
@@ -33,11 +39,13 @@ import AuthenticationPanel from "@/components/Authentication-Panel/Authenticatio
 import AuthenticationService from "@/services/AuthenticationService";
 export default {
   components: {
-    AuthenticationPanel,
+    AuthenticationPanel
   },
   data: () => ({
     email: "",
     password: "",
+    loginSuccess: false,
+    showPanel: false,
     error: null
   }),
   methods: {
@@ -47,11 +55,20 @@ export default {
           email: this.email,
           password: this.password
         });
-        this.$store.dispatch("setToken", response.data.token);
-        this.$store.dispatch("setUser", response.data.user);
-        this.$router.push({
-          name: "lectures"
-        });
+
+        this.showPanel = true;
+
+        setTimeout(() => {
+          this.loginSuccess = true;
+        }, 1500);
+
+        setTimeout(() => {
+          this.$store.dispatch("setToken", response.data.token);
+          this.$store.dispatch("setUser", response.data.user);
+          this.loginSuccess = false;
+          this.showPanel = false;
+          this.$router.push({ name: "lectures" });
+        }, 2500);
       } catch (error) {
         this.error = error.response.data.error;
       }

@@ -4,6 +4,7 @@
   <v-footer
     dark
     padless
+    absolute
     color="#617BE3"
     height="10px"
   >

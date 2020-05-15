@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <div>
       <Header />
     </div>
@@ -9,11 +9,26 @@
           Welcome <span class="greeting-name" v-if="$store.state.user.display_name">{{$store.state.user.display_name}}</span>! Start Your First Class :)
         </span>
       </div>-->
-      <div>
+      <!-- <div>
         <span class="greeting-title">Welcome! Start Your First Class :)</span>
-      </div>
-      <v-container>
-        <v-row justify="center" align="center" style="z-index: 100">
+      </div> -->
+      <v-container fluid>
+        <v-row style="z-index: 100">
+          <v-col v-if="$store.state.isUserLoggedIn" class="col-3 col-md-3 col-sm-6 cols-6">
+            <v-hover v-slot:default="{ hover }">
+              <router-link :to="{path: `/lectures/create/1`}" style="text-decoration:none;">
+                <v-card max-width="300px" height="320px" raised img="https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" :elevation="hover ? 8 : 2">
+                  <v-row class="fill-height flex-column justify-center">
+                    <div class="align-self-center">
+                      <v-btn icon :class="{ 'show-btns': hover }" class="invisible">
+                        <v-icon x-large :class="{ 'show-btns': hover }" class="invisible">{{"mdi-plus-circle-outline"}}</v-icon>
+                      </v-btn>
+                    </div>
+                  </v-row>
+                </v-card>
+              </router-link>
+            </v-hover>
+          </v-col>
           <v-col
             class="col-3 col-md-3 col-sm-6 cols-6"
             v-for="lecture in lectures"
@@ -21,20 +36,17 @@
           >
             <v-hover v-slot:default="{ hover }">
               <router-link :to="{path: `/lectures/${lecture.id}`}" style="text-decoration:none;">
-                <v-card max-width="300px" raised :elevation="hover ? 8 : 2">
+                <v-card max-width="300px" height="320px" raised :elevation="hover ? 8 : 2">
                   <v-list-item>
-                    <v-list-item-avatar color="grey"></v-list-item-avatar>
+                    <v-list-item-avatar color="indigo" v-if="!$store.state.user.icon_url"><v-icon dark>mdi-account-circle</v-icon></v-list-item-avatar>
+                    <v-list-item-avatar v-else :img="$store.state.user.icon_url"></v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-title class="title">{{lecture.title}}</v-list-item-title>
                       <!-- <v-list-item-subtitle>by Kurt Wagner</v-list-item-subtitle> -->
                     </v-list-item-content>
                   </v-list-item>
 
-                  <v-img
-                    src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
-                    height="194"
-                    class="darker-img"
-                  >
+                  <v-img :src="lecture.thumbnail_url" height="194" class="darker-img">
                     <v-row class="fill-height flex-column justify-center">
                       <div class="align-self-center">
                         <v-btn :class="{ 'show-btns': hover }" class="invisible" icon>
@@ -49,7 +61,7 @@
                   </v-img>
 
                   <v-card-text>
-                    <span style="display: block;">{{lecture.description}}</span>
+                    <span style="display: block;">{{lecture.short_description}}</span>
                     <!-- <span>{{lecture.Category.name}}</span> -->
                   </v-card-text>
                 </v-card>
@@ -59,7 +71,7 @@
         </v-row>
       </v-container>
     </div>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -79,6 +91,7 @@ export default {
     async getLectures() {
       const response = await LectureService.index();
       this.lectures = response.data;
+      this.lectures.description.innerHTML = this.lectures.description;
     }
   }
 };
@@ -99,8 +112,5 @@ export default {
 }
 .show-btns {
   color: rgb(255, 255, 255, 1) !important;
-}
-.darker-img {
-  
 }
 </style>

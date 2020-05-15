@@ -4,10 +4,13 @@ export default {
     index() {
         return Api().get('lectures')
     },
-    singleLecture(lectureId) {
+    show(lectureId) {
         return Api().get(`lectures/${lectureId}`)
     },
-    postLecture(data) {
-        return Api().post('lectures', data)
+    post(lecture) {
+        return Api().post('lectures', lecture)
     },
-}
+    put(lecture) {
+        return Api().put(`lectures/${lecture.id}`, lecture)
+    }
+ }

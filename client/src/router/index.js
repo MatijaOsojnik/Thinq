@@ -3,14 +3,14 @@ import VueRouter from 'vue-router'
 import Landing from '@/views/Landing'
 import Register from '@/views/Register.vue'
 import Login from '@/views/Login.vue'
-import Lectures from '@/views/Lectures.vue'
-import LectureCreate from '@/views/LectureCreate.vue'
-import Lecture from '@/views/Lecture.vue'
+import Lectures from '@/views/Lectures'
+import Lecture from '@/views/Lecture'
+import LectureCreate from '@/views/Lecture/LectureCreate.vue'
+import LectureEdit from '@/views/Lecture/LectureEdit.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const routes = [{
     path: '/',
     name: 'landing',
     component: Landing
@@ -31,15 +31,20 @@ const routes = [
     component: Lectures
   },
   {
+    path: '/lectures/:id',
+    name: 'lecture',
+    component: Lecture
+  },
+  {
     path: '/lectures/create/:id',
     name: 'lecture-create',
     component: LectureCreate
   },
   {
-    path: '/lectures/:id',
-    name: 'lecture',
-    component: Lecture
-  }
+    path: '/lectures/:id/edit',
+    name: 'lecture-edit',
+    component: LectureEdit
+  },
 ]
 
 const router = new VueRouter({

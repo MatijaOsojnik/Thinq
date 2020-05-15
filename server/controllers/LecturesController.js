@@ -22,7 +22,7 @@ module.exports = {
             })
         }
     },
-    async create(req, res) {
+    async post(req, res) {
         try {
             const userId = req.body.user_id;
             const lecture = await Lecture.create(req.body)
@@ -37,7 +37,7 @@ module.exports = {
             })
         }
     },
-    async findOne(req, res) {
+    async show(req, res) {
         try {
             const lecture = await Lecture.findByPk(req.params.lectureId)
             res.send(lecture)
@@ -45,6 +45,20 @@ module.exports = {
             res.status(500).send({
                 error: `An error has occured trying fetch a lecture`
             })
+        }
+    },
+    async put(req, res) {
+        try {
+            const lecture = await Lecture.update(req.body, {
+                where: {
+                    id: req.params.lectureId
+                } 
+            })
+            res.send(req.body)
+        } catch (error) {
+                        res.status(500).send({
+                            error: `An error has occured trying fetch a lecture`
+                        })
         }
     }
 }

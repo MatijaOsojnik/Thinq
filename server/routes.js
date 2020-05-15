@@ -11,8 +11,9 @@ module.exports = (app) => {
 
     // LECTURE ROUTES
     app.get('/lectures', LecturesController.index)
-    app.get('/lectures/:lectureId', LecturesController.findOne)
-    app.post('/lectures', LecturesController.create)
+    app.get('/lectures/:lectureId', LecturesController.show)
+    app.put('/lectures/:lectureId', LecturesController.put)
+    app.post('/lectures', LecturesController.post)
 
     // CATEGORY ROUTES
     app.get('/categories', CategoriesController.index)

@@ -1,45 +1,64 @@
 <template>
-  <AuthenticationPanel
-    authenticationTypeText="Sign up to Thinq"
-    route-name="login"
-    link-name="Sign in"
-  >
-    <v-alert outlined elevation="2" v-if="errors.length">
-      <ul>
-        <li v-for="error in errors" :key="error">{{ error }}</li>
-      </ul>
-    </v-alert>
-    <form @submit.prevent="handleSubmit" autocomplete="off">
-      <div>
-        <v-text-field
-          label="Display Name"
-          v-model="display_name"
-          prepend-inner-icon="mdi-account-outline"
-        />
-      </div>
-      <div>
-        <v-text-field label="E-mail" v-model="email" prepend-inner-icon="mdi-email-outline" />
-      </div>
-      <div>
-        <v-text-field
-          type="password"
-          autocomplete="new-password"
-          label="Password"
-          v-model="password"
-          prepend-inner-icon="mdi-lock-outline"
-        />
-      </div>
-      <div>
-        <v-text-field
-          type="password"
-          label="Repeat Password"
-          v-model="repeat_password"
-          prepend-inner-icon="mdi-lock-outline"
-        />
-      </div>
-    </form>
-    <v-btn color="primary" class="submit-btn" max-width="60%" @click="register">Register</v-btn>
-  </AuthenticationPanel>
+  <div>
+    <v-overlay v-if="showPanel" absolute z-index="999" :opacity="0.1">
+      <v-progress-circular
+        indeterminate
+        transition="scroll-x-transition"
+        color="green"
+        :size="50"
+        :width="5"
+        v-if="!registerSuccess"
+      />
+      <v-scroll-x-transition>
+        <v-alert
+          type="success"
+          transition="scroll-x-transition"
+          v-if="registerSuccess"
+        >Registration successful!</v-alert>
+      </v-scroll-x-transition>
+    </v-overlay>
+    <AuthenticationPanel
+      authenticationTypeText="Sign up to Thinq"
+      route-name="login"
+      link-name="Sign in"
+    >
+      <v-alert outlined elevation="2" v-if="errors.length">
+        <ul>
+          <li v-for="error in errors" :key="error">{{ error }}</li>
+        </ul>
+      </v-alert>
+      <form @submit.prevent="handleSubmit" autocomplete="off">
+        <div>
+          <v-text-field
+            label="Display Name"
+            v-model="display_name"
+            prepend-inner-icon="mdi-account-outline"
+          />
+        </div>
+        <div>
+          <v-text-field label="E-mail" v-model="email" prepend-inner-icon="mdi-email-outline" />
+        </div>
+        <div>
+          <v-text-field
+            type="password"
+            autocomplete="new-password"
+            label="Password"
+            v-model="password"
+            prepend-inner-icon="mdi-lock-outline"
+          />
+        </div>
+        <div>
+          <v-text-field
+            type="password"
+            label="Repeat Password"
+            v-model="repeat_password"
+            prepend-inner-icon="mdi-lock-outline"
+          />
+        </div>
+      </form>
+      <v-btn color="primary" class="submit-btn" max-width="60%" @click="register">Register</v-btn>
+    </AuthenticationPanel>
+  </div>
 </template>
 
 <script>
@@ -54,19 +73,35 @@ export default {
     email: "",
     password: "",
     repeat_password: "",
+    registerSuccess: false,
+    showPanel: false,
     errors: []
   }),
   methods: {
     async register() {
       try {
-        const response = await AuthenticationService.register({
+        await AuthenticationService.register({
           display_name: this.display_name,
           email: this.email,
           password: this.password,
           repeat_password: this.repeat_password
         });
-        this.$store.dispatch("setToken", response.data.token);
-        this.$store.dispatch("setUser", response.data.user);
+        // this.registerSuccess = true;
+        // setTimeout(() => {
+        //   this.registerSuccess = false;
+        //   this.$router.push({ name: "login" });
+        // }, 2000);
+        this.showPanel = true;
+
+        setTimeout(() => {
+          this.registerSuccess = true;
+        }, 1500);
+
+        setTimeout(() => {
+          this.registerSuccess = false;
+          this.showPanel = false;
+          this.$router.push({ name: "login" });
+        }, 2500);
       } catch (error) {
         this.errors = error.response.data;
       }

@@ -5,7 +5,7 @@
       <UserHeader/>
       <router-view></router-view>
     </main>
-    <Footer/>
+  <Footer/>
   </div>
 </v-app>
 </template>
@@ -35,5 +35,16 @@ a {
 .main {
   padding: 0;
   margin: 0;
+}
+
+.cta-btn-active {
+  background-color: #3f72af !important;
+  color: white !important;
+  transition: 0.2s;
+}
+.cta-btn-hover {
+  background-color: white !important;
+  color: black !important;
+  transition: 0.2s;
 }
 </style>

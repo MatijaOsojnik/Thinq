@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    search: ``,
     token: null,
     user: null,
     isUserLoggedIn: true

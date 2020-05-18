@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-app-bar flat color="#d3fgsg" v-if="$store.state.isUserLoggedIn">
+    <v-app-bar flat color="#d3fgsg" elevate-on-scroll scroll-target="#scrolling-target" v-if="$store.state.isUserLoggedIn">
       <v-toolbar-title>
         <router-link :to="{name: 'lectures'}" class="brand-black">Thinq</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-text-field append-icon="mdi-magnify" flat hide-details v-model="search" solo style="max-width: 300px;" />
+      <v-text-field append-icon="mdi-magnify" flat hide-details :v-model="search" solo style="max-width: 300px;" />
      
       <v-menu bottom transition="slide-y-transition">
         <template v-slot:activator="{ on }">
@@ -15,7 +15,7 @@
         </template>
 
         <v-list>
-          <v-list-item :to="{name: user}">
+          <v-list-item :to="{path: '/users/1'}">
             <v-list-item-title>User</v-list-item-title>
           </v-list-item>
           <v-list-item @click="logout">
@@ -23,12 +23,20 @@
           </v-list-item>
         </v-list>
       </v-menu>
+      <div id="scrolling-target">
+      </div>
     </v-app-bar>
   </div>
 </template>
 
 <script>
 export default {
+  data: () => ({
+    
+  }),
+  props: {
+    search: String,
+  },
   methods: {
     async logout() {
       this.$store.dispatch("setToken", null);

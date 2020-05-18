@@ -10,7 +10,7 @@
           <v-col cols="12">
             <v-hover v-slot:default="{ hover }">
               <router-link :to="{name: 'register'}">
-                <v-btn large :class="`${hover ? 'cta-btn-hover' : 'cta-btn-active'}`">Get Started</v-btn>
+                <v-btn large :class="`${hover ? 'cta-btn-hover' : 'cta-btn-active'}`"><span style="font-weight: 900;">Get Started</span></v-btn>
               </router-link>
             </v-hover>
           </v-col>

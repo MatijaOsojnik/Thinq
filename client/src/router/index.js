@@ -7,6 +7,7 @@ import Lectures from '@/views/Lectures'
 import Lecture from '@/views/Lecture'
 import LectureCreate from '@/views/Lecture/LectureCreate.vue'
 import LectureEdit from '@/views/Lecture/LectureEdit.vue'
+import User from '@/views/Users/Show.vue'
 
 Vue.use(VueRouter)
 
@@ -44,6 +45,11 @@ const routes = [{
     path: '/lectures/:id/edit',
     name: 'lecture-edit',
     component: LectureEdit
+  },
+  {
+    path: '/users/:id',
+    name: 'show-user',
+    component: User
   },
 ]
 

@@ -38,8 +38,8 @@
               <router-link :to="{path: `/lectures/${lecture.id}`}" style="text-decoration:none;">
                 <v-card max-width="300px" height="320px" raised :elevation="hover ? 8 : 2">
                   <v-list-item>
-                    <v-list-item-avatar color="indigo" v-if="!$store.state.user.icon_url"><v-icon dark>mdi-account-circle</v-icon></v-list-item-avatar>
-                    <v-list-item-avatar v-else :img="$store.state.user.icon_url"></v-list-item-avatar>
+                    <v-list-item-avatar color="indigo"><v-icon dark>mdi-account-circle</v-icon></v-list-item-avatar>
+                    <!-- <v-list-item-avatar v-else :img="$store.state.user.icon_url"></v-list-item-avatar> -->
                     <v-list-item-content>
                       <v-list-item-title class="title">{{lecture.title}}</v-list-item-title>
                       <!-- <v-list-item-subtitle>by Kurt Wagner</v-list-item-subtitle> -->
@@ -91,7 +91,6 @@ export default {
     async getLectures() {
       const response = await LectureService.index();
       this.lectures = response.data;
-      this.lectures.description.innerHTML = this.lectures.description;
     }
   }
 };

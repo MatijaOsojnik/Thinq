@@ -21,7 +21,6 @@ export default {
     async getLectures() {
       const response = await LectureService.index();
       this.lectures = response.data;
-      this.lectures.description.innerHTML = this.lectures.description;
     }
   }
 };

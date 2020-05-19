@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "client/vue-cli-service serve",
-    "build": "client/vue-cli-service build",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
     "start": "node server/app.js",
     "dev": "nodemon server/app.js"
   },

@@ -27,7 +27,7 @@
                 solo
                 clearable
                 counter
-                maxlength="100"
+                maxlength="80"
                 hint="This description will be used on the Lecture card before the user clicks on it."
                 aria-autocomplete="false"
                 v-model="lecture.short_description"
@@ -85,7 +85,8 @@ import {
   OrderedList,
   ListItem,
   HardBreak,
-  History
+  History,
+  Link
 } from "tiptap-vuetify";
 
 export default {
@@ -95,7 +96,7 @@ export default {
 
   data: () => ({
     rules: {
-      short_description: text => text.length <= 100 || "Max 100 characters",
+      short_description: text => text.length <= 80 || "Max 80 characters",
       file: value =>
         !value ||
         value.size < 2000000 ||
@@ -114,8 +115,10 @@ export default {
     categories: [],
     extensions: [
       History,
+        Bold,
       Italic,
       ListItem,
+      Link,
       BulletList,
       OrderedList,
       [
@@ -126,7 +129,6 @@ export default {
           }
         }
       ],
-      Bold,
       Paragraph,
       HardBreak
     ]

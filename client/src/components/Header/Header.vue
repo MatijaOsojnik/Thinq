@@ -40,7 +40,7 @@
     </v-menu>
     <v-spacer></v-spacer>
     <router-link :to="{name: 'register'}">
-      <v-btn outlined :color="`${$router.history.current['path'] === '/' ? 'white' : '#005082'}`" v-if="$router.history.current['path'] === '/lectures' || !$store.state.isUserLoggedIn">Sign in</v-btn>
+      <v-btn outlined :color="`${$router.history.current['path'] === '/' ? 'white' : '#005082'}`" v-if="!$store.state.isUserLoggedIn && $router.history.current['path'] !== '/login' && $router.history.current['path'] !== '/register'">Sign in</v-btn>
     </router-link>
   </v-app-bar>
 </template>

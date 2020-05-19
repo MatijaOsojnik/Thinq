@@ -1,18 +1,18 @@
 <template>
-  <v-container style="height: 100vh;">
+  <v-container>
     <router-link :to="{name: 'lectures'}" class="back-link" style="margin-top: 20px;">
       <v-icon dense>mdi-chevron-left</v-icon>Back to all lectures
     </router-link>
-    <v-row>
-      <v-col class="col-xl-8 col-lg-8 col-md-7 col-sm-12 cols-12">
-        <h1 class="display-3">{{lecture.title}}</h1>
+    <v-row class="ma-sm-6 ma-xl-0 ma-lg-0 ma-md-0">
+      <v-col class="col-xl-8 col-lg-8 col-md-8 col-sm-12 cols-12">
+        <h1 class="display-3" style="margin: 1rem 0 2rem;">{{lecture.title}}</h1>
         <div class="d-flex flex-column justify-space-around">
           <div>
             <div v-html="lecture.description"></div>
           </div>
         </div>
       </v-col>
-      <v-col class="col-xl-4 col-lg-4 col-md-5 col-sm-12 cols-12">
+      <v-col class="col-xl-4 col-lg-4 col-md-4 col-sm-12 cols-12 justify-sm-center">
         <v-card max-width="350px" max-height="400px">
           <v-img :src="lecture.thumbnail_url" height="250px"></v-img>
           <v-card-text>
@@ -23,7 +23,7 @@
           </v-card-text>
           <v-card-actions class="justify-center">
             <v-hover v-slot:default="{ hover }">
-              <router-link :to="{name: 'lectureAction'}">
+              <router-link :to="$store.state.isUserLoggedIn ? {name: 'lectureAction'} : {name: 'register'}">
                 <v-btn
                   :class="`${hover ? 'cta-btn-hover' : 'cta-btn-active'}`"
                 >Get Started</v-btn>

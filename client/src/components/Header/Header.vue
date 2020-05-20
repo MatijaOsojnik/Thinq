@@ -84,14 +84,14 @@ export default {
 
 .brand-black {
   font-family: "Patrick Hand SC", cursive;
-  color: #1b262c;
+  color: #1b262c !important;
   opacity: 0.9;
   font-weight: 900 !important;
   font-size: 40px !important;
 }
 .brand {
   font-family: "Patrick Hand SC", cursive;
-  color: white;
+  color: white !important;
   font-weight: 900 !important;
   font-size: 40px !important;
 }

@@ -4,14 +4,14 @@
       <Header />
     </div>
     <div>
-      <!-- <div>
+      <div>
         <span class="greeting-title">
-          Welcome <span class="greeting-name" v-if="$store.state.user.display_name">{{$store.state.user.display_name}}</span>! Start Your First Class :)
+          Welcome <span class="greeting-name pa-1" v-if="$store.state.isUserLoggedIn">{{$store.state.user.display_name}}</span>! Start Your First Class :)
         </span>
-      </div>-->
+      </div>
       <!-- <div>
         <span class="greeting-title">Welcome! Start Your First Class :)</span>
-      </div> -->
+      </div> !-->
       <v-container fluid>
         <v-row style="z-index: 100">
           <v-col v-if="$store.state.isUserLoggedIn" class="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-6">

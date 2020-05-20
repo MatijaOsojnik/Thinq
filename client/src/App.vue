@@ -31,6 +31,9 @@ export default {
 a {
   text-decoration: none;
 }
+.v-application a {
+  color: black !important;
+}
 
 .main {
   padding: 0;

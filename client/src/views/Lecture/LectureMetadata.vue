@@ -7,7 +7,7 @@
       <v-col class="col-xl-8 col-lg-8 col-md-8 col-sm-12 cols-12">
         <h1 class="display-3" style="margin-top: 1rem;">{{lecture.title}}</h1>
         <router-link :to="{name: 'lecture-edit', params: {id: $route.params.id}}">
-          <v-btn style="margin: 1rem 0;" icon>
+          <v-btn style="margin: 1rem 0;" icon v-if="$store.state.isUserLoggedIn">
             <v-icon medium color="black">mdi-pencil</v-icon>
           </v-btn>
         </router-link>

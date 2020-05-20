@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         icon_url: {
             type: DataTypes.STRING,
+            // default: '@/src/assets/neighbors.svg'
         },
         birth_date: {
             type: DataTypes.DATE

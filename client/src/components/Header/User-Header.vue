@@ -1,13 +1,19 @@
 <template>
   <div>
-    <v-app-bar flat color="#d3fgsg" elevate-on-scroll scroll-target="#scrolling-target" v-if="$store.state.isUserLoggedIn">
+    <v-app-bar
+      flat
+      color="#d3fgsg"
+      elevate-on-scroll
+      scroll-target="#scrolling-target"
+      v-if="$store.state.isUserLoggedIn"
+    >
       <v-toolbar-title>
         <router-link :to="{name: 'lectures'}" class="brand-black">Thinq</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-text-field append-icon="mdi-magnify" flat hide-details :v-model="search" solo style="max-width: 300px;" />
-     
-      <v-menu bottom transition="slide-y-transition">
+      <!-- <v-text-field append-icon="mdi-magnify" flat hide-details :v-model="search" solo style="max-width: 300px;" /> -->
+
+      <!-- <v-menu bottom transition="slide-y-transition">
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-icon color="black">mdi-dots-vertical</v-icon>
@@ -22,20 +28,74 @@
             <v-list-item-title>Log out</v-list-item-title>
           </v-list-item>
         </v-list>
+      </v-menu>-->
+
+      <v-menu
+        bottom
+        left
+        transition="slide-x-reverse-transition"
+        :close-on-content-click="false"
+        v-if="$store.state.isUserLoggedIn"
+      >
+        <template v-slot:activator="{ on }">
+          <v-btn color="indigo" v-on="on" icon style="margin-left: 30px;">
+            <v-icon large>mdi-account-circle</v-icon>
+          </v-btn>
+        </template>
+
+        <v-card max-width="200px">
+          <v-container fluid>
+            <div class="d-flex justify-center align-center flex-column ma-3">
+              <router-link :to="{path: `/user/${$store.state.user.id}`}">
+                <v-icon x-large>mdi-account-circle</v-icon>
+              </router-link>
+              <router-link
+                class="d-block ma-2 bold"
+                style="font-size: 16px;"
+                :to="{path: `/user/${$store.state.user.id}`}"
+              >
+                <span>{{$store.state.user.display_name}}</span>
+              </router-link>
+              <v-btn depressed small block>VIEW PROFILE</v-btn>
+            </div>
+            <v-divider />
+            <div class="d-flex justify-center align-center flex-column ma-3">
+              <v-btn
+                class="ma-1"
+                depressed
+                small
+                text
+                block
+                :to="{path: `/user/lectures/${$store.state.user.id}`}"
+              >My lectures</v-btn>
+              <v-btn
+                class="ma-1"
+                depressed
+                small
+                text
+                block
+                :to="{path: `/user/${$store.state.user.id}`}"
+              >Edit account</v-btn>
+
+              <v-btn class="ma-1" depressed small text block @click="logout">Log out</v-btn>
+            </div>
+            <!-- <v-list-item @click="toPath">My lectures</v-list-item>
+                <v-list-item @click="toPath">Settings</v-list-item>
+                <v-list-item @click="logout">Log out</v-list-item>
+            </v-list>-->
+          </v-container>
+        </v-card>
       </v-menu>
-      <div id="scrolling-target">
-      </div>
+      <div id="scrolling-target"></div>
     </v-app-bar>
   </div>
 </template>
 
 <script>
 export default {
-  data: () => ({
-    
-  }),
+  data: () => ({}),
   props: {
-    search: String,
+    search: String
   },
   methods: {
     async logout() {

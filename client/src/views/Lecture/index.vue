@@ -2,9 +2,7 @@
   <LectureMetadata :lecture="lecture">
     <template v-slot:similar>
       <v-slide-group
-        v-model="model"
         class="pa-4"
-        active-class="success"
         show-arrows
         v-if="categoryLectures.length"
       >

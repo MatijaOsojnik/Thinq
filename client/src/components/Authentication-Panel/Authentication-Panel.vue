@@ -1,6 +1,5 @@
 <template>
 <div>
-
     <Header />
     <div height="100vh" class="main">
       <v-row class="row-container">

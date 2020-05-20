@@ -7,7 +7,12 @@ export default {
     show(lectureId) {
         return Api().get(`lectures/${lectureId}`)
     },
-    post(lecture) {
+    showSimilar(categoryId, lectureId) {
+        return Api().get(`lectures/categories/similar/${categoryId}/${lectureId}`)
+    },
+    showDifferent(categoryId, lectureId) {
+            return Api().get(`lectures/categories/other/${categoryId}/${lectureId}`)
+        }, post(lecture) {
         return Api().post('lectures', lecture)
     },
     put(lecture) {

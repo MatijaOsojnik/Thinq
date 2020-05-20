@@ -96,7 +96,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .greeting-title {
   font-weight: 800;
   font-size: 24px;

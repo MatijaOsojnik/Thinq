@@ -17,7 +17,9 @@
           </div>
         </div>
       </v-col>
-      <v-col class="col-xl-4 col-lg-4 col-md-4 col-sm-12 cols-12 d-flex justify-lg-start justify-md-start justify-sm-center justify-center">
+      <v-col
+        class="col-xl-4 col-lg-4 col-md-4 col-sm-12 cols-12 d-flex justify-lg-start justify-md-start justify-sm-center justify-center"
+      >
         <v-card max-width="350px" max-height="400px">
           <v-img :src="lecture.thumbnail_url" height="250px"></v-img>
           <v-card-text>
@@ -38,11 +40,27 @@
         </v-card>
       </v-col>
     </v-row>
+    <div>
+      <span class="title ma-4 d-block">Similar lectures</span>
+      <v-divider></v-divider>
+      <slot name="similar">
+        <span class="heading ma-4 d-block">No similar lectures found</span>
+      </slot>
+    </div>
+    <v-spacer />
+    <div>
+      <span class="title ma-4 d-block">Other lectures</span>
+      <v-divider></v-divider>
+      <slot name="other">
+        <span class="heading ma-4 d-block">No other lectures found</span>
+      </slot>
+    </div>
   </v-container>
 </template>
 
 <script>
 export default {
+  data: () => ({}),
   props: {
     lecture: Object
   }

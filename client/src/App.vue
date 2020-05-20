@@ -3,7 +3,7 @@
     <div id="app">
       <main>
         <UserHeader />
-        <router-view />
+          <router-view />
         <Footer />
       </main>
     </div>

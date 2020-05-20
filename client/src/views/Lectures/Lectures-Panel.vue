@@ -14,7 +14,7 @@
       </div> -->
       <v-container fluid>
         <v-row style="z-index: 100">
-          <v-col v-if="$store.state.isUserLoggedIn" class="col-3 col-md-3 col-sm-6 cols-6">
+          <v-col v-if="$store.state.isUserLoggedIn" class="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-6">
             <v-hover v-slot:default="{ hover }">
               <router-link :to="{path: `/lectures/create/1`}" style="text-decoration:none;">
                 <v-card max-width="300px" height="320px" raised img="https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" :elevation="hover ? 8 : 2">
@@ -30,7 +30,7 @@
             </v-hover>
           </v-col>
           <v-col
-            class="col-3 col-md-3 col-sm-6 cols-6"
+            class="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-6"
             v-for="lecture in lectures"
             :key="lecture.id"
           >

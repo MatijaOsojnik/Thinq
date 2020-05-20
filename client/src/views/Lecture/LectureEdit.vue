@@ -4,7 +4,7 @@
       <v-flex xs12 justify="center" align="center">
         <v-card class="ma-12 mx-auto" max-width="1000px">
           <v-toolbar>
-            <v-toolbar-title>Create A New Lecture</v-toolbar-title>
+            <v-toolbar-title>Edit Lecture</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
             <v-scroll-x-transition>
@@ -62,7 +62,7 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-btn block @click="updateLecture">CREATE</v-btn>
+            <v-btn color="#f0f0f0" block large @click="updateLecture">SUBMIT</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>

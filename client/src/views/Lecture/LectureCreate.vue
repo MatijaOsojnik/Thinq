@@ -64,7 +64,7 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-btn block @click="createLecture">CREATE</v-btn>
+            <v-btn color="#f0f0f0" block large @click="createLecture">CREATE</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>

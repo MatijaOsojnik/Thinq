@@ -1,23 +1,23 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  strict: true,
+  plugins: [
+    createPersistedState()
+  ],
   state: {
-    search: ``,
     token: null,
     user: null,
-    isUserLoggedIn: true
+    isUserLoggedIn: false
   },
   mutations: {
     setToken(state, token) {
       state.token = token
-      if(!token){
-        state.isUserLoggedIn = false
-      }else{
-        state.isUserLoggedIn = true
-      }
+      state.isUserLoggedIn = !!(token)
     },
     setUser(state, user) {
       state.user = user

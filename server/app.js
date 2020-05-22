@@ -12,6 +12,8 @@ app.use(express.json())
 app.use(morgan("combined"))
 app.use(cors())
 
+require('./middleware/passport')
+
 require('./routes')(app);
 
 sequelize.sync()

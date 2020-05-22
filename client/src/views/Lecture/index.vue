@@ -23,7 +23,7 @@
 
 <script>
 import LectureService from "@/services/LectureService.js";
-import LectureMetadata from "@/views/Lecture/LectureMetadata.vue";
+import LectureMetadata from "@/views/Lecture/Metadata.vue";
 import CardRecommended from "@/components/Card-Recommended"
 export default {
   components: {

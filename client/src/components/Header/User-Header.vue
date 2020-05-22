@@ -46,17 +46,17 @@
         <v-card max-width="200px">
           <v-container fluid>
             <div class="d-flex justify-center align-center flex-column ma-3">
-              <router-link :to="{path: `/user/${$store.state.user.id}`}">
+              <router-link :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/profile`}">
                 <v-icon x-large>mdi-account-circle</v-icon>
               </router-link>
               <router-link
                 class="d-block ma-2 bold"
                 style="font-size: 16px;"
-                :to="{path: `/user/${$store.state.user.id}`}"
+                :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/profile`}"
               >
                 <span>{{$store.state.user.display_name}}</span>
               </router-link>
-              <v-btn depressed small block>VIEW PROFILE</v-btn>
+              <v-btn depressed small block :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/profile`}">VIEW PROFILE</v-btn>
             </div>
             <v-divider />
             <div class="d-flex justify-center align-center flex-column ma-3">
@@ -66,7 +66,7 @@
                 small
                 text
                 block
-                :to="{path: `/user/lectures/${$store.state.user.id}`}"
+                :to="{path: `/users/lectures/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}`}"
               >My lectures</v-btn>
               <v-btn
                 class="ma-1"
@@ -74,7 +74,7 @@
                 small
                 text
                 block
-                :to="{path: `/user/${$store.state.user.id}`}"
+                :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}`}"
               >Edit account</v-btn>
 
               <v-btn class="ma-1" depressed small text block @click="logout">Log out</v-btn>

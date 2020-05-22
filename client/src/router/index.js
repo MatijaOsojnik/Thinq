@@ -5,9 +5,11 @@ import Register from '@/views/Register.vue'
 import Login from '@/views/Login.vue'
 import Lectures from '@/views/Lectures'
 import Lecture from '@/views/Lecture'
-import LectureCreate from '@/views/Lecture/LectureCreate.vue'
-import LectureEdit from '@/views/Lecture/LectureEdit.vue'
+import LectureCreate from '@/views/Lecture/Create.vue'
+import LectureEdit from '@/views/Lecture/Edit.vue'
 import User from '@/views/Users/Show.vue'
+import EditUser from '@/views/Users/Edit.vue'
+
 
 Vue.use(VueRouter)
 
@@ -47,9 +49,18 @@ const routes = [{
     component: LectureEdit
   },
   {
-    path: '/users/:id',
+    path: '/users/:displayName/:id/profile',
     name: 'show-user',
     component: User
+  },
+  {
+    path: '/users/:displayName/:id',
+    name: 'edit-user',
+    component: EditUser
+  },
+  {
+    path: '*',
+    redirect: 'lectures'
   },
 ]
 

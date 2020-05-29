@@ -17,7 +17,7 @@
           <v-form lazy-validation>
             <v-text-field label="Display Name" v-model="user.display_name"></v-text-field>
             <v-text-field label="Email" v-model="user.email"></v-text-field>
-            <v-text-field label="Password" v-model="password"></v-text-field>
+            <v-text-field label="Password" type="password" v-model="newPassword"></v-text-field>
             <v-text-field label="Phone Number" v-model="user.phone_num"></v-text-field>
             <v-btn solo @click="updateUser"></v-btn>
           </v-form>
@@ -34,35 +34,23 @@ export default {
     user: {
       display_name: ``,
       email: ``,
-      password: ``,
       phone_num: ``
     },
-    password: ``,
+    newPassword: ``,
     errors: []
   }),
   mounted() {
-    this.user = this.$store.state.user
+    this.getUser()
   },
   methods: {
     async updateUser() {
-      // console.log(this.user)
-      // const areAllFieldsFilledIn = Object.keys(this.user).every(
-      //   key => !!this.user[key]
-      // );
-      // if (!areAllFieldsFilledIn) {
-      // this.errors = ("Please fill in all the fields.");
-      // return;
-      // }
       try {
-        const userId = this.$route.params.id;
-        this.user.password = this.password
-        console.log(this.user.password)
+        if(this.newPassword !== ``){
+          this.user.password = this.newPassword
+        }
         await UserService.put(this.user);
         this.$router.push({
-          name: "show-user",
-          params: {
-            id: userId
-          }
+          path: `/users/${(this.$store.state.user.display_name).toLowerCase()}/${this.$store.state.user.id}/profile`
         });
       } catch (err) {
         this.errors = err.response.data;

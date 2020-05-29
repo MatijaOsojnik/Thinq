@@ -43,7 +43,8 @@ module.exports = (sequelize, DataTypes) => {
 
     }, {
         hooks: {
-            beforeSave: hashPassword
+            beforeSave: hashPassword,
+            beforeUpdate: hashPassword
         }
     })
     User.prototype.comparePassword = function (password) {

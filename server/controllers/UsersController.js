@@ -20,11 +20,13 @@ module.exports = {
     },
     async show(req, res) {
         try {
-            const user = await User.findByPk(req.params.userId, {
-                attributes: {
-                    exclude: ['password']
-                }
-            })
+            const user = await User.findByPk(req.params.userId,
+                //     {
+                //     attributes: {
+                //         exclude: ['password']
+                //     }
+                // }
+            )
             res.send(user)
         } catch (error) {
             res.status(500).send({
@@ -34,21 +36,20 @@ module.exports = {
     },
     async put(req, res) {
         try {
-            const {
-                password
-            } = req.body
-            console.log(password)
-            const userFind = await User.findByPk(req.params.userId)
-            if (!(await userFind.comparePassword(password))) {
-                return res.status(403).send({
-                    error: `Password doesn't match`
-                })
-            }
-            const user = await User.update(req.body, {
-                where: {
-                    id: req.params.userId
-                },
+            const user = await User.findByPk(req.params.userId)
+            user.update(req.body, {
+                returning: true,
+                plain: true,
             })
+
+            //  const user = await User.update(req.body, {
+            //      where: {
+            //          id: req.params.userId
+            //      },
+            //      returning: true,
+            //      individualHooks: true
+            //  })
+            res.send(req.body)
         } catch (error) {
             res.status(500).send({
                 error: `An error has occured trying update user`

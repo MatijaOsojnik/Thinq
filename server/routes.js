@@ -7,7 +7,37 @@ const UsersController = require('./controllers/UsersController')
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy')
 const UserControllerPolicy = require('./policies/UserControllerPolicy')
 const isAuthenticated  = require('./policies/isAuthenticated')
+
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './uploads/')
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + file.originalname)
+    }
+})
+
+const fileFilter = (req, file, cb) => {
+    if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg')
+    cb(null, true)
+    else{
+        cb(null, false)
+    }
+}
+
+const upload = multer({
+    storage,
+    limits: {
+        fileSize: 1024 * 1024 * 2
+    },
+    fileFilter
+});
+
 module.exports = (app) => {
+
+    
     // LOGIN, REGISTER ROUTES
     app.post('/register', AuthenticationControllerPolicy.register, AuthenticationController.register)
     app.post('/login', AuthenticationController.login)
@@ -15,6 +45,7 @@ module.exports = (app) => {
     //USER ROUTES
     app.get('/users', UsersController.index)
     app.get('/users/:userId', UsersController.show)
+    app.post('/users/:userId/upload', upload.single('file'), UsersController.uploadFile)
     app.put('/users/:userId', UsersController.put)
     app.delete('/users/:userId', UsersController.delete)
 
@@ -33,7 +64,13 @@ module.exports = (app) => {
     app.post('/categories', isAuthenticated, CategoriesController.create)
 
     // ROLE ROUTES
-
     app.get('/roles', RolesController.index)
     app.post('/roles', isAuthenticated, RolesController.create)
+
+    //FILE UPLOAD ROUTE
+    // app.post('/upload', upload.single('file'), (req, res) => {
+    //     res.json({file: req.file})
+    //     console.log(req.file)
+    //     console.log(req.body)
+    // })
 }

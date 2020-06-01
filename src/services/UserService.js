@@ -9,5 +9,8 @@ export default {
     },
     put(user) {
         return Api().put(`users/${user.id}`, user)
+    },
+    changeAvatar(user, file) {
+        return Api().put(`users/${user.id}`, file)
     }
 }

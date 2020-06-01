@@ -8,8 +8,3 @@ export default {
         return Api().post('login', credentials)
     }
 }
-
-// AuthenticationService.register({
-//     email: 'a@b.com',
-//     password: '123456'
-// })

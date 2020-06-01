@@ -6,7 +6,11 @@ const morgan = require("morgan")
 const {sequelize} = require("./models")
 const config = require("./config/config")
 
+const path = require('path')
+
 const app = express()
+
+app.use("/uploads", express.static("uploads"))
 
 app.use(express.json())
 app.use(morgan("combined"))

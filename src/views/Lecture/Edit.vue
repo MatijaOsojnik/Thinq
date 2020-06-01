@@ -3,7 +3,7 @@
     <v-layout>
       <v-flex xs12 justify="center" align="center">
         <v-card class="ma-12 mx-auto" max-width="1000px">
-          <v-toolbar>
+          <v-toolbar flat color="#617BE3" dark>
             <v-toolbar-title>Edit Lecture</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
@@ -61,7 +61,7 @@
               ></v-select>
             </v-form>
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="pa-4">
             <v-btn color="#f0f0f0" block large @click="updateLecture">SUBMIT</v-btn>
           </v-card-actions>
         </v-card>

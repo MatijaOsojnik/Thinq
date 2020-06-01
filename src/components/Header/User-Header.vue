@@ -39,7 +39,12 @@
       >
         <template v-slot:activator="{ on }">
           <v-btn color="indigo" v-on="on" icon style="margin-left: 30px;">
-            <v-icon large>mdi-account-circle</v-icon>
+            <v-avatar v-if="!$store.state.user.icon_url">
+              <v-icon large>mdi-account-circle</v-icon>
+            </v-avatar>
+            <v-avatar v-else>
+                <img :src="'localhost:8082/' + $store.state.user.icon_url" />
+            </v-avatar>
           </v-btn>
         </template>
 

@@ -4,9 +4,13 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import './plugins/tiptap-vuetify'
+
+import AppSocket from './plugins/socket'
 // import UserHeader from './components/Header/User-Header.vue'
 
 Vue.config.productionTip = false
+
+Vue.use(AppSocket, {connection: process.env.VUE_APP_URI})
 
 // Vue.component('UserHeader', UserHeader)
 

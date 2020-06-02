@@ -2,7 +2,7 @@ const {
     User, RoleUsers
 } = require('../models');
 const jwt = require('jsonwebtoken');
-const config = require('../config/config')
+const config = require('../config')
 
 function jwtSignUser(user) {
     return jwt.sign({

@@ -5,7 +5,7 @@ const RolesController = require('./controllers/RolesController')
 const UsersController = require('./controllers/UsersController')
 
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy')
-const UserControllerPolicy = require('./policies/UserControllerPolicy')
+// const UserControllerPolicy = require('./policies/UserControllerPolicy')
 const isAuthenticated  = require('./policies/isAuthenticated')
 
 const multer = require('multer');
@@ -43,11 +43,11 @@ module.exports = (app) => {
     app.post('/login', AuthenticationController.login)
 
     //USER ROUTES
-    app.get('/users', UsersController.index)
-    app.get('/users/:userId', UsersController.show)
-    app.post('/users/:userId/upload', upload.single('file'), UsersController.uploadFile)
-    app.put('/users/:userId', UsersController.put)
-    app.delete('/users/:userId', UsersController.delete)
+    app.get('/users', isAuthenticated, UsersController.index)
+    app.get('/users/:userId', isAuthenticated, UsersController.show)
+    app.post('/users/:userId/upload', isAuthenticated, upload.single('file'), UsersController.uploadFile)
+    app.put('/users/:userId', isAuthenticated, UsersController.put)
+    app.delete('/users/:userId', isAuthenticated, UsersController.delete)
 
 
     // LECTURE ROUTES
@@ -56,7 +56,7 @@ module.exports = (app) => {
     app.get('/lectures/categories/similar/:categoryId/:lectureId', LecturesController.showSimilar)
     app.get('/lectures/categories/other/:categoryId/:lectureId', LecturesController.showDifferent)
 
-    app.put('/lectures/:lectureId', LecturesController.put)
+    app.put('/lectures/:lectureId', isAuthenticated, LecturesController.put)
     app.post('/lectures', isAuthenticated, LecturesController.post)
 
     // CATEGORY ROUTES

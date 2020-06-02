@@ -4,9 +4,9 @@ const express = require("express")
 const cors = require("cors")
 const morgan = require("morgan")
 const {sequelize} = require("./models")
-const config = require("./config/config")
+const config = require("./config")
 
-const path = require('path')
+const path = require("path")
 
 const app = express()
 
@@ -19,6 +19,15 @@ app.use(cors())
 require('./middleware/passport')
 
 require('./routes')(app);
+
+if (process.env.NODE_ENV === 'production') {
+    const appPath = path.join(__dirname, '..', 'dist');
+    app.use(express.static(appPath));
+
+    app.get('*', function (req, res) {
+        res.sendFile(path.resolve(appPath, 'index.html'));
+    });
+}
 
 sequelize.sync()
     .then(() => {

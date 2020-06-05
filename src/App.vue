@@ -24,9 +24,9 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: "Lato", cursive;
-}
+/* #app {
+  font-family: "Roboto", cursive;
+} */
 
 a {
   text-decoration: none;

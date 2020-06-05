@@ -19,7 +19,7 @@
           class="col-xl-4 col-lg-4 col-md-4 col-sm-12 cols-12 d-flex justify-lg-start justify-md-start justify-sm-center justify-center"
         >
           <v-card max-width="350px" max-height="400px">
-            <v-img :src="lecture.thumbnail_url" height="250px"></v-img>
+            <v-img :src="lecture.thumbnail_url" height="250px" width="350px"></v-img>
             <v-card-text>
               <div class="d-flex justify-space-around align-center">
                 <span class="lecture-count">Exercises</span>

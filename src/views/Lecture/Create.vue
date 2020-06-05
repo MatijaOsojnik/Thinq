@@ -27,14 +27,14 @@
                 solo
                 clearable
                 counter
-                maxlength="80"
+                maxlength="60"
                 hint="This description will be used on the Lecture card before the user clicks on it."
                 aria-autocomplete="false"
                 v-model="lecture.short_description"
               />
 
               <div style="margin: 0.5rem 0 2rem">
-                <tiptap-vuetify v-model="lecture.description"  :extensions="extensions" />
+                <tiptap-vuetify v-model="lecture.description" :rules="[rules.description]" placeholder="Write your description here." maxlength="300"  :extensions="extensions" />
               </div>
 
               <v-text-field
@@ -96,7 +96,8 @@ export default {
 
   data: () => ({
     rules: {
-      short_description: text => text.length <= 80 || "Max 80 characters",
+      short_description: text => text.length <= 60 || "Max 60 characters",
+      description: text => text.length <= 300 || "Max 300 characters",
       file: value =>
         !value ||
         value.size < 2000000 ||
@@ -106,7 +107,7 @@ export default {
     lecture: {
       title: ``,
       short_description: ``,
-      description: `<p>Write your description here.</p>`,
+      description: ``,
       thumbnail_url: ``,
       category_id: ``,
       user_id: null

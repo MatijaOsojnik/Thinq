@@ -56,7 +56,7 @@
             <v-hover v-slot:default="{ hover }">
               <v-card
                 :to="{path: `/lectures/${lecture.id}`}"
-                max-width="300px"
+                width="300px"
                 height="320px"
                 raised
                 :elevation="hover ? 8 : 2"

@@ -1,10 +1,10 @@
-import Api from '@/services/Api'
+import axios from '@/services/axios'
 
 export default {
     register(credentials) {
-        return Api().post('register', credentials)
+        return axios.post('register', credentials)
     },
     login(credentials) {
-        return Api().post('login', credentials)
+        return axios.post('login', credentials)
     }
 }

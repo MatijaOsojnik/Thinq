@@ -1,21 +1,22 @@
-import Api from '@/services/Api'
+import axios from '@/services/axios'
 
 export default {
     index() {
-        return Api().get('lectures')
+        return axios.get('lectures')
     },
     show(lectureId) {
-        return Api().get(`lectures/${lectureId}`)
+        return axios.get(`lectures/${lectureId}`)
     },
     showSimilar(categoryId, lectureId) {
-        return Api().get(`lectures/categories/similar/${categoryId}/${lectureId}`)
+        return axios.get(`lectures/categories/similar/${categoryId}/${lectureId}`)
     },
     showDifferent(categoryId, lectureId) {
-            return Api().get(`lectures/categories/other/${categoryId}/${lectureId}`)
-        }, post(lecture) {
-        return Api().post('lectures', lecture)
+        return axios.get(`lectures/categories/other/${categoryId}/${lectureId}`)
+    },
+    post(lecture) {
+        return axios.post('lectures', lecture)
     },
     put(lecture) {
-        return Api().put(`lectures/${lecture.id}`, lecture)
+        return axios.put(`lectures/${lecture.id}`, lecture)
     }
- }
+}

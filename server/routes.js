@@ -4,6 +4,8 @@ const CategoriesController = require('./controllers/CategoriesController')
 const RolesController = require('./controllers/RolesController')
 const UsersController = require('./controllers/UsersController')
 
+const authJwt = require('./middleware/authJwt')
+
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy')
 // const UserControllerPolicy = require('./policies/UserControllerPolicy')
 const isAuthenticated  = require('./policies/isAuthenticated')
@@ -36,36 +38,34 @@ const upload = multer({
 });
 
 module.exports = (app) => {
-
     
     // LOGIN, REGISTER ROUTES
-    app.post('/register', AuthenticationControllerPolicy.register, AuthenticationController.register)
-    app.post('/login', AuthenticationController.login)
+    app.post('/api/register', AuthenticationControllerPolicy.register, AuthenticationController.register)
+    app.post('/api/login', AuthenticationController.login)
 
     //USER ROUTES
-    app.get('/users', isAuthenticated, UsersController.index)
-    app.get('/users/:userId', isAuthenticated, UsersController.show)
-    app.post('/users/:userId/upload', isAuthenticated, upload.single('file'), UsersController.uploadFile)
-    app.put('/users/:userId', isAuthenticated, UsersController.put)
-    app.delete('/users/:userId', isAuthenticated, UsersController.delete)
-
+    app.get('/api/users', UsersController.index)
+    app.get('/api/users/:userId', isAuthenticated, UsersController.show)
+    app.post('/api/users/:userId/upload', isAuthenticated, upload.single('file'), UsersController.uploadFile)
+    app.put('/api/users/:userId', isAuthenticated, UsersController.put)
+    app.delete('/api/users/:userId', isAuthenticated, UsersController.delete)
 
     // LECTURE ROUTES
-    app.get('/lectures', LecturesController.index)
-    app.get('/lectures/:lectureId', LecturesController.show)
-    app.get('/lectures/categories/similar/:categoryId/:lectureId', LecturesController.showSimilar)
-    app.get('/lectures/categories/other/:categoryId/:lectureId', LecturesController.showDifferent)
+    app.get('/api/lectures', LecturesController.index)
+    app.get('/api/lectures/:lectureId', LecturesController.show)
+    app.get('/api/lectures/categories/similar/:categoryId/:lectureId', LecturesController.showSimilar)
+    app.get('/api/lectures/categories/other/:categoryId/:lectureId', LecturesController.showDifferent)
 
-    app.put('/lectures/:lectureId', isAuthenticated, LecturesController.put)
-    app.post('/lectures', isAuthenticated, LecturesController.post)
+    app.put('/api/lectures/:lectureId', isAuthenticated, LecturesController.put)
+    app.post('/api/lectures', isAuthenticated, LecturesController.post)
 
     // CATEGORY ROUTES
-    app.get('/categories', CategoriesController.index)
-    app.post('/categories', isAuthenticated, CategoriesController.create)
+    app.get('/api/categories', CategoriesController.index)
+    app.post('/api/categories', isAuthenticated, CategoriesController.create)
 
     // ROLE ROUTES
-    app.get('/roles', RolesController.index)
-    app.post('/roles', isAuthenticated, RolesController.create)
+    app.get('/api/roles', RolesController.index)
+    app.post('/api/roles', isAuthenticated, RolesController.create)
 
     //FILE UPLOAD ROUTE
     // app.post('/upload', upload.single('file'), (req, res) => {

@@ -41,4 +41,6 @@ Object.keys(db).forEach(async function (modelName) {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.ROLES = ['Member', 'Lecturer', 'Moderator', 'Admin'];
+
 module.exports = db

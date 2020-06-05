@@ -1,6 +1,12 @@
 const {
-    User, RoleUsers
+    User,
+    Role,
 } = require('../models');
+
+const {
+    Op
+} = require("sequelize");
+
 const jwt = require('jsonwebtoken');
 const config = require('../config')
 
@@ -8,33 +14,76 @@ function jwtSignUser(user) {
     return jwt.sign({
         user,
     }, config.authentication.jwtSecret, {
-        expiresIn: '7d'
+        expiresIn: 86400
     })
 }
 
 module.exports = {
     async register(req, res) {
         try {
-            const user = await User.create(req.body)
-            const userJson = user.toJSON()
-            
-            const userRole = await RoleUsers.create({
-                RoleId: 1,
-                UserId: userJson.id
-            })
-            
-            const userRoleJson = userRole.toJSON()
-            res.send({
-                user: userJson,
-                userRole: userRoleJson
-            })
+            console.log(req.body)
+            await User.create({
+                    display_name: req.body.display_name,
+                    email: req.body.email,
+                    password: req.body.password,
+                    repeat_password: req.body.repeat_password
+                })
+                .then((user) => {
+                    if (req.body.roles) {
+                        Role.findAll({
+                            where: {
+                                name: {
+                                    [Op.or]: req.body.roles
+                                }
+                            }
+                        }).then(roles => {
+                            console.log(roles)
+                            user.setRoles(roles).then(() => {
+                                res.send({
+                                    message: "User was registered successfully!"
+                                });
+                            });
+                        });
+                    } else {
+                        user.setRoles([1]).then(() => {
+                            res.send({
+                                message: "User was registered successfully!"
+                            });
+                        }).catch(err => {
+                            res.status(500).send({
+                                error: err
+                            })
+                        })
+                    }
+                })
+
+            // const userRole = await User.findOne({
+            //     where: {
+            //         email: req.body.email
+            //     },
+            //     include: [{
+            //         model: Role
+            //     }, {
+            //         model: 'RolesUsers'
+            //     }]
+            // })
+            // const userJson = userRole.toJSON()
+
+            // const userRole = await RoleUsers.create({
+            //     RoleId: 1,
+            //     UserId: userJson.id
+            // })
+
+            // const userRoleJson = userRole.toJSON()
+            // res.send({
+            //     user: userJson,
+            // })
         } catch (err) {
             res.status(400).send([`Email is already in use.`])
         }
     },
     async login(req, res) {
         try {
-
             const {
                 email,
                 password
@@ -54,8 +103,18 @@ module.exports = {
                     error: `The login information was incorrect`
                 })
             }
+
+            const authorities = []
+
+            user.getRoles().then((roles) => {
+                for (let i = 0; i < roles.length; i++) {
+                    authorities.push("ROLE_" + roles[i].name.toUpperCase());
+                }
+            })
+
             const userJson = user.toJSON();
             res.send({
+                authorities,
                 user: user,
                 token: jwtSignUser(userJson)
             })

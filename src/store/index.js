@@ -2,10 +2,17 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 
+import categories from './modules/categories'
+import lectures from './modules/lectures'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   strict: true,
+  modules: {
+    categories,
+    lectures
+  },
   plugins: [
     createPersistedState()
   ],
@@ -21,7 +28,10 @@ export default new Vuex.Store({
     },
     setUser(state, user) {
       state.user = user
-    }
+    },
+    // setItems(state, {resource, items}) {
+    //   state[resource].items = items
+    // }
   },
   actions: {
     setToken({commit}, token){
@@ -31,6 +41,4 @@ export default new Vuex.Store({
       commit('setUser', user)
     }
   },
-  modules: {
-  }
 })

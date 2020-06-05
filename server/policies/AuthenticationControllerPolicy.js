@@ -3,6 +3,7 @@ const Joi = require('@hapi/joi')
 module.exports = {
     register(req, res, next) {
         const schema = Joi.object({
+            roles: Joi.array().max(1),
             display_name: Joi.string()
                 .alphanum()
                 .min(3)

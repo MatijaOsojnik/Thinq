@@ -1,10 +1,10 @@
-import Api from '@/services/Api'
+import axios from '@/services/axios'
 
 export default {
     index() {
-        return Api().get('categories')
+        return axios.get('categories')
     },
     postCategory(data) {
-        return Api().post('categories', data)
+        return axios.post('categories', data)
     }
 }

@@ -1,16 +1,16 @@
-import Api from '@/services/Api'
+import axios from 'axios'
 
 export default {
     index() {
-        return Api().get('users')
+        return axios.get('users')
     },
     show(userId) {
-        return Api().get(`users/${userId}`)
+        return axios.get(`users/${userId}`)
     },
     put(user) {
-        return Api().put(`users/${user.id}`, user)
+        return axios.put(`users/${user.id}`, user)
     },
     changeAvatar(user, file) {
-        return Api().put(`users/${user.id}`, file)
+        return axios.put(`users/${user.id}`, file)
     }
 }

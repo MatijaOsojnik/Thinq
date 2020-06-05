@@ -1,14 +1,16 @@
 const {
-    Role
+    Role, User
 } = require('../models')
 
 module.exports = {
     async index(req, res) {
         try {
             const roles = await Role.findAll({
-                where: {}
+                where: {},
+                include: [{
+                    model: User
+                }]
             })
-            console.log(roles)
             res.send(roles)
         } catch (error) {
             console.log(error)

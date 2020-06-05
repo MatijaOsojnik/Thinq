@@ -1,7 +1,7 @@
-import Api from '@/services/Api'
+import axios from 'axios'
 
 export default {
     index(userId, file) {
-        return Api().post(`users/${userId}/upload`, file)
+        return axios.post(`users/${userId}/upload`, file)
     },
 }

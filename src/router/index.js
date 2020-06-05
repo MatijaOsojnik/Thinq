@@ -37,6 +37,7 @@ const routes = [{
     path: '/lectures/:id',
     name: 'lecture',
     component: Lecture,
+    props: true
   },
   {
     path: '/lectures/create/:id',

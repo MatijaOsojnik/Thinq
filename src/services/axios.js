@@ -1,7 +1,13 @@
 import axios from 'axios'
+let baseurl = ''
+if(process.env.NODE_ENV === 'production'){
+    baseurl = 'https://thinq-language-learning.herokuapp.com/api'
+}else {
+    baseurl = 'http://localhost:8082/api'
+}
 
 const axiosInstance = axios.create({
-    baseURL: process.env.VUE_APP_URI + ':' + process.env.PORT + '/api',
+    baseURL: baseurl,
     timeout: 3000
 })
 

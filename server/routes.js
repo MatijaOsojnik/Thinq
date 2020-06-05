@@ -56,8 +56,8 @@ module.exports = (app) => {
     app.get('/api/lectures/categories/similar/:categoryId/:lectureId', LecturesController.showSimilar)
     app.get('/api/lectures/categories/other/:categoryId/:lectureId', LecturesController.showDifferent)
 
-    app.put('/api/lectures/:lectureId', isAuthenticated, LecturesController.put)
-    app.post('/api/lectures', isAuthenticated, LecturesController.post)
+    app.put('/api/lectures/:lectureId', LecturesController.put)
+    app.post('/api/lectures', LecturesController.post)
 
     // CATEGORY ROUTES
     app.get('/api/categories', CategoriesController.index)

@@ -3,14 +3,16 @@ require('dotenv').config()
 const express = require("express")
 const cors = require("cors")
 const morgan = require("morgan")
-const {sequelize} = require("./models")
+const {
+    sequelize
+} = require("./models")
 const config = require("./config")
 
 const path = require("path")
 
 const app = express()
 
-app.use("/uploads", express.static("uploads"))
+app.use("/static", express.static(path.join(__dirname, 'static')))
 
 app.use(express.json())
 app.use(morgan("combined"))
@@ -34,5 +36,3 @@ sequelize.sync()
         app.listen(config.port)
         console.log(`Server started on port ${config.port}`)
     });
-
-

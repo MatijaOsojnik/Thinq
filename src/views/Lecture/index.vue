@@ -9,6 +9,11 @@
               <v-icon medium color="black">mdi-pencil</v-icon>
             </v-btn>
           </router-link>
+          <router-link :to="{name: 'lectures'}">
+            <v-btn style="margin: 1rem 0;" icon v-if="$store.state.isUserLoggedIn" @click="deleteLecture">
+              <v-icon medium color="black">mdi-delete-forever</v-icon>
+            </v-btn>
+          </router-link>
           <div class="d-flex flex-column justify-space-around">
             <div>
               <div v-html="lecture.description"></div>
@@ -92,6 +97,10 @@ export default {
       this.lecture = responseLecture.data;
       this.categoryLectures = responseSimilarLectures.data;
       this.differentLectures = responseDifferentLectures.data;
+    },
+    async deleteLecture() {
+      const lectureId = this.$route.params.id
+      await LectureService.delete(lectureId)
     }
   }
 };

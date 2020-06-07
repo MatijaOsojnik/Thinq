@@ -2,6 +2,7 @@ const {
     Lecture,
     Category,
     LectureUsers,
+    User
 } = require('../models')
 
 const {
@@ -15,6 +16,8 @@ module.exports = {
                 include: [{
                     model: Category,
                     required: true
+                },{
+                    model: User,
                 }]
             })
             res.send(lectures)
@@ -75,28 +78,28 @@ module.exports = {
             })
         }
     },
-        async showDifferent(req, res) {
-            try {
-                console.log(req.params.lectureId)
-                const lectures = await Lecture.findAll({
-                    where: {
-                                id: {
-                                    [Op.ne]: req.params.lectureId
-                                }
-                    },
-                    order: [
-                        ['title', 'ASC']
-                    ]
-                })
-                console.log(lectures)
-                res.send(lectures)
-            } catch (error) {
-                console.log(error)
-                res.status(500).send({
-                    error: `An error has occured trying to fetch lectures`
-                })
-            }
-        },
+    async showDifferent(req, res) {
+        try {
+            console.log(req.params.lectureId)
+            const lectures = await Lecture.findAll({
+                where: {
+                    id: {
+                        [Op.ne]: req.params.lectureId
+                    }
+                },
+                order: [
+                    ['title', 'ASC']
+                ]
+            })
+            console.log(lectures)
+            res.send(lectures)
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({
+                error: `An error has occured trying to fetch lectures`
+            })
+        }
+    },
     async put(req, res) {
         try {
             const lecture = await Lecture.update(req.body, {
@@ -105,6 +108,19 @@ module.exports = {
                 }
             })
             res.send(req.body)
+        } catch (error) {
+            res.status(500).send({
+                error: `An error has occured trying fetch a lecture`
+            })
+        }
+    },
+    async delete(req, res) {
+        try {
+            const lecture = await Lecture.destroy({
+                where: {
+                    id: req.params.lectureId
+                }
+            })
         } catch (error) {
             res.status(500).send({
                 error: `An error has occured trying fetch a lecture`

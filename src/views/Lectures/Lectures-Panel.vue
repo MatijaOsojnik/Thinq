@@ -63,10 +63,12 @@
               >
                 <div>
                   <v-list-item>
-                    <v-list-item-avatar color="indigo">
+                    <v-list-item-avatar v-if="!lecture.Users.icon_url" color="indigo">
                       <v-icon dark>mdi-account-circle</v-icon>
                     </v-list-item-avatar>
-                    <!-- <v-list-item-avatar v-else :img="$store.state.user.icon_url"></v-list-item-avatar> -->
+                    <v-list-item-avatar v-else :img="lecture.Users.icon_url">
+
+                    </v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-title class="title">{{lecture.title}}</v-list-item-title>
                       <!-- <v-list-item-subtitle>by Kurt Wagner</v-list-item-subtitle> -->

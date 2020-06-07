@@ -8,7 +8,7 @@ import lectures from './modules/lectures'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  strict: true,
+  strict: false,
   modules: {
     categories,
     lectures

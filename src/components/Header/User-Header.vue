@@ -43,7 +43,7 @@
               <v-icon large>mdi-account-circle</v-icon>
             </v-avatar>
             <v-avatar v-else>
-                <img :src="'localhost:8082/' + $store.state.user.icon_url" />
+              <v-img :src="$store.state.user.icon_url" />
             </v-avatar>
           </v-btn>
         </template>
@@ -51,8 +51,15 @@
         <v-card max-width="200px">
           <v-container fluid>
             <div class="d-flex justify-center align-center flex-column ma-3">
-              <router-link :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/profile`}">
-                <v-icon x-large>mdi-account-circle</v-icon>
+              <router-link
+                :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/profile`}"
+              >
+                <v-avatar v-if="!$store.state.user.icon_url">
+                  <v-icon large>mdi-account-circle</v-icon>
+                </v-avatar>
+                <v-avatar v-else>
+                  <v-img :src="$store.state.user.icon_url" />
+                </v-avatar>
               </router-link>
               <router-link
                 class="d-block ma-2 bold"
@@ -61,7 +68,12 @@
               >
                 <span>{{$store.state.user.display_name}}</span>
               </router-link>
-              <v-btn depressed small block :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/profile`}">VIEW PROFILE</v-btn>
+              <v-btn
+                depressed
+                small
+                block
+                :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/profile`}"
+              >VIEW PROFILE</v-btn>
             </div>
             <v-divider />
             <div class="d-flex justify-center align-center flex-column ma-3">

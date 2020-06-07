@@ -2,12 +2,43 @@ const {
     User
 } = require('../models')
 
-const fs = require('fs');
-const Jimp = require('jimp')
+const fs = require('fs')
 
-const {
-    Op
-} = require("sequelize");
+const sharp = require('sharp')
+
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './uploads/')
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, file.fieldname + '-' + uniqueSuffix)
+    }
+})
+
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+    if (!allowedTypes.includes(file.mimetype)) {
+        const error = new Error("Incorrect file");
+        error.code = "INCORRECT_FILETYPE";
+        return cb(error, false)
+    }
+    cb(null, true);
+}
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 2
+    },
+    fileFilter: fileFilter
+}).single('file');
+
+// const {
+//     Op
+// } = require("sequelize");
 
 module.exports = {
     async index(req, res) {
@@ -74,33 +105,36 @@ module.exports = {
     },
     async uploadFile(req, res) {
         try {
-            const user = await User.findByPk(req.params.userId)
-                user.update({
-                    icon_url: `static/${req.file.originalname}`
+            await sharp(req.file.path)
+                .resize(128, 128)
+                .jpeg({
+                    quality: 80
                 })
-                // Jimp.read(req.file.path)
-                //     .then(image => {
-                //         return image
-                //             .resize(256, 256) // resize
-                //             .quality(60) // set JPEG quality
-                //             .greyscale() // set greyscale
-                //             .write(`./static/${req.file.originalname}`);
-                //         // save
-                //     })
-                //     .catch(err => {
-                //         console.error(err);
-                //     });
+                .toFile(`./static/${req.file.originalname}`)
 
-                // fs.unlink(req.file.path, () => {
-                //     res.json({
-                //         file: `/static/${req.file.originalname}`
-                //     })
-                // })
-                res.send(user)
-        } catch (error) {
-            res.status(500).send({
-                error: `An error has occured trying to change user avatar`
+                let url = ``
+
+                if(process.env.NODE_ENV === 'production') {
+                    url = `https://thinq-language-learning.herokuapp.com/static/${req.file.originalname}`
+                } else {
+                    url = `http://localhost:8082/static/${req.file.originalname}`
+                }
+
+            const user = await User.findByPk(req.params.userId)
+            user.update({
+                icon_url: url
             })
+
+            fs.unlink(req.file.path, () => {
+                res.json({
+                    file: `/static/${req.file.originalname}`
+                })
+            })
+
+        } catch (error) {
+                res.send({
+                    err: error
+                })
         }
     }
 }

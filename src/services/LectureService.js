@@ -18,5 +18,8 @@ export default {
     },
     put(lecture) {
         return axios.put(`lectures/${lecture.id}`, lecture)
+    },
+    delete(lectureId) {
+        return axios.delete(`lectures/${lectureId}`)
     }
 }

@@ -21,6 +21,7 @@
             :key="index"
             class="mx-4"
             icon
+            color="white"
             :href="icon.link"
             target="_blank"
           >

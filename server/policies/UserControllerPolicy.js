@@ -3,13 +3,10 @@ const Joi = require('@hapi/joi')
 module.exports = {
     update(req, res, next) {
         const schema = Joi.object({
-            id: Joi.number(),
-            
             display_name: Joi.string()
                 .alphanum()
                 .min(3)
                 .max(30)
-                .required()
                 .messages({
                     'string.base': 'Display name should be a type of text',
                     'string.empty': `Please enter a name`,
@@ -25,13 +22,37 @@ module.exports = {
                     'any.only': `E-mail entered is not valid`
                 }),
             password: Joi.string()
-                .pattern(new RegExp('^[a-zA-Z0-9]{8,}$'))
+            .pattern(new RegExp('^[a-zA-Z0-9]{8,}$'))
+            .allow('', null)
+            .messages({
+                'string.pattern.base': `Password must be longer than 8 characters`,
+                'any.base': `Password must be longer than 8 characters`,
+                'any.only': `Password must be longer than 8 characters`,
+            }),
+            repeat_password: Joi.any()
+                .allow('')
+                .optional()
+                .valid(Joi.ref('password'))
                 .messages({
-                    'string.empty': `Please enter a password`,
-                    'string.pattern.base': `Password must be longer than 8 characters`,
-                    'any.base': `Password must be longer than 8 characters`,
-                    'any.only': `Password must be longer than 8 characters`,
+                    'any.only': `Passwords don't match`
                 }),
+            birth_date: Joi.date()
+            .allow('', null)
+            .iso()
+            .min('1-1-1940')
+            .messages({
+                'date.base': `Please enter a valid date`,
+                'date.format': `The date you entered was in invalid format`,
+                'date.min': `You must be born after 1940.`
+            }),
+            phone_num: Joi.string()
+            .allow('', null)
+            .pattern(new RegExp('^[0-9]{8,}$'))
+            .messages({
+                'string.pattern.base': `The phone number you entered is invalid`,
+                'any.base': `The phone number you entered is invalid`,
+                'any.only': `The phone number you entered is invalid`
+            })
         })
 
         const {

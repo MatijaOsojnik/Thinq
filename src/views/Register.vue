@@ -75,7 +75,7 @@ export default {
     repeat_password: "",
     registerSuccess: false,
     showPanel: false,
-    errors: []
+    errors: null
   }),
   methods: {
     async register() {

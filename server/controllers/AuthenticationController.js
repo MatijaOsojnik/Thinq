@@ -56,28 +56,6 @@ module.exports = {
                         })
                     }
                 })
-
-            // const userRole = await User.findOne({
-            //     where: {
-            //         email: req.body.email
-            //     },
-            //     include: [{
-            //         model: Role
-            //     }, {
-            //         model: 'RolesUsers'
-            //     }]
-            // })
-            // const userJson = userRole.toJSON()
-
-            // const userRole = await RoleUsers.create({
-            //     RoleId: 1,
-            //     UserId: userJson.id
-            // })
-
-            // const userRoleJson = userRole.toJSON()
-            // res.send({
-            //     user: userJson,
-            // })
         } catch (err) {
             res.status(400).send([`Email is already in use.`])
         }

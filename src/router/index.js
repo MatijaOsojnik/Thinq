@@ -9,7 +9,7 @@ import Lecture from '@/views/Lecture'
 import LectureCreate from '@/views/Lecture/Create.vue'
 import LectureEdit from '@/views/Lecture/Edit.vue'
 import User from '@/views/Users/Show.vue'
-import Users from '@/views/Users'
+// import Users from '@/views/Users'
 import EditUser from '@/views/Users/Edit.vue'
 
 
@@ -89,14 +89,14 @@ const routes = [{
     }
 
   },
-  {
-    path: '/users',
-    name: 'users',
-    component: Users,
-    meta: {
-      onlyAuthUser: true
-    }
-  },
+  // {
+  //   path: '/users',
+  //   name: 'users',
+  //   component: Users,
+  //   meta: {
+  //     onlyAuthUser: true
+  //   }
+  // },
   {
     path: '*',
     redirect: 'lectures'

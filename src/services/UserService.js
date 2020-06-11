@@ -7,11 +7,8 @@ export default {
     show(userId) {
         return axios.get(`users/${userId}`)
     },
-    showAuthenticated(config) {
-        return axios.get(`users/me`, config)
-    },
-    put(user) {
-        return axios.put(`users/${user.id}`, user)
+    put(userId, data) {
+        return axios.put(`users/${userId}`, data)
     },
     changeAvatar(user, file) {
         return axios.put(`users/${user.id}`, file)

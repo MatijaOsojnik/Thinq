@@ -6,6 +6,7 @@ const UsersController = require('./controllers/UsersController')
 
 // const authJwt = require('./middleware/authJwt')
 
+const UserControllerPolicy = require('./policies/UserControllerPolicy')
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy')
 // const UserControllerPolicy = require('./policies/UserControllerPolicy')
 const isAuthenticated = require('./policies/isAuthenticated')
@@ -66,7 +67,7 @@ module.exports = (app) => {
         }
     });
 
-    app.put('/api/users/:userId', AuthenticationControllerPolicy.register, UsersController.put)
+    app.put('/api/users/:userId', UserControllerPolicy.update, UsersController.put)
     app.delete('/api/users/:userId', isAuthenticated, UsersController.delete)
 
     // LECTURE ROUTES

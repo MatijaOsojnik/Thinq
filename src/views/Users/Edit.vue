@@ -26,7 +26,7 @@
           <v-card flat class="mx-4">
             <v-card-text>
               <v-scroll-x-transition>
-                <v-alert type="warning" mode="out-in" v-if="errors.length">
+                <v-alert elevation="2" type="warning" v-if="errors.length">
                   <ul>
                     <li v-for="error in errors" :key="error">{{ error }}</li>
                   </ul>
@@ -62,7 +62,7 @@
           <v-card flat class="mx-4">
             <v-card-text>
               <v-scroll-x-transition>
-                <v-alert type="warning" mode="out-in" v-if="errors.length">
+                <v-alert elevation="2" type="warning" v-if="errors.length">
                   <ul>
                     <li v-for="error in errors" :key="error">{{ error }}</li>
                   </ul>
@@ -70,13 +70,51 @@
               </v-scroll-x-transition>
               <v-form lazy-validation autocomplete="off">
                 <label for="displayName">Display Name</label>
-                <v-text-field id="displayName" class="mt-2" solo v-model="user.display_name"></v-text-field>
-                <!-- <v-scroll-x-transition>
-                  <v-alert type="success" mode="out-in" v-if="successfulUpdate">
-                    <span>You successfuly changed your display name.</span>
+                <v-text-field
+                  id="displayName"
+                  class="mt-2"
+                  prepend-icon="mdi-account-outline"
+                  solo
+                  v-model="user.display_name"
+                ></v-text-field>
+                <label for="phoneNum">Phone Number</label>
+                <v-text-field
+                  id="phoneNum"
+                  class="mt-2"
+                  prepend-icon="mdi-phone"
+                  solo
+                  v-model="user.phone_num"
+                ></v-text-field>
+                <label for="date">Birth Date</label>
+                <v-dialog
+                  ref="dialog"
+                  v-model="modal"
+                  :return-value.sync="date"
+                  persistent
+                  width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      id="date"
+                      solo
+                      v-model="date"
+                      prepend-icon="mdi-calendar"
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="date" scrollable>
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+                    <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+                  </v-date-picker>
+                </v-dialog>
+                <v-scroll-x-transition>
+                  <v-alert type="success" mode="out-in" v-if="successfulInfoUpdate">
+                    <span>You successfuly changed your information.</span>
                   </v-alert>
-                </v-scroll-x-transition> -->
-                <v-btn solo @click="updateUser">SUBMIT</v-btn>
+                </v-scroll-x-transition>
+                <v-btn solo @click="updateInfo">SUBMIT</v-btn>
               </v-form>
             </v-card-text>
           </v-card>
@@ -85,7 +123,7 @@
           <v-card flat class="mx-4">
             <v-card-text>
               <v-scroll-x-transition>
-                <v-alert type="warning" mode="out-in" v-if="errors.length">
+                <v-alert elevation="2" type="warning" v-if="errors.length">
                   <ul>
                     <li v-for="error in errors" :key="error">{{ error }}</li>
                   </ul>
@@ -93,13 +131,19 @@
               </v-scroll-x-transition>
               <v-form lazy-validation autocomplete="off">
                 <label for="email">Email</label>
-                <v-text-field id="email" class="mt-2" solo v-model="user.email"></v-text-field>
-                <!-- <v-scroll-x-transition>
-                  <v-alert type="success" mode="out-in" v-if="successfulUpdate">
+                <v-text-field
+                  id="email"
+                  class="mt-2"
+                  prepend-icon="mdi-email"
+                  solo
+                  v-model="user.email"
+                ></v-text-field>
+                <v-scroll-x-transition>
+                  <v-alert type="success" mode="out-in" v-if="successfulEmailUpdate">
                     <span>You successfuly changed your email.</span>
                   </v-alert>
-                </v-scroll-x-transition> -->
-                <v-btn solo @click="updateUser">SUBMIT</v-btn>
+                </v-scroll-x-transition>
+                <v-btn solo @click="updateEmail">SUBMIT</v-btn>
               </v-form>
             </v-card-text>
           </v-card>
@@ -108,7 +152,7 @@
           <v-card flat class="mx-4">
             <v-card-text>
               <v-scroll-x-transition>
-                <v-alert type="warning" mode="out-in" v-if="errors.length">
+                <v-alert elevation="2" type="warning" v-if="errors.length">
                   <ul>
                     <li v-for="error in errors" :key="error">{{ error }}</li>
                   </ul>
@@ -121,6 +165,7 @@
                   class="mt-2"
                   type="password"
                   placeholder="Enter New Password Here"
+                  prepend-icon="mdi-lock-outline"
                   solo
                   v-model="newPassword"
                   autocomplete="off"
@@ -132,6 +177,7 @@
                   solo
                   placeholder="Re-enter New Password"
                   type="password"
+                  prepend-icon="mdi-lock-outline"
                   v-model="repeatPassword"
                   autocomplete="off"
                 ></v-text-field>
@@ -140,36 +186,13 @@
                     <span>You successfuly changed your password.</span>
                   </v-alert>
                 </v-scroll-x-transition>
-                <v-btn solo @click="updateUser">SUBMIT</v-btn>
+                <v-btn solo @click="updatePassword">SUBMIT</v-btn>
               </v-form>
             </v-card-text>
           </v-card>
         </v-tab-item>
       </v-tabs>
     </v-card>
-    <!-- </v-col>
-      <v-col class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
-        <v-card>
-          <div class="d-flex flex-column container">
-            <span class="title">YOUR ACCOUNT</span>
-            <v-scroll-x-transition>
-              <v-alert type="warning" mode="out-in" v-if="errors.length">
-                <ul>
-                  <li v-for="error in errors" :key="error">{{ error }}</li>
-                </ul>
-              </v-alert>
-            </v-scroll-x-transition>
-            <v-form lazy-validation>
-              <v-text-field label="Display Name" v-model="user.display_name"></v-text-field>
-              <v-text-field label="Email" v-model="user.email"></v-text-field>
-              <v-text-field label="Password" type="password" v-model="newPassword"></v-text-field>
-              <v-text-field label="Phone Number" v-model="user.phone_num"></v-text-field>
-              <v-btn solo @click="updateUser"></v-btn>
-            </v-form>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>-->
   </v-container>
 </template>
 
@@ -190,35 +213,25 @@ export default {
     user: {
       display_name: ``,
       email: ``,
-      phone_num: ``
+      phone_num: ``,
+      date_birth: null
     },
+    date: new Date().toISOString().substr(0, 10),
     file: null,
+    modal: false,
     newPassword: ``,
     repeatPassword: ``,
     uploadedFile: null,
     uploading: false,
-    successfulUpdate: false,
+    successfulInfoUpdate: false,
+    successfulEmailUpdate: false,
     successfulPasswordUpdate: false,
     errors: []
   }),
   created() {
     this.getUser();
   },
-  // computed: {
-  //   updateUser: {
-  //     get() {
-  //       return this.$store.state.obj.message;
-  //     },
-  //     set(value) {
-  //       this.$store.commit("updateUser", value);
-  //     }
-  //   }
-  // },
   methods: {
-    // onSelect() {
-    //   this.file = this.$refs.file.files[0]
-    //   console.log(this.$refs.file.files)
-    // },
     async submitAvatar() {
       this.uploading = true;
       const userId = this.user.id;
@@ -232,54 +245,89 @@ export default {
         this.getUser();
       } catch (err) {
         this.uploading = false;
-        this.errors.push(err.response.data.error);
+        this.errors = err.response.data;
         setTimeout(() => (this.errors = []), 5000);
       }
     },
-    async updateUser() {
+    async updateInfo() {
+      try {
+        const userId = this.user.id;
+        this.user.birth_date = this.date
+
+        const response = await UserService.put(userId, {
+          display_name: this.user.display_name,
+          phone_num: this.user.phone_num,
+          birth_date: this.user.birth_date
+        });
+        if (response) {
+          this.successfulInfoUpdate = true;
+          setTimeout(() => (this.successfulInfoUpdate = false), 5000);
+          this.date = this.user.birth_date
+        }
+        this.getUser();
+      } catch (err) {
+        this.errors = err.response.data;
+        setTimeout(() => (this.errors = []), 5000);
+      }
+    },
+    async updateEmail() {
+      try {
+        const userId = this.user.id;
+        const response = await UserService.put(userId, {
+          email: this.user.email
+        });
+        if (response) {
+          this.successfulEmailUpdate = true;
+          setTimeout(() => (this.successfulEmailUpdate = false), 5000);
+        }
+        this.getUser();
+      } catch (err) {
+        this.errors = err.response.data;
+        setTimeout(() => (this.errors = []), 5000);
+      }
+    },
+    async updatePassword() {
       try {
         if (
           this.newPassword !== `` &&
           this.newPassword === this.repeatPassword
         ) {
-          this.user.password = this.newPassword;
           this.successfulPasswordUpdate = true;
           setTimeout(() => (this.successfulPasswordUpdate = false), 5000);
-        } else {
-          this.errors.push(`Passwords don't match.`)
-          setTimeout(() => (this.errors = []), 5000);
+          const userId = this.user.id;
+          await UserService.put(userId, {
+            password: this.newPassword,
+            repeat_password: this.repeatPassword
+          });
+          this.newPassword = "";
+          this.repeatPassword = "";
+          this.getUser();
         }
-        await UserService.put(this.user);
-        // this.$router.push({
-        //   path: `/users/${this.$store.state.user.display_name.toLowerCase()}/${
-        //     this.$store.state.user.id
-        //   }/profile`
-        // });
-        this.newPassword = ''
-        this.repeatPassword = ''
-        this.getUser();
+        // else {
+        //   this.errors.push(`Passwords don't match.`);
+        //   setTimeout(() => (this.errors = []), 5000);
+        // }
       } catch (err) {
-        this.errors.push(err.response.data);
-        console.log(err);
+        this.errors = err.response.data;
         setTimeout(() => (this.errors = []), 5000);
       }
     },
     async getUser() {
       try {
         const userId = this.$route.params.id;
-        if(userId == this.$store.state.user.id){
+        if (userId == this.$store.state.user.id) {
           const response = await UserService.show(userId);
           this.user = response.data;
           this.$store.dispatch("setUser", this.user);
-        }else{
+        } else {
           this.$router.push({
-            name: 'lectures'
-          })
+            name: "lectures"
+          });
         }
       } catch (err) {
         console.log(err);
       }
-    }
+    },
   }
 };
 </script>

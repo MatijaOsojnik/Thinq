@@ -82,7 +82,7 @@
                   <v-img
                     :src="lecture.thumbnail_url"
                     height="194"
-                    lazy-src="@/assets/image-error-background.jpg"
+                    lazy-src="@/assets/blue-error-background.jpg"
                     class="darker-img"
                   >
                     <v-row class="fill-height flex-column justify-center">
@@ -152,9 +152,6 @@ export default {
         response = await LectureService.index();
       }
       this.lectures = response.data;
-    },
-    imageLoadError() {
-      this.imageUrl = "@/assets/image-error-background.jpg";
     },
     checkRoles() {
       const userAuthorities = this.$store.state.authorities;

@@ -24,7 +24,12 @@
           class="col-xl-4 col-lg-4 col-md-4 col-sm-12 cols-12 d-flex justify-lg-start justify-md-start justify-sm-center justify-center"
         >
           <v-card max-width="350px" max-height="400px">
-            <v-img :src="lecture.thumbnail_url" height="250px" width="350px"></v-img>
+            <v-img
+              :src="lecture.thumbnail_url"
+              lazy-src="@/assets/blue-error-background.jpg"
+              height="250px"
+              width="350px"
+            ></v-img>
             <v-card-text>
               <div class="d-flex justify-space-around align-center">
                 <span class="lecture-count">Exercises</span>
@@ -78,7 +83,7 @@ export default {
   }),
   created() {
     this.getLecture();
-    this.checkRoles()
+    this.checkRoles();
   },
   watch: {
     // call again the method if the route changes
@@ -101,20 +106,20 @@ export default {
         this.categoryLectures = responseSimilarLectures.data;
         this.differentLectures = responseDifferentLectures.data;
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
     },
     async deleteLecture() {
       try {
-        const lectureId = this.$route.params.id
-        if(this.permisions){
-          await LectureService.delete(lectureId)
+        const lectureId = this.$route.params.id;
+        if (this.permisions) {
+          await LectureService.delete(lectureId);
         }
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
     },
-        checkRoles() {
+    checkRoles() {
       const userAuthorities = this.$store.state.authorities;
       let hasPriviliges = false;
 

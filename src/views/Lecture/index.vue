@@ -5,12 +5,12 @@
         <v-col class="col-xl-8 col-lg-8 col-md-8 col-sm-12 cols-12">
           <h1 class="display-3" style="margin-top: 1rem;">{{lecture.title}}</h1>
           <router-link :to="{name: 'lecture-edit', params: {id: $route.params.id}}">
-            <v-btn style="margin: 1rem 0;" icon v-if="$store.state.isUserLoggedIn">
+            <v-btn style="margin: 1rem 0;" icon v-if="permisions">
               <v-icon medium color="black">mdi-pencil</v-icon>
             </v-btn>
           </router-link>
           <router-link :to="{name: 'lectures'}">
-            <v-btn style="margin: 1rem 0;" icon v-if="$store.state.isUserLoggedIn" @click="deleteLecture">
+            <v-btn style="margin: 1rem 0;" icon v-if="permisions" @click="deleteLecture">
               <v-icon medium color="black">mdi-delete-forever</v-icon>
             </v-btn>
           </router-link>
@@ -72,11 +72,13 @@ export default {
   },
   data: () => ({
     lecture: null,
+    permisions: false,
     categoryLectures: [],
     differentLectures: []
   }),
   created() {
     this.getLecture();
+    this.checkRoles()
   },
   watch: {
     // call again the method if the route changes
@@ -84,23 +86,52 @@ export default {
   },
   methods: {
     async getLecture() {
-      const lectureId = this.$route.params.id;
-      const responseLecture = await LectureService.show(lectureId);
-      const responseSimilarLectures = await LectureService.showSimilar(
-        responseLecture.data.category_id,
-        lectureId
-      );
-      const responseDifferentLectures = await LectureService.showDifferent(
-        responseLecture.data.category_id,
-        lectureId
-      );
-      this.lecture = responseLecture.data;
-      this.categoryLectures = responseSimilarLectures.data;
-      this.differentLectures = responseDifferentLectures.data;
+      try {
+        const lectureId = this.$route.params.id;
+        const responseLecture = await LectureService.show(lectureId);
+        const responseSimilarLectures = await LectureService.showSimilar(
+          responseLecture.data.category_id,
+          lectureId
+        );
+        const responseDifferentLectures = await LectureService.showDifferent(
+          responseLecture.data.category_id,
+          lectureId
+        );
+        this.lecture = responseLecture.data;
+        this.categoryLectures = responseSimilarLectures.data;
+        this.differentLectures = responseDifferentLectures.data;
+      } catch (err) {
+        console.log(err)
+      }
     },
     async deleteLecture() {
-      const lectureId = this.$route.params.id
-      await LectureService.delete(lectureId)
+      try {
+        const lectureId = this.$route.params.id
+        if(this.permisions){
+          await LectureService.delete(lectureId)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    },
+        checkRoles() {
+      const userAuthorities = this.$store.state.authorities;
+      let hasPriviliges = false;
+
+      if (userAuthorities) {
+        for (let i = 0; i < userAuthorities.length; i++) {
+          if (
+            userAuthorities[i] === "ROLE_LECTURER" ||
+            userAuthorities[i] === "ROLE_MODERATOR" ||
+            userAuthorities[i] === "ROLE_ADMIN"
+          ) {
+            hasPriviliges = true;
+          }
+        }
+      }
+      if (hasPriviliges) {
+        this.priviliges = true;
+      }
     }
   }
 };

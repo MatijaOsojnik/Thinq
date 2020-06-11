@@ -34,7 +34,7 @@
               >All Lectures</v-btn>
             </div>
             <v-divider />
-            <span class="subtitle ma-2 d-block bold text-center">Categories</span>
+            <span class="subtitle ma-2 d-block font-weight-bold text-center">Categories</span>
             <div
               class="d-flex justify-center align-center flex-column ma-1"
               v-for="category in categories"

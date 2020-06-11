@@ -1,14 +1,12 @@
 <template>
   <LecturesMetadata>
-      <template v-slot:lectures-panel>
-      <Header />
+    <Header />
+    <template v-slot:lectures-panel>
+      <div v-if="lectures">
         <div v-if="$store.state.isUserLoggedIn">
-          <span class="greeting-title">
+          <span class="greeting-title" v-if="$store.state.isUserLoggedIn && lectures">
             Welcome
-            <span
-              class="greeting-name pa-1"
-              v-if="$store.state.isUserLoggedIn"
-            >{{$store.state.user.display_name}}</span>! Start Your First Class :)
+            <span class="greeting-name pa-1">{{$store.state.user.display_name}}</span>! Start Your First Class :)
           </span>
         </div>
         <v-container fluid>
@@ -107,20 +105,24 @@
                 </v-card>
               </v-hover>
             </v-col>
-            <v-btn @click="limit = null" v-if="lectures > 10">Show More</v-btn>
+            <v-col col="2">
+              <v-btn @click="limit = null" v-if="lectures > 10">Show More</v-btn>
+            </v-col>
           </v-row>
         </v-container>
-      </template>
+      </div>
+    </template>
   </LecturesMetadata>
 </template>
 
 <script>
 import Header from "@/components/Header/Header";
 import LectureService from "@/services/LectureService.js";
-import LecturesMetadata from "@/views/Lectures/Metadata.vue"
+import LecturesMetadata from "@/views/Lectures/Metadata.vue";
 export default {
   components: {
-    Header, LecturesMetadata
+    Header,
+    LecturesMetadata
   },
   data: () => ({
     lectures: null,
@@ -150,10 +152,16 @@ export default {
       if (this.$route.params.categoryId) {
         const categoryId = this.$route.params.categoryId;
         response = await LectureService.categories(categoryId);
+        if (response.data.length > 0) {
+          this.lectures = response.data;
+        } else {
+          this.lectures = null;
+        }
+        console.log(this.lectures);
       } else {
         response = await LectureService.index();
+        this.lectures = response.data;
       }
-      this.lectures = response.data;
     },
     checkRoles() {
       const userAuthorities = this.$store.state.authorities;

@@ -132,13 +132,13 @@ router.beforeEach((to, from, next) => {
           next()
         } else {
           next({
-            name: 'lectures'
+            name: 'login'
           })
         }
       } else if (to.meta.onlyGuestUser) {
         if (isUserLoggedIn) {
           next({
-            name: 'landing'
+            name: 'lectures'
           })
         } else {
           next()

@@ -65,6 +65,7 @@ export default {
         setTimeout(() => {
           this.$store.dispatch("setToken", response.data.token);
           this.$store.dispatch("setUser", response.data.user);
+          this.$store.dispatch("setAuthorities", response.data.authorities)
           this.loginSuccess = false;
           this.showPanel = false;
           this.$router.push({ name: "lectures" });

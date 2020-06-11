@@ -110,7 +110,6 @@ export default {
       description: ``,
       thumbnail_url: ``,
       category_id: ``,
-      user_id: null
     },
     error: null,
     categories: [],
@@ -136,7 +135,6 @@ export default {
   }),
   mounted() {
     this.findCategories();
-    this.lecture.user_id = this.$route.params.id;
   },
   methods: {
     async createLecture() {
@@ -148,7 +146,8 @@ export default {
         return
       }
       try {
-      await LectureService.post(this.lecture);
+      const userId = this.$route.params.id
+      await LectureService.post(this.lecture, userId);
         this.$router.push({
           name: 'lectures'
         })

@@ -14,29 +14,34 @@
         </v-btn>
       </template>
 
-      <v-card>
-        <v-container>
-          <v-row>
-            <v-col>
-              <v-list subheader>
-                <v-subheader>Learn</v-subheader>
-                <v-divider style="margin-left: 2rem;" />
-                <v-list-item
-                  v-for="category in categories"
-                  :key="category.id"
-                  @click="toPath"
-                >{{category.name}}</v-list-item>
-              </v-list>
-            </v-col>
-            <v-col>
-              <v-list>
-                <v-list-item @click="toPath">All Lectures</v-list-item>
-                <v-list-item @click="toPath">Recommended Lectures</v-list-item>
-              </v-list>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card>
+      
+        <v-card max-width="200px">
+          <v-container fluid>
+            <div class="d-flex justify-center align-center flex-column ma-3">
+              <v-btn
+                depressed
+                small
+                block
+                :to="{path: `/lectures`}"
+              >All Lectures</v-btn>
+            </div>
+            <v-divider />
+            <span class="subtitle ma-2 d-block bold text-center">Categories</span>
+            <div
+              class="d-flex justify-center align-center flex-column ma-1"
+              v-for="category in categories"
+              :key="category.id"
+            >
+              <v-btn
+                depressed
+                small
+                text
+                block
+                :to="{path: `/lectures/categories/${category.id}`}"
+              >{{category.name}}</v-btn>
+            </div>
+          </v-container>
+        </v-card>
     </v-menu>
     <v-spacer></v-spacer>
     <router-link :to="{name: 'register'}">

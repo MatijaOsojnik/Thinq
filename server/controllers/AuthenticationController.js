@@ -106,15 +106,14 @@ module.exports = {
 
             const authorities = []
 
-            user.getRoles().then((roles) => {
-                for (let i = 0; i < roles.length; i++) {
-                    authorities.push("ROLE_" + roles[i].name.toUpperCase());
-                }
-            })
+            const roles = await user.getRoles()
+            for (let i = 0; i < roles.length; i++) {
+                authorities.push("ROLE_" + roles[i].name.toUpperCase());
+            }
 
             const userJson = user.toJSON();
             res.send({
-                authorities,
+                authorities: authorities,
                 user: user,
                 token: jwtSignUser(userJson)
             })

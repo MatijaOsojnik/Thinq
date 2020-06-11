@@ -72,11 +72,12 @@ module.exports = (app) => {
     // LECTURE ROUTES
     app.get('/api/lectures', LecturesController.index)
     app.get('/api/lectures/:lectureId', LecturesController.show)
+    app.get('/api/lectures/categories/:categoryId', LecturesController.showCategories)
     app.get('/api/lectures/categories/similar/:categoryId/:lectureId', LecturesController.showSimilar)
     app.get('/api/lectures/categories/other/:categoryId/:lectureId', LecturesController.showDifferent)
 
     app.put('/api/lectures/:lectureId', LecturesController.put)
-    app.post('/api/lectures', LecturesController.post)
+    app.post('/api/lectures/:userId', LecturesController.post)
     app.delete('/api/lectures/:lectureId', LecturesController.delete)
 
     // CATEGORY ROUTES

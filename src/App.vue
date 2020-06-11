@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div id="app">
-      <main max-width="1400px">
+      <main max-width="1600px">
         <UserHeader />
           <router-view />
         <Footer />

@@ -16,7 +16,7 @@ module.exports = {
                 include: [{
                     model: Category,
                     required: true
-                },{
+                }, {
                     model: User,
                 }]
             })
@@ -30,12 +30,23 @@ module.exports = {
     },
     async post(req, res) {
         try {
-            const userId = req.body.user_id;
-            const lecture = await Lecture.create(req.body)
-            await LectureUsers.create({
-                UserId: userId,
-                LectureId: lecture.id
+            const lecture = await Lecture.create(req.body).
+            then((lecture) => {
+                if(req.params.userId) {
+                    User.findByPk(req.params.userId).then((user) => {
+                        lecture.setUsers(user)
+                    }).catch((err) => {
+                        res.send({
+                            err: err
+                        })
+                    })
+                }
             })
+            // lecture.setUsers
+            // await LectureUsers.create({
+            //     UserId: userId,
+            //     LectureId: lecture.id
+            // })
             res.send(lecture)
         } catch (error) {
             res.status(500).send({
@@ -90,6 +101,28 @@ module.exports = {
                 order: [
                     ['title', 'ASC']
                 ]
+            })
+            console.log(lectures)
+            res.send(lectures)
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({
+                error: `An error has occured trying to fetch lectures`
+            })
+        }
+    },
+    async showCategories(req, res) {
+        try {
+            const lectures = await Lecture.findAll({
+                where: {
+                    category_id: req.params.categoryId
+                },
+                include: [{
+                    model: Category,
+                    required: true
+                }, {
+                    model: User,
+                }]
             })
             console.log(lectures)
             res.send(lectures)

@@ -6,36 +6,6 @@ const fs = require('fs')
 
 const sharp = require('sharp')
 
-const multer = require('multer');
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './uploads/')
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, file.fieldname + '-' + uniqueSuffix)
-    }
-})
-
-const fileFilter = (req, file, cb) => {
-    const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
-    if (!allowedTypes.includes(file.mimetype)) {
-        const error = new Error("Incorrect file");
-        error.code = "INCORRECT_FILETYPE";
-        return cb(error, false)
-    }
-    cb(null, true);
-}
-
-const upload = multer({
-    storage: storage,
-    limits: {
-        fileSize: 1024 * 1024 * 2
-    },
-    fileFilter: fileFilter
-}).single('file');
-
 // const {
 //     Op
 // } = require("sequelize");
@@ -112,13 +82,13 @@ module.exports = {
                 })
                 .toFile(`./static/${req.file.originalname}`)
 
-                let url = ``
+            let url = ``
 
-                if(process.env.NODE_ENV === 'production') {
-                    url = `https://thinq-language-learning.herokuapp.com/static/${req.file.originalname}`
-                } else {
-                    url = `http://localhost:8082/static/${req.file.originalname}`
-                }
+            if (process.env.NODE_ENV === 'production') {
+                url = `https://thinq-language-learning.herokuapp.com/static/${req.file.originalname}`
+            } else {
+                url = `http://localhost:8082/static/${req.file.originalname}`
+            }
 
             const user = await User.findByPk(req.params.userId)
             user.update({
@@ -132,9 +102,9 @@ module.exports = {
             })
 
         } catch (error) {
-                res.send({
-                    err: error
-                })
+            res.send({
+                err: error
+            })
         }
     }
 }

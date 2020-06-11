@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store'
 import Landing from '@/views/Landing'
 import Register from '@/views/Register.vue'
 import Login from '@/views/Login.vue'
@@ -17,22 +18,31 @@ Vue.use(VueRouter)
 const routes = [{
     path: '/',
     name: 'landing',
-    component: Landing
+    component: Landing,
+    meta: {
+      onlyGuestUser: true
+    }
   },
   {
     path: '/register',
     name: 'register',
-    component: Register
+    component: Register,
+    meta: {
+      onlyGuestUser: true
+    }
   },
   {
     path: '/login',
     name: 'login',
-    component: Login
+    component: Login,
+    meta: {
+      onlyGuestUser: true
+    }
   },
   {
     path: '/lectures',
     name: 'lectures',
-    component: Lectures
+    component: Lectures,
   },
   {
     path: '/lectures/:id',
@@ -41,29 +51,51 @@ const routes = [{
     props: true
   },
   {
+    path: '/lectures/categories/:categoryId',
+    name: 'lectures-categories',
+    component: Lectures,
+    props: true,
+  },
+  {
     path: '/lectures/create/:id',
     name: 'lecture-create',
-    component: LectureCreate
+    component: LectureCreate,
+    meta: {
+      onlyPrivilegedUser: true
+    }
   },
   {
     path: '/lectures/:id/edit',
     name: 'lecture-edit',
-    component: LectureEdit
+    component: LectureEdit,
+    meta: {
+      onlyPrivilegedUser: true
+    }
   },
   {
     path: '/users/:displayName/:id/profile',
     name: 'show-user',
-    component: User
+    component: User,
+    meta: {
+      onlyAuthUser: true
+    }
   },
   {
     path: '/users/:displayName/:id',
     name: 'edit-user',
-    component: EditUser
+    component: EditUser,
+    meta: {
+        onlyAuthUser: true
+    }
+
   },
   {
     path: '/users',
     name: 'users',
-    component: Users
+    component: Users,
+    meta: {
+      onlyAuthUser: true
+    }
   },
   {
     path: '*',
@@ -74,6 +106,67 @@ const routes = [{
 const router = new VueRouter({
   routes,
   mode: 'history'
+})
+
+router.beforeEach((to, from, next) => {
+      const isUserLoggedIn = store.state.isUserLoggedIn
+      const userAuthorities = store.state.authorities
+      let isAdmin = false;
+      let isModerator = false;
+      let isLecturer = false;
+
+      if(userAuthorities) {
+        for(let i = 0; i<userAuthorities.length; i++) {
+          if(userAuthorities[i] === 'ROLE_LECTURER'){
+            isLecturer = true
+          } else if (userAuthorities[i] === 'ROLE_MODERATOR') {
+            isModerator = true
+          } else if (userAuthorities[i] === 'ROLE_ADMIN') {
+            isAdmin = true
+          }
+        }
+      }
+
+      if (to.meta.onlyAuthUser) {
+        if (isUserLoggedIn) {
+          next()
+        } else {
+          next({
+            name: 'lectures'
+          })
+        }
+      } else if (to.meta.onlyGuestUser) {
+        if (isUserLoggedIn) {
+          next({
+            name: 'landing'
+          })
+        } else {
+          next()
+        }
+      }
+      else if (to.meta.onlyPrivilegedUser) {
+        if (isUserLoggedIn) {
+          if(isLecturer || isModerator || isAdmin){
+            next()
+          }else{
+            next({name: 'lectures'})
+          }
+          // if(isLecturer){
+          //   next()
+          // } else {
+          //   next({
+          //     name: 'lectures'
+          //   })
+          // }
+        } else {
+          next({
+            name: 'lectures'
+          })
+        }
+      }
+      else {
+        next()
+      }
 })
 
 export default router

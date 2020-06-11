@@ -10,25 +10,49 @@
       <v-toolbar-title>
         <router-link :to="{name: 'lectures'}" class="brand-black">Thinq</router-link>
       </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <!-- <v-text-field append-icon="mdi-magnify" flat hide-details :v-model="search" solo style="max-width: 300px;" /> -->
 
-      <!-- <v-menu bottom transition="slide-y-transition">
+      <v-menu
+        transition="slide-y-transition"
+        :close-on-content-click="false"
+        v-if="$store.state.isUserLoggedIn"
+      >
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon color="black">mdi-dots-vertical</v-icon>
-          </v-btn> 
+          <v-btn v-on="on" outlined color="#3f3f44" style="margin-left: 30px;">
+            Browse
+            <v-icon small>mdi-menu-down</v-icon>
+          </v-btn>
         </template>
 
-        <v-list>
-          <v-list-item :to="{path: '/users/1'}">
-            <v-list-item-title>User</v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="logout">
-            <v-list-item-title>Log out</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>-->
+        <v-card max-width="200px">
+          <v-container fluid>
+            <div class="d-flex justify-center align-center flex-column ma-3">
+              <v-btn
+                depressed
+                small
+                block
+                :to="{path: `/lectures`}"
+              >All Lectures</v-btn>
+            </div>
+            <v-divider />
+            <span class="subtitle ma-2 d-block bold text-center">Categories</span>
+            <div
+              class="d-flex justify-center align-center flex-column ma-1"
+              v-for="category in categories"
+              :key="category.id"
+            >
+              <v-btn
+                depressed
+                small
+                text
+                block
+                :to="{path: `/lectures/categories/${category.id}`}"
+              >{{category.name}}</v-btn>
+            </div>
+          </v-container>
+        </v-card>
+      </v-menu>
+
+      <v-spacer></v-spacer>
 
       <v-menu
         bottom
@@ -109,20 +133,35 @@
 </template>
 
 <script>
+import CategoryService from "@/services/CategoryService";
 export default {
-  data: () => ({}),
+  data: () => ({
+    categories: null
+  }),
   props: {
     search: String
+  },
+  mounted() {
+    this.getCategories();
   },
   methods: {
     async logout() {
       this.$store.dispatch("setToken", null);
       this.$store.dispatch("setUser", null);
+      this.$store.dispatch("setAuthorities", null)
       this.$router.push({
         name: "login"
       });
+    },
+    async getCategories() {
+      const response = await CategoryService.index();
+      this.categories = response.data;
+    },
+    // searchByAll() {
+    //   if (this.$router.history.current["name"] !== "lectures") {
+    //     this.$router.go();
+    //   }
     }
-  }
 };
 </script>
 

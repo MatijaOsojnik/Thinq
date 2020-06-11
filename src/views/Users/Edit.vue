@@ -216,7 +216,7 @@ export default {
       phone_num: ``,
       date_birth: null
     },
-    date: new Date().toISOString().substr(0, 10),
+    date: new Date('December 31, 2002 00:00:00').toISOString().substr(0, 10),
     file: null,
     modal: false,
     newPassword: ``,

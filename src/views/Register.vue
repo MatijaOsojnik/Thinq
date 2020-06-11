@@ -75,7 +75,7 @@ export default {
     repeat_password: "",
     registerSuccess: false,
     showPanel: false,
-    errors: null
+    errors: []
   }),
   methods: {
     async register() {
@@ -86,11 +86,6 @@ export default {
           password: this.password,
           repeat_password: this.repeat_password
         });
-        // this.registerSuccess = true;
-        // setTimeout(() => {
-        //   this.registerSuccess = false;
-        //   this.$router.push({ name: "login" });
-        // }, 2000);
         this.showPanel = true;
 
         setTimeout(() => {

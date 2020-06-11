@@ -267,7 +267,7 @@ export default {
     async getUser() {
       try {
         const userId = this.$route.params.id;
-        if(userId === this.$store.state.user.id){
+        if(userId == this.$store.state.user.id){
           const response = await UserService.show(userId);
           this.user = response.data;
           this.$store.dispatch("setUser", this.user);

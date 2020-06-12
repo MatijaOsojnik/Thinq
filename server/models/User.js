@@ -1,8 +1,7 @@
 const bcrypt = require('bcrypt')
-const config = require('../config')
 
 function hashPassword(user, options) {
-    const SALT_FACTOR = config.salt
+    const SALT_FACTOR = 10
     if (!user.changed('password')) {
         return;
     }

@@ -1,15 +1,14 @@
 const bcrypt = require('bcrypt')
 
 function hashPassword(user, options) {
-    SALT_FACTOR = 8
-
+    const SALT_FACTOR = 8
     if (!user.changed('password')) {
         return;
     }
-
     return bcrypt
         .genSalt(SALT_FACTOR)
-        .then(salt => bcrypt.hash(user.password, salt, null))
+        .then(salt => 
+            bcrypt.hash(user.password, salt, null))
         .then(hash => {
             user.setDataValue('password', hash)
         })
@@ -40,13 +39,12 @@ module.exports = (sequelize, DataTypes) => {
         phone_num: {
             type: DataTypes.STRING
         }
-
     }, {
         hooks: {
-            beforeSave: hashPassword,
-            beforeUpdate: hashPassword
+            beforeSave: hashPassword
         }
     })
+
     User.prototype.comparePassword = function (password) {
         return bcrypt.compare(password, this.password)
     }
@@ -67,6 +65,5 @@ module.exports = (sequelize, DataTypes) => {
     User.belongsToMany(Lecture, {
         through: 'LectureUsers'
     })
-
     return User;
 }

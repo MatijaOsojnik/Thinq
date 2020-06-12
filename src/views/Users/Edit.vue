@@ -188,6 +188,8 @@
                 </v-scroll-x-transition>
                 <v-btn solo @click="updatePassword">SUBMIT</v-btn>
               </v-form>
+
+
             </v-card-text>
           </v-card>
         </v-tab-item>
@@ -216,7 +218,7 @@ export default {
       phone_num: ``,
       date_birth: null
     },
-    date: new Date('December 31, 2002 00:00:00').toISOString().substr(0, 10),
+    date: new Date("December 31, 2002 00:00:00").toISOString().substr(0, 10),
     file: null,
     modal: false,
     newPassword: ``,
@@ -252,7 +254,7 @@ export default {
     async updateInfo() {
       try {
         const userId = this.user.id;
-        this.user.birth_date = this.date
+        this.user.birth_date = this.date;
 
         const response = await UserService.put(userId, {
           display_name: this.user.display_name,
@@ -262,7 +264,7 @@ export default {
         if (response) {
           this.successfulInfoUpdate = true;
           setTimeout(() => (this.successfulInfoUpdate = false), 5000);
-          this.date = this.user.birth_date
+          this.date = this.user.birth_date;
         }
         this.getUser();
       } catch (err) {
@@ -288,25 +290,18 @@ export default {
     },
     async updatePassword() {
       try {
-        if (
-          this.newPassword !== `` &&
-          this.newPassword === this.repeatPassword
-        ) {
+        const userId = this.user.id;
+        const response = await UserService.put(userId, {
+          password: this.newPassword,
+          repeat_password: this.repeatPassword
+        });
+        if (response) {
           this.successfulPasswordUpdate = true;
           setTimeout(() => (this.successfulPasswordUpdate = false), 5000);
-          const userId = this.user.id;
-          await UserService.put(userId, {
-            password: this.newPassword,
-            repeat_password: this.repeatPassword
-          });
-          this.newPassword = "";
-          this.repeatPassword = "";
-          this.getUser();
         }
-        // else {
-        //   this.errors.push(`Passwords don't match.`);
-        //   setTimeout(() => (this.errors = []), 5000);
-        // }
+        this.newPassword = "";
+        this.repeatPassword = "";
+        this.getUser();
       } catch (err) {
         this.errors = err.response.data;
         setTimeout(() => (this.errors = []), 5000);
@@ -327,7 +322,7 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    },
+    }
   }
 };
 </script>

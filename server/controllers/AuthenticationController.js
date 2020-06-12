@@ -21,7 +21,6 @@ function jwtSignUser(user) {
 module.exports = {
     async register(req, res) {
         try {
-            console.log(req.body)
             await User.create({
                     display_name: req.body.display_name,
                     email: req.body.email,

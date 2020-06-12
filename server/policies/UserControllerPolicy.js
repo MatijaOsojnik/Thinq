@@ -23,15 +23,13 @@ module.exports = {
                 }),
             password: Joi.string()
             .pattern(new RegExp('^[a-zA-Z0-9]{8,}$'))
-            .allow('', null)
             .messages({
                 'string.pattern.base': `Password must be longer than 8 characters`,
                 'any.base': `Password must be longer than 8 characters`,
                 'any.only': `Password must be longer than 8 characters`,
+                'string.empty': `Please enter a new password`
             }),
             repeat_password: Joi.any()
-                .allow('')
-                .optional()
                 .valid(Joi.ref('password'))
                 .messages({
                     'any.only': `Passwords don't match`

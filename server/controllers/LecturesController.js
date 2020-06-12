@@ -56,7 +56,12 @@ module.exports = {
     },
     async show(req, res) {
         try {
-            const lecture = await Lecture.findByPk(req.params.lectureId)
+            const lecture = await Lecture.findByPk(req.params.lectureId,
+                {
+                    include: [
+                        User
+                    ]
+                })
             res.send(lecture)
         } catch (error) {
             res.status(500).send({

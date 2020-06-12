@@ -5,16 +5,16 @@
         <v-col class="col-xl-8 col-lg-8 col-md-8 col-sm-12 cols-12">
           <h1 class="display-3" style="margin-top: 1rem;">{{lecture.title}}</h1>
           <router-link :to="{name: 'lecture-edit', params: {id: $route.params.id}}">
-            <v-btn style="margin: 1.5rem 0;" icon v-if="permisions">
+            <v-btn style="margin: 1.5rem 0;" icon v-if="isOwner">
               <v-icon medium color="black">mdi-pencil</v-icon>
             </v-btn>
           </router-link>
           <router-link :to="{name: 'lectures'}">
-            <v-btn style="margin: 1.5rem 0;" icon v-if="permisions" @click="deleteLecture">
+            <v-btn style="margin: 1.5rem 0;" icon v-if="isOwner" @click="deleteLecture">
               <v-icon medium color="black">mdi-delete-forever</v-icon>
             </v-btn>
           </router-link>
-          <div style="margin: 2rem 0" class="d-flex flex-column justify-space-around">
+          <div style="margin: 1rem 0" class="d-flex flex-column justify-space-around">
             <div>
               <div v-html="lecture.description"></div>
             </div>
@@ -77,7 +77,8 @@ export default {
   },
   data: () => ({
     lecture: null,
-    permisions: false,
+    permissions: false,
+    isOwner: false,
     categoryLectures: [],
     differentLectures: []
   }),
@@ -102,6 +103,9 @@ export default {
           responseLecture.data.category_id,
           lectureId
         );
+        if(responseLecture.data.Users[0].id === this.$store.state.user.id){
+          this.isOwner = true
+        }
         this.lecture = responseLecture.data;
         this.categoryLectures = responseSimilarLectures.data;
         this.differentLectures = responseDifferentLectures.data;
@@ -135,7 +139,7 @@ export default {
         }
       }
       if (hasPriviliges) {
-        this.priviliges = true;
+        this.permissions = true;
       }
     }
   }

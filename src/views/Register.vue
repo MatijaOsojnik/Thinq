@@ -84,7 +84,8 @@ export default {
           display_name: this.display_name,
           email: this.email,
           password: this.password,
-          repeat_password: this.repeat_password
+          repeat_password: this.repeat_password,
+          roles: ['Lecturer']
         });
         this.showPanel = true;
 

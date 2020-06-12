@@ -54,7 +54,7 @@
       </v-card>
     </v-menu>
     <v-spacer></v-spacer>
-    <router-link :to="{name: 'register'}">
+    <router-link :to="{name: 'login'}">
       <v-btn
         outlined
         :color="`${$router.history.current['path'] === '/' ? 'white' : '#005082'}`"

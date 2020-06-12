@@ -2,6 +2,7 @@ require('dotenv').config()
 
 module.exports = {
     port: process.env.PORT || 8081,
+    salt: process.env.HASH_SALT || 8,
     db: {
         database: process.env.DB_NAME || 'thinq',
         username: process.env.DB_USERNAME || 'postgres',

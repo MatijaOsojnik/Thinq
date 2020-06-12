@@ -1,7 +1,7 @@
 <template>
   <v-hover v-slot:default="{ hover }">
     <router-link :to="{path: `/lectures/${lecture.id}`}" style="text-decoration:none;">
-      <v-card max-width="220px" height="270px" class="ma-4" raised :elevation="hover ? 8 : 2">
+      <v-card width="220px" height="270px" class="ma-4" raised :elevation="hover ? 8 : 2">
         <v-list-item>
           <v-list-item-avatar color="indigo">
             <v-icon dark>mdi-account-circle</v-icon>
@@ -13,7 +13,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-img :src="lecture.thumbnail_url" height="120" class="darker-img">
+        <v-img :src="lecture.thumbnail_url" lazy-src="@/assets/blue-error-background.jpg" height="120" class="darker-img">
           <v-row class="fill-height flex-column justify-center">
             <div class="align-self-center">
               <v-btn :class="{ 'show-btns': hover }" class="invisible" icon>

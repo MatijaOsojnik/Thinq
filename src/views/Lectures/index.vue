@@ -1,8 +1,7 @@
 <template>
   <LecturesMetadata>
-    <Header />
     <template v-slot:lectures-panel>
-      <div v-if="lectures">
+      <v-container fluid v-if="lectures">
         <div v-if="$store.state.isUserLoggedIn">
           <span class="greeting-title" v-if="$store.state.isUserLoggedIn && lectures">
             Welcome
@@ -110,18 +109,16 @@
             </v-col>
           </v-row>
         </v-container>
-      </div>
+      </v-container>
     </template>
   </LecturesMetadata>
 </template>
 
 <script>
-import Header from "@/components/Header/Header";
 import LectureService from "@/services/LectureService.js";
 import LecturesMetadata from "@/views/Lectures/Metadata.vue";
 export default {
   components: {
-    Header,
     LecturesMetadata
   },
   data: () => ({

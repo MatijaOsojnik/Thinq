@@ -33,13 +33,20 @@ module.exports = {
     async put(req, res) {
         try {
             const user = await User.findByPk(req.params.userId)
-            user.update(req.body, {
-                returning: true,
-                plain: true,
-            })
-            res.send(req.body)
+            if (user.email !== req.body.email) {
+                await user.update(req.body, {
+                    returning: true,
+                    plain: true,
+                })
+                .then(() => res.send(req.body))
+                .catch(err => {
+                    res.status(400).send([`Email is already in use`])
+                })
+            } else {
+                res.status(400).send([`Use a different email.`])
+            }
         } catch (err) {
-            res.status(400).send([`Email is already in use.`])
+            res.status(400).send([`Email is already in use`])
             res.status(500).send([
                 `An error has occured trying update user`
             ])

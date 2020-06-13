@@ -37,11 +37,11 @@ module.exports = {
             birth_date: Joi.date()
             .allow('', null)
             .iso()
-            .min('1-1-1940')
+            .min('1-1-1920')
             .messages({
                 'date.base': `Please enter a valid date`,
                 'date.format': `The date you entered was in invalid format`,
-                'date.min': `You must be born after 1940.`
+                'date.min': `You should be born after 1920`
             }),
             phone_num: Joi.string()
             .allow('', null)

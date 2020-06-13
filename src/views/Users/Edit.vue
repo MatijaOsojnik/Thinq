@@ -83,6 +83,7 @@
                   class="mt-2"
                   prepend-icon="mdi-phone"
                   solo
+                  placeholder="Enter Your Phone Number"
                   v-model="user.phone_num"
                 ></v-text-field>
                 <label for="date">Birth Date</label>
@@ -100,6 +101,7 @@
                       v-model="date"
                       prepend-icon="mdi-calendar"
                       v-bind="attrs"
+                      placeholder="Enter Your Birth Date"
                       v-on="on"
                     ></v-text-field>
                   </template>
@@ -312,6 +314,9 @@ export default {
         const userId = this.$route.params.id;
         if (userId == this.$store.state.user.id) {
           const response = await UserService.show(userId);
+          if(response.data.birth_date){
+            this.date = response.data.birth_date.substr(0, 10)
+          }
           this.user = response.data;
           this.$store.dispatch("setUser", this.user);
         } else {

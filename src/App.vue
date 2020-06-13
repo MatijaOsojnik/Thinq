@@ -31,11 +31,13 @@ export default {
 a {
   text-decoration: none;
 }
+
 .v-application a {
   color: black !important;
 }
 
 .main {
+  font-family: 'Lato', sans-serif;
   padding: 0;
   margin: 0;
 }

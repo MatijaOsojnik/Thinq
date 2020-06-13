@@ -17,7 +17,7 @@
           <v-row style="z-index: 100" class="flex-sm-fill">
             <v-col
               v-if="priviliges"
-              class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 d-sm-flex justify-sm-center"
+              class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 d-sm-flex justify-sm-center"
             >
               <v-hover v-slot:default="{ hover }">
                 <v-card
@@ -50,7 +50,7 @@
               </v-hover>
             </v-col>
             <v-col
-              class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 d-sm-flex justify-sm-center"
+              class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 d-sm-flex justify-sm-center"
               v-for="lecture in lectures"
               :key="lecture.id"
             >

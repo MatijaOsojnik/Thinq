@@ -12,7 +12,7 @@
           </div>
         </v-col>
         <v-col class="col-xl-7 col-lg-7 col-md-7 col-sm-12">
-          <v-container class="form-container">
+          <v-container class="form-container ma-3">
             <div>
               <span class="sign-in-brand">{{authenticationTypeText}}</span>
             </div>

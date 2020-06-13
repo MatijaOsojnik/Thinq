@@ -10,7 +10,9 @@
           <v-col cols="12">
             <v-hover v-slot:default="{ hover }">
               <router-link :to="{name: 'register'}">
-                <v-btn large :class="`${hover ? 'cta-btn-hover' : 'cta-btn-active'}`"><span style="font-weight: 900;">Get Started</span></v-btn>
+                <v-btn large :class="`${hover ? 'cta-btn-hover' : 'cta-btn-active'}`">
+                  <span style="font-weight: 900;">Get Started</span>
+                </v-btn>
               </router-link>
             </v-hover>
           </v-col>
@@ -123,23 +125,13 @@
           style="font-weight:bold; margin-top: 2rem;"
         >Find What Fascinates You</h3>
 
-        <template v-slots:extension>
-          <div style="width:60%; margin:auto;" class="pa-6">
-            <v-tabs v-model="tab" height="40px" grow class="tab">
-              <v-tab v-for="(item, key) in tabItems" :key="key">{{ item }}</v-tab>
-            </v-tabs>
+          <div class="pa-6">
+            <v-slide-group show-arrows>
+              <v-slide-item v-for="lecture in lectures" :key="lecture.id">
+                <CardRecommended :lecture="lecture" />
+              </v-slide-item>
+            </v-slide-group>
           </div>
-        </template>
-
-        <v-container class="pa-8">
-          <v-tabs-items v-model="tab" class="transparent">
-            <v-tab-item v-for="(item, key) in tabItems" :key="key">
-              <CardContentComponent v-if="key===0" :cardContent="cardContent[0]" />
-              <CardContentComponent v-if="key===1" :cardContent="cardContent[1]" />
-              <CardContentComponent v-if="key===2" :cardContent="cardContent[2]" />
-            </v-tab-item>
-          </v-tabs-items>
-        </v-container>
       </v-container>
     </div>
     <div class="cta-container pa-12">
@@ -183,34 +175,29 @@
 
 <script>
 import Header from "@/components/Header/Header";
-import CardContentComponent from "@/components/Card-Content/Card-Content-Component";
+import LectureService from "@/services/LectureService.js";
+
+import CardRecommended from "@/components/Card-Recommended";
 import Footer from "@/components/Footer/Footer";
 export default {
   components: {
     Header,
     Footer,
-    CardContentComponent
+    CardRecommended
   },
   data: () => ({
-    tab: null,
-    tabItems: ["Traveling", "Movies", "Library"],
-    cardContent: [
-      [
-        { title: "Traveling1", imageUrl: "traveling.jpg" },
-        { title: "Traveling2", imageUrl: "traveling.jpg" },
-        { title: "Traveling2", imageUrl: "traveling.jpg" },
-        { title: "Traveling2", imageUrl: "traveling.jpg" }
-      ],
-      [
-        { title: "Movie1", imageUrl: "traveling.jpg" },
-        { title: "Movie2", imageUrl: "traveling.jpg" }
-      ],
-      [
-        { title: "Library1", imageUrl: "traveling.jpg" },
-        { title: "Library2", imageUrl: "traveling.jpg" }
-      ]
-    ]
-  })
+    lectures: null
+  }),
+  created() {
+    this.getLectures();
+  },
+  methods: {
+    async getLectures() {
+        const response = await LectureService.index();
+          this.lectures = response.data;
+        console.log(this.lectures);
+    }
+  }
 };
 </script>
 

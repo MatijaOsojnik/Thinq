@@ -2,7 +2,7 @@
   <LectureMetadata>
     <template v-slot:lecture>
       <v-row class="ma-sm-6 ma-xl-0 ma-lg-0 ma-md-0" v-if="lecture">
-        <v-col class="col-xl-8 col-lg-8 col-md-8 col-sm-12 cols-12">
+        <v-col class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
           <h1 class="display-3" style="margin-top: 1rem;">{{lecture.title}}</h1>
           <router-link :to="{name: 'lecture-edit', params: {id: $route.params.id}}">
             <v-btn style="margin: 1.5rem 0;" icon v-if="isOwner">
@@ -21,7 +21,7 @@
           </div>
         </v-col>
         <v-col
-          class="col-xl-4 col-lg-4 col-md-4 col-sm-12 cols-12 d-flex justify-lg-start justify-md-start justify-sm-center justify-center"
+          class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex justify-lg-start justify-md-start justify-sm-center justify-center"
         >
           <v-card max-width="350px" max-height="400px">
             <v-img

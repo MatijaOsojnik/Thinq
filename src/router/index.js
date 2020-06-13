@@ -9,6 +9,7 @@ import Lecture from '@/views/Lecture'
 import LectureCreate from '@/views/Lecture/Create.vue'
 import LectureEdit from '@/views/Lecture/Edit.vue'
 import User from '@/views/Users/Show.vue'
+import UserLectures from '@/views/Users/Lectures.vue'
 // import Users from '@/views/Users'
 import EditUser from '@/views/Users/Edit.vue'
 
@@ -78,11 +79,19 @@ const routes = [{
     component: User,
   },
   {
+    path: '/users/:displayName/:id/lectures',
+    name: 'user-lectures',
+    component: UserLectures,
+    meta: {
+      onlyPrivilegedUser: true
+    }
+  },
+  {
     path: '/users/:displayName/:id',
     name: 'edit-user',
     component: EditUser,
     meta: {
-        onlyAuthUser: true
+      onlyAuthUser: true
     }
 
   },
@@ -106,64 +115,64 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-      const isUserLoggedIn = store.state.isUserLoggedIn
-      const userAuthorities = store.state.authorities
-      let isAdmin = false;
-      let isModerator = false;
-      let isLecturer = false;
+  const isUserLoggedIn = store.state.isUserLoggedIn
+  const userAuthorities = store.state.authorities
+  let isAdmin = false;
+  let isModerator = false;
+  let isLecturer = false;
 
-      if(userAuthorities) {
-        for(let i = 0; i<userAuthorities.length; i++) {
-          if(userAuthorities[i] === 'ROLE_LECTURER'){
-            isLecturer = true
-          } else if (userAuthorities[i] === 'ROLE_MODERATOR') {
-            isModerator = true
-          } else if (userAuthorities[i] === 'ROLE_ADMIN') {
-            isAdmin = true
-          }
-        }
+  if (userAuthorities) {
+    for (let i = 0; i < userAuthorities.length; i++) {
+      if (userAuthorities[i] === 'ROLE_LECTURER') {
+        isLecturer = true
+      } else if (userAuthorities[i] === 'ROLE_MODERATOR') {
+        isModerator = true
+      } else if (userAuthorities[i] === 'ROLE_ADMIN') {
+        isAdmin = true
       }
+    }
+  }
 
-      if (to.meta.onlyAuthUser) {
-        if (isUserLoggedIn) {
-          next()
-        } else {
-          next({
-            name: 'login'
-          })
-        }
-      } else if (to.meta.onlyGuestUser) {
-        if (isUserLoggedIn) {
-          next({
-            name: 'lectures'
-          })
-        } else {
-          next()
-        }
-      }
-      else if (to.meta.onlyPrivilegedUser) {
-        if (isUserLoggedIn) {
-          if(isLecturer || isModerator || isAdmin){
-            next()
-          }else{
-            next({name: 'lectures'})
-          }
-          // if(isLecturer){
-          //   next()
-          // } else {
-          //   next({
-          //     name: 'lectures'
-          //   })
-          // }
-        } else {
-          next({
-            name: 'lectures'
-          })
-        }
-      }
-      else {
+  if (to.meta.onlyAuthUser) {
+    if (isUserLoggedIn) {
+      next()
+    } else {
+      next({
+        name: 'login'
+      })
+    }
+  } else if (to.meta.onlyGuestUser) {
+    if (isUserLoggedIn) {
+      next({
+        name: 'lectures'
+      })
+    } else {
+      next()
+    }
+  } else if (to.meta.onlyPrivilegedUser) {
+    if (isUserLoggedIn) {
+      if (isLecturer || isModerator || isAdmin) {
         next()
+      } else {
+        next({
+          name: 'lectures'
+        })
       }
+      // if(isLecturer){
+      //   next()
+      // } else {
+      //   next({
+      //     name: 'lectures'
+      //   })
+      // }
+    } else {
+      next({
+        name: 'lectures'
+      })
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

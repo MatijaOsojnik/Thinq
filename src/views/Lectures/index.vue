@@ -75,13 +75,13 @@
                       </router-link>
                       <v-list-item-content>
                         <v-list-item-title class="title">{{lecture.title}}</v-list-item-title>
-                        <!-- <v-list-item-subtitle>by Kurt Wagner</v-list-item-subtitle> -->
+                        <v-list-item-subtitle v-if="lecture.Users[0]">By <span class="font-weight-bold">{{lecture.Users[0].display_name}}</span></v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
 
                     <v-img
                       :src="lecture.thumbnail_url"
-                      height="194"
+                      height="180"
                       lazy-src="@/assets/blue-error-background.jpg"
                       class="darker-img"
                     >
@@ -118,10 +118,12 @@
 
 <script>
 import LectureService from "@/services/LectureService.js";
+// import LectureCardComponent from '@/components/Card-Lecture'
 import LecturesMetadata from "@/views/Lectures/Metadata.vue";
 export default {
   components: {
-    LecturesMetadata
+    LecturesMetadata,
+    // LectureCardComponent
   },
   data: () => ({
     lectures: null,

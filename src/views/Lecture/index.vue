@@ -94,7 +94,6 @@ export default {
     async getLecture() {
       try {
         const lectureId = this.$route.params.id;
-        console.log(lectureId)
         const responseLecture = await LectureService.show(lectureId);
         const responseSimilarLectures = await LectureService.showSimilar(
           responseLecture.data.category_id,

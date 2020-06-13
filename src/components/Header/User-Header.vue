@@ -97,7 +97,7 @@
                 small
                 block
                 :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/profile`}"
-              >VIEW PROFILE</v-btn>
+              >View profile</v-btn>
             </div>
             <v-divider />
             <div class="d-flex justify-center align-center flex-column ma-3">
@@ -107,7 +107,7 @@
                 small
                 text
                 block
-                :to="{path: `/users/lectures/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}`}"
+                :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/lectures`}"
               >My lectures</v-btn>
               <v-btn
                 class="ma-1"

@@ -69,6 +69,24 @@ module.exports = {
             })
         }
     },
+    async user(req, res) {
+        try {
+            const lectures = await Lecture.findAll({
+                include: [ {
+                    model: User,
+                        where: {
+                            id: req.params.userId
+                        }
+                }]
+            })
+            res.send(lectures)
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({
+                error: `An error has occured trying to fetch lectures`
+            })
+        }
+    },
     async showSimilar(req, res) {
         try {
             console.log(req.params.lectureId)

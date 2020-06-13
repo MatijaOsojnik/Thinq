@@ -195,7 +195,6 @@ export default {
     async getLectures() {
         const response = await LectureService.index();
           this.lectures = response.data;
-        console.log(this.lectures);
     }
   }
 };

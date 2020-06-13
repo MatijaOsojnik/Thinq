@@ -19,92 +19,14 @@
               class="col-xl-2 col-lg-3 col-md-4 col-sm-6 cols-12 d-sm-flex justify-sm-center"
               v-if="priviliges"
             >
-              <v-hover v-slot:default="{ hover }">
-                <v-card
-                  max-width="300px"
-                  height="320px"
-                  :to="{path: `/lectures/create/${$store.state.user.id}`}"
-                  raised
-                  :elevation="hover ? 8 : 2"
-                >
-                  <div>
-                    <v-img
-                      src="https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-                      height="320px"
-                      class="darker-img"
-                    >
-                      <v-row class="fill-height flex-column justify-center">
-                        <div class="align-self-center">
-                          <v-btn icon :class="{ 'show-btns': hover }" class="invisible">
-                            <v-icon
-                              x-large
-                              :class="{ 'show-btns': hover }"
-                              class="invisible"
-                            >{{"mdi-plus-circle-outline"}}</v-icon>
-                          </v-btn>
-                        </div>
-                      </v-row>
-                    </v-img>
-                  </div>
-                </v-card>
-              </v-hover>
+              <LectureCardCreateComponent :card="card"/>
             </v-col>
             <v-col
               class="col-xl-2 col-lg-3 col-md-4 col-sm-6 cols-12 d-sm-flex justify-sm-center"
               v-for="lecture in lectures"
               :key="lecture.id"
             >
-              <v-hover v-slot:default="{ hover }">
-                <v-card
-                  :to="{path: `/lectures/${lecture.id}`}"
-                  width="300px"
-                  height="320px"
-                  raised
-                  :elevation="hover ? 8 : 2"
-                >
-                  <div>
-                    <v-list-item>
-                      <router-link v-if="lecture.Users[0]" :to="{path: `/users/${lecture.Users[0].display_name}/${lecture.Users[0].id}/profile`}">
-                      <v-list-item-avatar>
-                        <v-img
-                          v-if="lecture.Users.length > 0 && lecture.Users[0].icon_url"
-                          :src="lecture.Users[0].icon_url"
-                        ></v-img>
-                        <v-icon v-else dark large color="indigo">mdi-account-circle</v-icon>
-                      </v-list-item-avatar>
-                      </router-link>
-                      <v-list-item-content>
-                        <v-list-item-title class="title">{{lecture.title}}</v-list-item-title>
-                        <v-list-item-subtitle v-if="lecture.Users[0]">By <span class="font-weight-bold">{{lecture.Users[0].display_name}}</span></v-list-item-subtitle>
-                      </v-list-item-content>
-                    </v-list-item>
-
-                    <v-img
-                      :src="lecture.thumbnail_url"
-                      height="180"
-                      lazy-src="@/assets/blue-error-background.jpg"
-                      class="darker-img"
-                    >
-                      <v-row class="fill-height flex-column justify-center">
-                        <div class="align-self-center">
-                          <v-btn :class="{ 'show-btns': hover }" class="invisible" icon>
-                            <v-icon
-                              :class="{ 'show-btns': hover }"
-                              class="invisible"
-                              large
-                            >{{"mdi-play-circle-outline"}}</v-icon>
-                          </v-btn>
-                        </div>
-                      </v-row>
-                    </v-img>
-
-                    <v-card-text>
-                      <span style="display: block;">{{lecture.short_description}}</span>
-                      <!-- <span>{{lecture.Category.name}}</span> -->
-                    </v-card-text>
-                  </div>
-                </v-card>
-              </v-hover>
+              <LectureCardComponent :lecture="lecture"/>
             </v-col>
             <v-col col="2">
               <v-btn @click="limit = null" v-if="lectures > 10">Show More</v-btn>
@@ -118,14 +40,20 @@
 
 <script>
 import LectureService from "@/services/LectureService.js";
-// import LectureCardComponent from '@/components/Card-Lecture'
+import LectureCardComponent from '@/components/Card-Lecture'
+import LectureCardCreateComponent from '@/components/Card-Lecture-Create'
 import LecturesMetadata from "@/views/Lectures/Metadata.vue";
 export default {
   components: {
     LecturesMetadata,
-    // LectureCardComponent
+    LectureCardComponent,
+    LectureCardCreateComponent
   },
   data: () => ({
+    card: {
+      imageUrl: 'https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+      url: '/lectures/create/',
+    },
     lectures: null,
     priviliges: false,
     limit: 10
@@ -158,7 +86,6 @@ export default {
         } else {
           this.lectures = null;
         }
-        console.log(this.lectures);
       } else {
         response = await LectureService.index();
         this.lectures = response.data;

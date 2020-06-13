@@ -1,12 +1,17 @@
 <template>
   <div>
+    <Header/>
      <h1 v-if="user">{{user.display_name}}</h1>
   </div>
 </template>
 
 <script>
 import UserService from '@/services/UserService.js'
+import Header from '@/components/Header/Header'
 export default {
+  components: {
+    Header
+  },
   data: () => ({
     user: null
   }),

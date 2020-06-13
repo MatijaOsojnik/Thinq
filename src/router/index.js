@@ -83,7 +83,8 @@ const routes = [{
     name: 'user-lectures',
     component: UserLectures,
     meta: {
-      onlyPrivilegedUser: true
+      onlyPrivilegedUser: true,
+      belongsToUser: true
     }
   },
   {
@@ -165,7 +166,22 @@ router.beforeEach((to, from, next) => {
       //     name: 'lectures'
       //   })
       // }
-    } else {
+    } else if(to.meta.belongsToUser) {
+      if(isUserLoggedIn){
+        if (this.$route.params.id === this.$store.state.user.id){
+          next()
+        }else{
+          next({
+            name: 'lectures'
+          })
+        }
+      }else{
+        next({
+          name: 'lectures'
+        })
+      }
+    }
+    else {
       next({
         name: 'lectures'
       })

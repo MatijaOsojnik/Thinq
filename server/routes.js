@@ -73,6 +73,7 @@ module.exports = (app) => {
     // LECTURE ROUTES
     app.get('/api/lectures', LecturesController.index)
     app.get('/api/lectures/:lectureId', LecturesController.show)
+    app.get('/api/lectures/users/:userId', LecturesController.user)
     app.get('/api/lectures/categories/:categoryId', LecturesController.showCategories)
     app.get('/api/lectures/categories/similar/:categoryId/:lectureId', LecturesController.showSimilar)
     app.get('/api/lectures/categories/other/:categoryId/:lectureId', LecturesController.showDifferent)

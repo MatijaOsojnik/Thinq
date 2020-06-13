@@ -16,6 +16,9 @@ export default {
     showDifferent(categoryId, lectureId) {
         return axios.get(`lectures/categories/other/${categoryId}/${lectureId}`)
     },
+    user(userId){
+        return axios.get(`lectures/users/${userId}`)
+    },
     post(lecture, userId) {
         return axios.post(`lectures/${userId}`, lecture)
     },

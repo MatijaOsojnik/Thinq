@@ -94,6 +94,7 @@ export default {
     async getLecture() {
       try {
         const lectureId = this.$route.params.id;
+        console.log(lectureId)
         const responseLecture = await LectureService.show(lectureId);
         const responseSimilarLectures = await LectureService.showSimilar(
           responseLecture.data.category_id,
@@ -103,8 +104,10 @@ export default {
           responseLecture.data.category_id,
           lectureId
         );
-        if(responseLecture.data.Users[0].id === this.$store.state.user.id){
-          this.isOwner = true
+        if(this.$store.state.user){
+          if(responseLecture.data.Users[0].id === this.$store.state.user.id){
+            this.isOwner = true
+          }
         }
         this.lecture = responseLecture.data;
         this.categoryLectures = responseSimilarLectures.data;

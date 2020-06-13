@@ -16,8 +16,8 @@
           >{{lectures[0].Category.name}}</span>
           <v-row style="z-index: 100" class="flex-sm-fill">
             <v-col
+              class="col-xl-2 col-lg-3 col-md-4 col-sm-6 cols-12 d-sm-flex justify-sm-center"
               v-if="priviliges"
-              class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 d-sm-flex justify-sm-center"
             >
               <v-hover v-slot:default="{ hover }">
                 <v-card
@@ -50,7 +50,7 @@
               </v-hover>
             </v-col>
             <v-col
-              class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 d-sm-flex justify-sm-center"
+              class="col-xl-2 col-lg-3 col-md-4 col-sm-6 cols-12 d-sm-flex justify-sm-center"
               v-for="lecture in lectures"
               :key="lecture.id"
             >
@@ -64,6 +64,7 @@
                 >
                   <div>
                     <v-list-item>
+                      <router-link v-if="lecture.Users[0]" :to="{path: `/users/${lecture.Users[0].display_name}/${lecture.Users[0].id}/profile`}">
                       <v-list-item-avatar>
                         <v-img
                           v-if="lecture.Users.length > 0 && lecture.Users[0].icon_url"
@@ -71,6 +72,7 @@
                         ></v-img>
                         <v-icon v-else dark large color="indigo">mdi-account-circle</v-icon>
                       </v-list-item-avatar>
+                      </router-link>
                       <v-list-item-content>
                         <v-list-item-title class="title">{{lecture.title}}</v-list-item-title>
                         <!-- <v-list-item-subtitle>by Kurt Wagner</v-list-item-subtitle> -->

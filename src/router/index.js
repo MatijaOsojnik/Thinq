@@ -76,9 +76,6 @@ const routes = [{
     path: '/users/:displayName/:id/profile',
     name: 'show-user',
     component: User,
-    meta: {
-      onlyAuthUser: true
-    }
   },
   {
     path: '/users/:displayName/:id',

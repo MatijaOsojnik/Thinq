@@ -16,21 +16,23 @@
           >{{lectures[0].Category.name}}</span>
           <v-row style="z-index: 100" class="flex-sm-fill">
             <v-col
-              class="col-xl-2 col-lg-3 col-md-4 col-sm-6 cols-12 d-sm-flex justify-sm-center"
+              class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12  d-flex d-sm-flex d-md-block d-lg-block d-xl-block justify-center justify-sm-center"
               v-if="priviliges"
             >
               <LectureCardCreateComponent :card="card"/>
             </v-col>
             <v-col
-              class="col-xl-2 col-lg-3 col-md-4 col-sm-6 cols-12 d-sm-flex justify-sm-center"
-              v-for="lecture in lectures"
+              class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 d-flex d-sm-flex d-md-block d-lg-block d-xl-block justify-center justify-sm-center"
+              v-for="lecture in lectureLimit"
               :key="lecture.id"
             >
               <LectureCardComponent :lecture="lecture"/>
             </v-col>
-            <v-col col="2">
-              <v-btn @click="limit = null" v-if="lectures > 10">Show More</v-btn>
-            </v-col>
+        <v-col
+          class="col-12 text-center"
+        >
+          <v-btn @click="limit = null" v-if="limit">Show More</v-btn>
+        </v-col>
           </v-row>
         </v-container>
       </v-container>
@@ -59,11 +61,16 @@ export default {
     limit: 10
   }),
   computed: {
-    lectureLimit: async () => {
+    lectureLimit() {
       if (this.lectures) {
-        return (await this.limit)
-          ? this.lectures.slice(0, this.limit)
-          : this.lectures;
+        if(this.limit){
+          const splitLectures = this.lectures.slice(0, 10)
+          return splitLectures
+        }else{
+          return this.lectures
+        }
+      }else{
+        return this.lectures
       }
     }
   },
@@ -88,7 +95,7 @@ export default {
         }
       } else {
         response = await LectureService.index();
-        this.lectures = response.data;
+          this.lectures = response.data;
       }
     },
     checkRoles() {

@@ -1,26 +1,23 @@
 <template>
-<LectureMetadata>
+  <LectureMetadata>
     <template v-slot:yourLectures>
-    <v-row style="z-index: 100" class="flex-sm-fill">
-      <v-col
-        class="col-xl-2 col-lg-3 col-md-4 col-sm-6 cols-12 d-sm-flex justify-sm-center"
-        v-for="lecture in lectures"
-        :key="lecture.id"
-      >
-        <LectureCardComponent :lecture="lecture" />
-      </v-col>
-      <v-col col="2">
-        <v-btn @click="limit = null" v-if="lectures > 10">Show More</v-btn>
-      </v-col>
-    </v-row>
+      <v-row style="z-index: 100" class="flex-sm-fill">
+        <v-col
+          class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 d-sm-flex justify-sm-center"
+          v-for="lecture in lectures"
+          :key="lecture.id"
+        >
+          <LectureCardComponent :lecture="lecture" />
+        </v-col>
+      </v-row>
     </template>
-</LectureMetadata>
+  </LectureMetadata>
 </template>
 
 <script>
-import LectureCardComponent from '@/components/Card-Lecture';
-import LectureService from '@/services/LectureService';
-import LectureMetadata from '@/views/Users/Metadata'
+import LectureCardComponent from "@/components/Card-Lecture";
+import LectureService from "@/services/LectureService";
+import LectureMetadata from "@/views/Users/Metadata";
 
 export default {
   components: {

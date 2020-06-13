@@ -11,21 +11,26 @@
         <v-list-item>
           <router-link
             v-if="lecture.Users[0]"
-            :to="{path: `/users/${lecture.Users[0].display_name}/${lecture.Users[0].id}/profile`}"
+            :to="{path: `/users/${lecture.Users[0].display_name.toLowerCase()}/${lecture.Users[0].id}/profile`}"
           >
             <v-list-item-avatar>
               <v-img
                 v-if="lecture.Users.length > 0 && lecture.Users[0].icon_url"
                 :src="lecture.Users[0].icon_url"
               ></v-img>
-              <v-icon v-else dark large color="indigo">mdi-account-circle</v-icon>
+              <v-img v-else src="@/assets/blue-error-background.jpg"></v-img>
             </v-list-item-avatar>
           </router-link>
           <v-list-item-content>
             <v-list-item-title class="title">{{lecture.title}}</v-list-item-title>
             <v-list-item-subtitle v-if="lecture.Users[0]">
               By
-              <span class="font-weight-bold">{{lecture.Users[0].display_name}}</span>
+              <router-link
+                v-if="lecture.Users[0]"
+                :to="{path: `/users/${lecture.Users[0].display_name.toLowerCase()}/${lecture.Users[0].id}/profile`}"
+              >
+                <span class="font-weight-bold">{{lecture.Users[0].display_name}}</span>
+              </router-link>
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>

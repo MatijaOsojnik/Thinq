@@ -31,7 +31,7 @@
         <v-col
           class="col-12 text-center"
         >
-          <v-btn @click="limit = null" v-if="limit">Show More</v-btn>
+          <v-btn @click="limit = null" v-if="limit && lectures.length > 10">Show More</v-btn>
         </v-col>
           </v-row>
         </v-container>

@@ -80,8 +80,8 @@ module.exports = (app) => {
     app.get('/api/lectures/categories/similar/:categoryId/:lectureId', LecturesController.showSimilar)
     app.get('/api/lectures/categories/other/:categoryId/:lectureId', LecturesController.showDifferent)
 
-    app.put('/api/lectures/:lectureId', LectureControllerPolicy, LecturesController.put)
-    app.post('/api/lectures/:userId', LectureControllerPolicy, LecturesController.post)
+    app.put('/api/lectures/:lectureId', LectureControllerPolicy.update, LecturesController.put)
+    app.post('/api/lectures/:userId', LectureControllerPolicy.update, LecturesController.post)
     app.delete('/api/lectures/:lectureId', LecturesController.delete)
 
     // CATEGORY ROUTES

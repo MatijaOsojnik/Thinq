@@ -98,7 +98,7 @@
                     <span>You successfuly changed your information.</span>
                   </v-alert>
                 </v-scroll-x-transition>
-                <v-btn solo @click="updateInfo">SUBMIT</v-btn>
+                <v-btn solo :disabled="waitBeforeClick" @click="updateInfo">SUBMIT</v-btn>
               </v-form>
             </v-card-text>
           </v-card>
@@ -134,7 +134,7 @@
                   </v-container>-->
                 </v-scroll-x-transition>
 
-                <v-btn solo @click="submitAvatar">SUBMIT</v-btn>
+                <v-btn solo :disabled="waitBeforeClick" @click="submitAvatar">SUBMIT</v-btn>
               </v-form>
             </v-card-text>
           </v-card>
@@ -163,7 +163,7 @@
                     <span>You successfuly changed your email.</span>
                   </v-alert>
                 </v-scroll-x-transition>
-                <v-btn solo @click="updateEmail">SUBMIT</v-btn>
+                <v-btn solo :disabled="waitBeforeClick" @click="updateEmail">SUBMIT</v-btn>
               </v-form>
             </v-card-text>
           </v-card>
@@ -206,7 +206,7 @@
                     <span>You successfuly changed your password.</span>
                   </v-alert>
                 </v-scroll-x-transition>
-                <v-btn solo @click="updatePassword">SUBMIT</v-btn>
+                <v-btn solo :disabled="waitBeforeClick" @click="updatePassword">SUBMIT</v-btn>
               </v-form>
             </v-card-text>
           </v-card>
@@ -260,6 +260,7 @@ export default {
     successfulInfoUpdate: false,
     successfulEmailUpdate: false,
     successfulPasswordUpdate: false,
+    waitBeforeClick: false,
     errors: []
   }),
   created() {
@@ -285,6 +286,7 @@ export default {
     },
     async updateInfo() {
       try {
+        this.waitBeforeClick = true;
         const userId = this.user.id;
         this.user.birth_date = this.date;
         const response = await UserService.put(userId, {
@@ -296,7 +298,10 @@ export default {
         });
         if (response) {
           this.successfulInfoUpdate = true;
-          setTimeout(() => (this.successfulInfoUpdate = false), 5000);
+          setTimeout(() => {
+            this.successfulInfoUpdate = false;
+            this.waitBeforeClick = false;
+          }, 4000);
           this.date = this.user.birth_date;
         }
         this.getUser();
@@ -307,13 +312,17 @@ export default {
     },
     async updateEmail() {
       try {
+        this.waitBeforeClick = true;
         const userId = this.user.id;
         const response = await UserService.put(userId, {
           email: this.user.email
         });
         if (response) {
           this.successfulEmailUpdate = true;
-          setTimeout(() => (this.successfulEmailUpdate = false), 5000);
+          setTimeout(() => {
+            this.successfulEmailUpdate = false;
+            this.waitBeforeClick = false;
+          }, 4000);
         }
         this.getUser();
       } catch (err) {
@@ -323,6 +332,7 @@ export default {
     },
     async updatePassword() {
       try {
+        this.waitBeforeClick = true;
         const userId = this.user.id;
         const response = await UserService.put(userId, {
           password: this.newPassword,
@@ -330,7 +340,10 @@ export default {
         });
         if (response) {
           this.successfulPasswordUpdate = true;
-          setTimeout(() => (this.successfulPasswordUpdate = false), 5000);
+          setTimeout(() => {
+            this.successfulPasswordUpdate = false;
+            this.waitBeforeClick = false;
+          }, 4000);
         }
         this.newPassword = "";
         this.repeatPassword = "";

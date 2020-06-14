@@ -82,7 +82,7 @@ export default {
     categoryLectures: [],
     differentLectures: []
   }),
-  created() {
+  mounted() {
     this.getLecture();
     this.checkRoles();
   },
@@ -106,6 +106,8 @@ export default {
         if(this.$store.state.user){
           if(responseLecture.data.Users[0].id === this.$store.state.user.id){
             this.isOwner = true
+          }else{
+            this.isOwner = false
           }
         }
         this.lecture = responseLecture.data;

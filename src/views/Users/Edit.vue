@@ -2,17 +2,17 @@
   <div>
     <!-- <v-row>
     <v-col class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">-->
-    <v-card height="450px" max-height="500px" max-width="1000px" class="mx-auto mt-6">
+    <v-card height="830px" max-height="1000px" max-width="1000px" class="mx-auto my-6">
       <v-toolbar flat color="#617BE3" dark>
         <v-toolbar-title>User Profile</v-toolbar-title>
       </v-toolbar>
       <v-tabs vertical color="#617BE3">
         <v-tab>
-          <v-icon left>mdi-account-circle</v-icon>Avatar
+          <v-icon left>mdi-account-cog</v-icon>Personal Info
         </v-tab>
         <v-divider />
         <v-tab>
-          <v-icon left>mdi-account-cog</v-icon>Personal Info
+          <v-icon left>mdi-account-circle</v-icon>Avatar
         </v-tab>
         <v-divider />
         <v-tab>
@@ -32,42 +32,6 @@
                   </ul>
                 </v-alert>
               </v-scroll-x-transition>
-              <v-form enctype="multipart/form-data" autocomplete="off">
-                <label for="avatar">Avatar</label>
-                <v-file-input
-                  :rules="rules.avatarRules"
-                  accept="image/png, image/jpeg, image/bmp"
-                  placeholder="Pick an avatar"
-                  prepend-icon="mdi-camera"
-                  label="Avatar"
-                  solo
-                  :loading="uploading"
-                  v-model="file"
-                ></v-file-input>
-                <v-scroll-x-transition>
-                  <v-alert type="success" mode="out-in" v-if="uploadedFile">
-                    <span>You successfuly changed your avatar.</span>
-                  </v-alert>
-                  <!-- <v-container fluid>
-                    <img :src="'http://localhost:8082' + uploadedFile"/>
-                  </v-container>-->
-                </v-scroll-x-transition>
-
-                <v-btn solo @click="submitAvatar">SUBMIT</v-btn>
-              </v-form>
-            </v-card-text>
-          </v-card>
-        </v-tab-item>
-        <v-tab-item>
-          <v-card flat class="mx-4">
-            <v-card-text>
-              <v-scroll-x-transition>
-                <v-alert elevation="2" type="warning" v-if="errors.length">
-                  <ul>
-                    <li v-for="error in errors" :key="error">{{ error }}</li>
-                  </ul>
-                </v-alert>
-              </v-scroll-x-transition>
               <v-form lazy-validation autocomplete="off">
                 <label for="displayName">Display Name</label>
                 <v-text-field
@@ -77,6 +41,24 @@
                   solo
                   v-model="user.display_name"
                 ></v-text-field>
+                <label for="title">Title</label>
+                <v-text-field
+                  id="title"
+                  class="mt-2"
+                  prepend-icon="mdi-badge-account-horizontal-outline"
+                  solo
+                  placeholder="Enter Your Title"
+                  v-model="user.title"
+                ></v-text-field>
+                <label for="description">Description</label>
+                <div style="margin: 0.5rem 0 2rem">
+                  <tiptap-vuetify
+                    id="description"
+                    placeholder="Write something about yourself here."
+                    :extensions="extensions"
+                    v-model="user.description"
+                  />
+                </div>
                 <label for="phoneNum">Phone Number</label>
                 <v-text-field
                   id="phoneNum"
@@ -117,6 +99,42 @@
                   </v-alert>
                 </v-scroll-x-transition>
                 <v-btn solo @click="updateInfo">SUBMIT</v-btn>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item>
+          <v-card flat class="mx-4">
+            <v-card-text>
+              <v-scroll-x-transition>
+                <v-alert elevation="2" type="warning" v-if="errors.length">
+                  <ul>
+                    <li v-for="error in errors" :key="error">{{ error }}</li>
+                  </ul>
+                </v-alert>
+              </v-scroll-x-transition>
+              <v-form enctype="multipart/form-data" autocomplete="off">
+                <label for="avatar">Avatar</label>
+                <v-file-input
+                  :rules="rules.avatarRules"
+                  accept="image/png, image/jpeg, image/bmp"
+                  placeholder="Pick an avatar"
+                  prepend-icon="mdi-camera"
+                  label="Avatar"
+                  solo
+                  :loading="uploading"
+                  v-model="file"
+                ></v-file-input>
+                <v-scroll-x-transition>
+                  <v-alert type="success" mode="out-in" v-if="uploadedFile">
+                    <span>You successfuly changed your avatar.</span>
+                  </v-alert>
+                  <!-- <v-container fluid>
+                    <img :src="'http://localhost:8082' + uploadedFile"/>
+                  </v-container>-->
+                </v-scroll-x-transition>
+
+                <v-btn solo @click="submitAvatar">SUBMIT</v-btn>
               </v-form>
             </v-card-text>
           </v-card>
@@ -190,8 +208,6 @@
                 </v-scroll-x-transition>
                 <v-btn solo @click="updatePassword">SUBMIT</v-btn>
               </v-form>
-
-
             </v-card-text>
           </v-card>
         </v-tab-item>
@@ -203,7 +219,19 @@
 <script>
 import UserService from "@/services/UserService.js";
 import FileService from "@/services/FileService.js";
+import {
+  TiptapVuetify,
+  Bold,
+  Italic,
+  Paragraph,
+  HardBreak,
+  History
+} from "tiptap-vuetify";
+
 export default {
+  components: {
+    TiptapVuetify
+  },
   data: () => ({
     rules: {
       avatarRules: [
@@ -212,7 +240,8 @@ export default {
           value.size < 2000000 ||
           "Avatar size should be less than 2 MB!"
       ],
-      passwordRules: []
+      passwordRules: [],
+      description: text => text.length <= 300 || "Max 300 characters"
     },
     user: {
       display_name: ``,
@@ -220,6 +249,7 @@ export default {
       phone_num: ``,
       date_birth: null
     },
+    extensions: [Bold, Italic, Paragraph, History, HardBreak],
     date: new Date("December 31, 2002 00:00:00").toISOString().substr(0, 10),
     file: null,
     modal: false,
@@ -257,9 +287,10 @@ export default {
       try {
         const userId = this.user.id;
         this.user.birth_date = this.date;
-
         const response = await UserService.put(userId, {
           display_name: this.user.display_name,
+          title: this.user.title,
+          description: this.user.description,
           phone_num: this.user.phone_num,
           birth_date: this.user.birth_date
         });
@@ -314,8 +345,8 @@ export default {
         const userId = this.$route.params.id;
         if (userId == this.$store.state.user.id) {
           const response = await UserService.show(userId);
-          if(response.data.birth_date){
-            this.date = response.data.birth_date.substr(0, 10)
+          if (response.data.birth_date) {
+            this.date = response.data.birth_date.substr(0, 10);
           }
           this.user = response.data;
           this.$store.dispatch("setUser", this.user);

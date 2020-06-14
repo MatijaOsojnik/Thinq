@@ -14,6 +14,10 @@
                   <v-img :src="user.icon_url" />
                 </v-avatar>
                 <span class="d-block my-2 text-capitalize title">{{user.display_name}}</span>
+                <span
+                  v-if="$store.state.user.title"
+                  class="d-block ma-1 subtitle-2"
+                >{{user.title.toUpperCase()}}</span>
                 <v-btn
                   small
                   absolute
@@ -28,13 +32,7 @@
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
               </div>
-              <v-divider v-if="user.title || user.description || $route.params.id == $store.state.user.id" />
-              <div class="pa-2 my-2 text-center">
-                <span
-                  v-if="$store.state.user.title"
-                  class="d-block pa-2 ma-2 subtitle-1"
-                >{{user.title.toUpperCase()}}</span>
-              </div>
+              <v-divider v-if="!user.title || !user.description || $route.params.id != $store.state.user.id" />
               <div v-if="$route.params.id == $store.state.user.id">
                 <v-btn
                 v-if="!user.title"
@@ -59,7 +57,8 @@
               <div>
                 <span class="d-block about-title">About Me</span>
               </div>
-              <span class="d-block my-4">Hi, I'm {{user.display_name}}.</span>
+              <span v-if="!user.description" class="d-block my-4">Hi, I'm {{user.display_name}}.</span>
+              <span v-else class="d-block my-4" v-html="user.description"></span>
             </div>
             <ProfileMetadata>
               <template v-slot:userLectures>

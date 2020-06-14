@@ -50,6 +50,14 @@ module.exports = {
                 'string.pattern.base': `The phone number you entered is invalid`,
                 'any.base': `The phone number you entered is invalid`,
                 'any.only': `The phone number you entered is invalid`
+            }),
+            title: Joi.string()
+            .allow('', null),
+            description: Joi.string()
+            .allow('', null)
+            .max(300)
+            .messages({
+                'string.max': `Description can contain only 300 characters`
             })
         })
 

@@ -84,11 +84,11 @@ module.exports = (app) => {
 
     // CATEGORY ROUTES
     app.get('/api/categories', CategoriesController.index)
-    app.post('/api/categories', isAuthenticated, CategoriesController.create)
+    app.post('/api/categories', CategoriesController.create)
 
     // ROLE ROUTES
     app.get('/api/roles', RolesController.index)
-    app.post('/api/roles', isAuthenticated, RolesController.create)
+    app.post('/api/roles', RolesController.create)
 
     //FILE UPLOAD ROUTE
     // app.post('/upload', upload.single('file'), (req, res) => {

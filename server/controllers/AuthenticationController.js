@@ -36,7 +36,6 @@ module.exports = {
                                 }
                             }
                         }).then(roles => {
-                            console.log(roles)
                             user.setRoles(roles).then(() => {
                                 res.send({
                                     message: "User was registered successfully!"

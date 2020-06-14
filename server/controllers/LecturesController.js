@@ -31,7 +31,7 @@ module.exports = {
         try {
             const lecture = await Lecture.create(req.body).
             then((lecture) => {
-                if(req.params.userId) {
+                if (req.params.userId) {
                     User.findByPk(req.params.userId).then((user) => {
                         lecture.setUsers(user)
                     }).catch((err) => {
@@ -55,12 +55,11 @@ module.exports = {
     },
     async show(req, res) {
         try {
-            const lecture = await Lecture.findByPk(req.params.lectureId,
-                {
-                    include: [
-                        User
-                    ]
-                })
+            const lecture = await Lecture.findByPk(req.params.lectureId, {
+                include: [
+                    User
+                ]
+            })
             res.send(lecture)
         } catch (error) {
             res.status(500).send({
@@ -71,11 +70,11 @@ module.exports = {
     async user(req, res) {
         try {
             const lectures = await Lecture.findAll({
-                include: [ {
+                include: [{
                     model: User,
-                        where: {
-                            id: req.params.userId
-                        }
+                    where: {
+                        id: req.params.userId
+                    }
                 }]
             })
             res.send(lectures)
@@ -100,7 +99,10 @@ module.exports = {
                             }
                         }
                     ],
-                }
+                },
+                include: [{
+                    model: User
+                }]
             })
             res.send(lectures)
         } catch (error) {
@@ -120,7 +122,10 @@ module.exports = {
                 },
                 order: [
                     ['title', 'ASC']
-                ]
+                ],
+                include: [{
+                    model: User
+                }]
             })
             res.send(lectures)
         } catch (error) {

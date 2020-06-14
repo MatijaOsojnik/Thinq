@@ -3,9 +3,13 @@
     <router-link :to="{path: `/lectures/${lecture.id}`}" style="text-decoration:none;">
       <v-card width="220px" height="270px" class="ma-4" raised :elevation="hover ? 8 : 2">
         <v-list-item>
-          <v-list-item-avatar color="indigo">
-            <v-icon dark>mdi-account-circle</v-icon>
-          </v-list-item-avatar>
+            <v-list-item-avatar>
+              <v-img
+                v-if="lecture.Users.length > 0 && lecture.Users[0].icon_url"
+                :src="lecture.Users[0].icon_url"
+              ></v-img>
+              <v-img v-else src="@/assets/blue-error-background.jpg"></v-img>
+            </v-list-item-avatar>
           <!-- <v-list-item-avatar v-else :img="$store.state.user.icon_url"></v-list-item-avatar> -->
           <v-list-item-content>
             <v-list-item-title class="title">{{lecture.title}}</v-list-item-title>

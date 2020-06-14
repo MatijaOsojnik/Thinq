@@ -56,12 +56,17 @@
 
         <v-card-text>
           <span style="display: block;">{{lecture.short_description}}</span>
-          <!-- <span>{{lecture.Category.name}}</span> -->
+          <div v-if="$router.history.current['name'] === 'user-lectures'">
+            <v-btn absolute dark fab small bottom left color="white" :to="{path: `/lectures/${lecture.id}/edit`}">
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
+          </div>
         </v-card-text>
       </div>
     </v-card>
   </v-hover>
 </template>
+
 
 <script>
 export default {

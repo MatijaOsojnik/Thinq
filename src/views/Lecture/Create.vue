@@ -135,6 +135,7 @@ export default {
   }),
   mounted() {
     this.findCategories();
+    this.checkUser();
   },
   methods: {
     async createLecture() {
@@ -162,6 +163,15 @@ export default {
       response.data.map(category => {
         this.categories.push({ name: category.name, id: category.id });
       });
+    },
+    checkUser() {
+      if (this.$store.state.user) {
+              if (this.$route.params.id != this.$store.state.user.id) {
+                this.$router.push({
+                  name: "lectures"
+                });
+              }
+            }
     }
   }
 };

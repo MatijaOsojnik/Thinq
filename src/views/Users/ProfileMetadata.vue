@@ -1,22 +1,10 @@
 <template>
-  <v-container>
-    <router-link :to="{name: 'lectures'}" class="back-link" style="margin-top: 20px;">
-      <v-icon dense>mdi-chevron-left</v-icon>Back to all lectures
-    </router-link>
-    <div>
-      <slot name="yourLectures">
-        <span class="title ma-4 d-block">Your lectures</span>
-        <span class="heading ma-4 d-block">Looks like you haven't made any lectures yet..</span>
-      </slot>
-    </div>
     <div>
       <slot name="userLectures">
         <span class="title ma-4 d-block">My lectures</span>
         <span class="heading ma-4 d-block">Looks like I haven't made any lectures yet..</span>
       </slot>
     </div>
-    <div></div>
-  </v-container>
 </template>
 
 <script>

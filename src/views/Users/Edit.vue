@@ -1,8 +1,8 @@
 <template>
-  <v-container fluid>
+  <div>
     <!-- <v-row>
     <v-col class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">-->
-    <v-card height="450px" max-height="500px" max-width="1200px" class="mx-auto">
+    <v-card height="450px" max-height="500px" max-width="1000px" class="mx-auto mt-6">
       <v-toolbar flat color="#617BE3" dark>
         <v-toolbar-title>User Profile</v-toolbar-title>
       </v-toolbar>
@@ -197,7 +197,7 @@
         </v-tab-item>
       </v-tabs>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script>

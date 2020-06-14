@@ -1,5 +1,7 @@
 <template>
   <LectureMetadata>
+    <span class="title ma-4 d-block">Your lectures</span>
+
     <template v-slot:yourLectures>
       <v-row style="z-index: 100" class="flex-sm-fill">
         <v-col
@@ -20,7 +22,7 @@
 </template>
 
 <script>
-import LectureCardCreateComponent from '@/components/Card-Lecture-Create'
+import LectureCardCreateComponent from "@/components/Card-Lecture-Create";
 import LectureCardComponent from "@/components/Card-Lecture";
 import LectureService from "@/services/LectureService";
 import LectureMetadata from "@/views/Users/Metadata";
@@ -33,7 +35,8 @@ export default {
   },
   data: () => ({
     card: {
-      imageUrl: "https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+      imageUrl:
+        "https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
       url: "/lectures/create/"
     },
     lectures: null

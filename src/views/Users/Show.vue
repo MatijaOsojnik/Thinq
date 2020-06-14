@@ -15,7 +15,7 @@
                 </v-avatar>
                 <span class="d-block my-2 text-capitalize title">{{user.display_name}}</span>
                 <span
-                  v-if="$store.state.user.title"
+                  v-if="user.title"
                   class="d-block ma-1 subtitle-2"
                 >{{user.title.toUpperCase()}}</span>
                 <v-btn

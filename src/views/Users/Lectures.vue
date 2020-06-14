@@ -1,8 +1,7 @@
 <template>
   <LectureMetadata>
-    <span class="title ma-4 d-block">Your lectures</span>
-
     <template v-slot:yourLectures>
+    <span class="title my-4 d-block">Your lectures</span>
       <v-row style="z-index: 100" class="flex-sm-fill">
         <v-col
           class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 d-flex d-sm-flex d-md-block d-lg-block d-xl-block justify-center justify-sm-center"
@@ -25,7 +24,7 @@
 import LectureCardCreateComponent from "@/components/Card-Lecture-Create";
 import LectureCardComponent from "@/components/Card-Lecture";
 import LectureService from "@/services/LectureService";
-import LectureMetadata from "@/views/Users/Metadata";
+import LectureMetadata from "@/views/Users/LectureMetadata";
 
 export default {
   components: {

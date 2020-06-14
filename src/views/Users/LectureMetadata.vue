@@ -9,12 +9,6 @@
         <span class="heading ma-4 d-block">Looks like you haven't made any lectures yet..</span>
       </slot>
     </div>
-    <div>
-      <slot name="userLectures">
-        <span class="title ma-4 d-block">My lectures</span>
-        <span class="heading ma-4 d-block">Looks like I haven't made any lectures yet..</span>
-      </slot>
-    </div>
     <div></div>
   </v-container>
 </template>

@@ -4,7 +4,15 @@
       <v-row class="ma-sm-6 ma-xl-0 ma-lg-0 ma-md-0" v-if="lecture">
         <v-col class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
           <h1 class="display-3" style="margin-top: 1rem;">{{lecture.title}}</h1>
-          <span class="d-block">By <span class="d-block title">{{lecture.Users[0].display_name}}</span></span>
+          <span class="d-block mt-2">
+            By
+            <router-link
+              v-if="lecture.Users[0]"
+              :to="{path: `/users/${lecture.Users[0].display_name.toLowerCase()}/${lecture.Users[0].id}/profile`}"
+            >
+              <span class="font-weight-bold">{{lecture.Users[0].display_name}}</span>
+            </router-link>
+          </span>
           <router-link :to="{name: 'lecture-edit', params: {id: $route.params.id}}">
             <v-btn style="margin: 1.5rem 0;" icon v-if="isOwner">
               <v-icon medium color="black">mdi-pencil</v-icon>
@@ -149,7 +157,7 @@ export default {
       }
     },
     async imageLoadError() {
-      this.imageError = true
+      this.imageError = true;
     }
   }
 };

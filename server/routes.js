@@ -6,8 +6,10 @@ const UsersController = require('./controllers/UsersController')
 
 // const authJwt = require('./middleware/authJwt')
 
-const UserControllerPolicy = require('./policies/UserControllerPolicy')
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy')
+const UserControllerPolicy = require('./policies/UserControllerPolicy')
+const LectureControllerPolicy = require('./policies/LectureControllerPolicy')
+
 // const UserControllerPolicy = require('./policies/UserControllerPolicy')
 const isAuthenticated = require('./policies/isAuthenticated')
 
@@ -78,8 +80,8 @@ module.exports = (app) => {
     app.get('/api/lectures/categories/similar/:categoryId/:lectureId', LecturesController.showSimilar)
     app.get('/api/lectures/categories/other/:categoryId/:lectureId', LecturesController.showDifferent)
 
-    app.put('/api/lectures/:lectureId', LecturesController.put)
-    app.post('/api/lectures/:userId', LecturesController.post)
+    app.put('/api/lectures/:lectureId', LectureControllerPolicy, LecturesController.put)
+    app.post('/api/lectures/:userId', LectureControllerPolicy, LecturesController.post)
     app.delete('/api/lectures/:lectureId', LecturesController.delete)
 
     // CATEGORY ROUTES

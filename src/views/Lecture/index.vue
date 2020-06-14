@@ -131,7 +131,7 @@ export default {
     async deleteLecture() {
       try {
         const lectureId = this.$route.params.id;
-        if (this.permisions) {
+        if (this.permissions) {
           await LectureService.delete(lectureId);
         }
       } catch (err) {

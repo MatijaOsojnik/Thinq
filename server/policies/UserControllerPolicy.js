@@ -8,6 +8,7 @@ module.exports = {
                 .min(3)
                 .max(30)
                 .messages({
+                    'string.alphanum': 'Display name should only contain alpha-numeric characters',
                     'string.base': 'Display name should be a type of text',
                     'string.empty': `Please enter a name`,
                     'string.min': `Display name must be longer than 3 characters`,

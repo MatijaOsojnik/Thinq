@@ -91,6 +91,7 @@
                 depressed
                 small
                 block
+                text
                 :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/profile`}"
               >View profile</v-btn>
             </div>
@@ -111,7 +112,7 @@
                 small
                 text
                 block
-                :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}`}"
+                :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/edit`}"
               >Edit account</v-btn>
 
               <v-btn class="ma-1" depressed small text block @click="logout">Log out</v-btn>

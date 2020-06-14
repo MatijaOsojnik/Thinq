@@ -10,9 +10,7 @@ import LectureCreate from '@/views/Lecture/Create.vue'
 import LectureEdit from '@/views/Lecture/Edit.vue'
 import User from '@/views/Users/Show.vue'
 import UserLectures from '@/views/Users/Lectures.vue'
-// import Users from '@/views/Users'
 import EditUser from '@/views/Users/Edit.vue'
-
 
 Vue.use(VueRouter)
 
@@ -79,6 +77,14 @@ const routes = [{
     component: User,
   },
   {
+    path: '/users/:displayName/:id/edit',
+    name: 'edit-user',
+    component: EditUser,
+    meta: {
+      onlyAuthUser: true,
+      belongsToUser: true
+    },
+  }, {
     path: '/users/:displayName/:id/lectures',
     name: 'user-lectures',
     component: UserLectures,
@@ -87,23 +93,6 @@ const routes = [{
       belongsToUser: true
     }
   },
-  {
-    path: '/users/:displayName/:id',
-    name: 'edit-user',
-    component: EditUser,
-    meta: {
-      onlyAuthUser: true
-    }
-
-  },
-  // {
-  //   path: '/users',
-  //   name: 'users',
-  //   component: Users,
-  //   meta: {
-  //     onlyAuthUser: true
-  //   }
-  // },
   {
     path: '*',
     redirect: 'lectures'
@@ -166,22 +155,21 @@ router.beforeEach((to, from, next) => {
       //     name: 'lectures'
       //   })
       // }
-    } else if(to.meta.belongsToUser) {
-      if(isUserLoggedIn){
-        if (this.$route.params.id === this.$store.state.user.id){
+    } else if (to.meta.belongsToUser) {
+      if (isUserLoggedIn) {
+        if (this.$route.params.id === this.$store.state.user.id) {
           next()
-        }else{
+        } else {
           next({
             name: 'lectures'
           })
         }
-      }else{
+      } else {
         next({
           name: 'lectures'
         })
       }
-    }
-    else {
+    } else {
       next({
         name: 'lectures'
       })

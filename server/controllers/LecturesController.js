@@ -1,7 +1,6 @@
 const {
     Lecture,
     Category,
-    LectureUsers,
     User
 } = require('../models')
 
@@ -103,7 +102,6 @@ module.exports = {
                     ],
                 }
             })
-            console.log(lectures)
             res.send(lectures)
         } catch (error) {
             console.log(error)
@@ -114,7 +112,6 @@ module.exports = {
     },
     async showDifferent(req, res) {
         try {
-            console.log(req.params.lectureId)
             const lectures = await Lecture.findAll({
                 where: {
                     id: {
@@ -125,7 +122,6 @@ module.exports = {
                     ['title', 'ASC']
                 ]
             })
-            console.log(lectures)
             res.send(lectures)
         } catch (error) {
             console.log(error)
@@ -147,7 +143,6 @@ module.exports = {
                     model: User,
                 }]
             })
-            console.log(lectures)
             res.send(lectures)
         } catch (error) {
             console.log(error)
@@ -158,7 +153,7 @@ module.exports = {
     },
     async put(req, res) {
         try {
-            const lecture = await Lecture.update(req.body, {
+            await Lecture.update(req.body, {
                 where: {
                     id: req.params.lectureId
                 }

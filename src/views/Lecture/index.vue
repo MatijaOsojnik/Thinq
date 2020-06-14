@@ -128,7 +128,6 @@ export default {
     checkRoles() {
       const userAuthorities = this.$store.state.authorities;
       let hasPriviliges = false;
-
       if (userAuthorities) {
         for (let i = 0; i < userAuthorities.length; i++) {
           if (

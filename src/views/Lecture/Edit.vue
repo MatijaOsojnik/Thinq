@@ -109,11 +109,12 @@ export default {
       category_id: ``,
       user_id: null
     },
+    isOwner: false,
     error: null,
     categories: [],
     extensions: [
       History,
-        Bold,
+      Bold,
       Italic,
       Link,
       ListItem,
@@ -131,7 +132,7 @@ export default {
       HardBreak
     ]
   }),
-  mounted() {
+  created() {
     this.getLecture();
     this.findCategories();
     this.lecture.user_id = this.$route.params.id;
@@ -153,7 +154,7 @@ export default {
         this.$router.push({
           name: "lecture",
           params: {
-              id: lectureId
+            id: lectureId
           }
         });
       } catch (err) {
@@ -161,16 +162,39 @@ export default {
       }
     },
     async findCategories() {
-      const response = await CategoryService.index();
-
-      response.data.map(category => {
-        this.categories.push({ name: category.name, id: category.id });
-      });
+      try {
+        const response = await CategoryService.index();
+        response.data.map(category => {
+          this.categories.push({ name: category.name, id: category.id });
+        });
+      } catch (err) {
+        this.error = err.response.data
+      }
     },
     async getLecture() {
-      const lectureId = this.$route.params.id;
-      const response = await LectureService.show(lectureId);
-      this.lecture = response.data;
+      try {
+        const lectureId = this.$route.params.id;
+        const response = await LectureService.show(lectureId);
+          if (response.data === undefined || !response.data) {
+            this.$router.push({
+              name: "lectures"
+            });
+          }else{
+            if (this.$store.state.user) {
+              if (response.data.Users[0].id === this.$store.state.user.id) {
+                this.isOwner = true;
+                this.lecture = response.data;
+              } else {
+                this.$router.push({
+                  name: "lectures"
+                });
+              }
+            }
+          }
+        
+      } catch (err) {
+        this.error = err.response.data
+      }
     }
   }
 };

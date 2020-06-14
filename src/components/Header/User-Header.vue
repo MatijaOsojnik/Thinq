@@ -26,12 +26,7 @@
         <v-card max-width="200px">
           <v-container fluid>
             <div class="d-flex justify-center align-center flex-column ma-3">
-              <v-btn
-                depressed
-                small
-                block
-                :to="{path: `/lectures`}"
-              >All Lectures</v-btn>
+              <v-btn depressed small block :to="{path: `/lectures`}">All Lectures</v-btn>
             </div>
             <v-divider />
             <span class="subtitle ma-2 d-block font-weight-bold text-center">Categories</span>
@@ -102,6 +97,7 @@
             <v-divider />
             <div class="d-flex justify-center align-center flex-column ma-3">
               <v-btn
+                v-if='hasPriviliges'
                 class="ma-1"
                 depressed
                 small
@@ -136,7 +132,8 @@
 import CategoryService from "@/services/CategoryService";
 export default {
   data: () => ({
-    categories: null
+    categories: null,
+    hasPriviliges: false
   }),
   props: {
     search: String
@@ -148,7 +145,7 @@ export default {
     async logout() {
       this.$store.dispatch("setToken", null);
       this.$store.dispatch("setUser", null);
-      this.$store.dispatch("setAuthorities", null)
+      this.$store.dispatch("setAuthorities", null);
       this.$router.push({
         name: "login"
       });
@@ -157,11 +154,29 @@ export default {
       const response = await CategoryService.index();
       this.categories = response.data;
     },
+    checkRoles() {
+      const userAuthorities = this.$store.state.authorities;
+      let hasPriviliges = false;
+      if (userAuthorities) {
+        for (let i = 0; i < userAuthorities.length; i++) {
+          if (
+            userAuthorities[i] === "ROLE_LECTURER" ||
+            userAuthorities[i] === "ROLE_MODERATOR" ||
+            userAuthorities[i] === "ROLE_ADMIN"
+          ) {
+            hasPriviliges = true;
+          }
+        }
+      }
+      if (hasPriviliges) {
+        this.permissions = true;
+      }
+    }
     // searchByAll() {
     //   if (this.$router.history.current["name"] !== "lectures") {
     //     this.$router.go();
     //   }
-    }
+  }
 };
 </script>
 

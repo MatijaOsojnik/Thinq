@@ -97,7 +97,7 @@
             <v-divider />
             <div class="d-flex justify-center align-center flex-column ma-3">
               <v-btn
-                v-if='hasPriviliges'
+                v-if='permissions'
                 class="ma-1"
                 depressed
                 small
@@ -133,13 +133,14 @@ import CategoryService from "@/services/CategoryService";
 export default {
   data: () => ({
     categories: null,
-    hasPriviliges: false
+    permissions: false
   }),
   props: {
     search: String
   },
   mounted() {
     this.getCategories();
+    this.checkRoles();
   },
   methods: {
     async logout() {

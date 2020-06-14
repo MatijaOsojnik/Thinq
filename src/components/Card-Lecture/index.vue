@@ -36,10 +36,10 @@
         </v-list-item>
 
         <v-img
-          :src="lecture.thumbnail_url"
+          :src="imageError ? require('@/assets/blue-error-background.jpg') : lecture.thumbnail_url"
           height="175"
-          lazy-src="@/assets/blue-error-background.jpg"
           class="darker-img"
+          @error="imageLoadError"
         >
           <v-row class="fill-height flex-column justify-center">
             <div class="align-self-center">
@@ -65,8 +65,16 @@
 
 <script>
 export default {
+  data: () => ({
+    imageError: false
+  }),
   props: {
     lecture: Object
+  },
+  methods: {
+    async imageLoadError() {
+      this.imageError = true;
+    }
   }
 };
 </script>

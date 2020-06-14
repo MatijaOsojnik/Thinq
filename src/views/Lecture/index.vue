@@ -25,10 +25,10 @@
         >
           <v-card max-width="350px" max-height="400px">
             <v-img
-              :src="lecture.thumbnail_url"
-              lazy-src="@/assets/blue-error-background.jpg"
+              :src="imageError ? require('@/assets/blue-error-background.jpg') : lecture.thumbnail_url"
               height="250px"
               width="350px"
+              @error="imageLoadError"
             ></v-img>
             <v-card-text>
               <div class="d-flex justify-space-around align-center">
@@ -79,10 +79,11 @@ export default {
     lecture: null,
     permissions: false,
     isOwner: false,
+    imageError: false,
     categoryLectures: [],
     differentLectures: []
   }),
-  mounted() {
+  created() {
     this.getLecture();
     this.checkRoles();
   },
@@ -103,16 +104,17 @@ export default {
           responseLecture.data.category_id,
           lectureId
         );
-        if(this.$store.state.user){
-          if(responseLecture.data.Users[0].id === this.$store.state.user.id){
-            this.isOwner = true
-          }else{
-            this.isOwner = false
+        if (this.$store.state.user) {
+          if (responseLecture.data.Users[0].id === this.$store.state.user.id) {
+            this.isOwner = true;
+          } else {
+            this.isOwner = false;
           }
         }
         this.lecture = responseLecture.data;
         this.categoryLectures = responseSimilarLectures.data;
         this.differentLectures = responseDifferentLectures.data;
+        this.imageError = false;
       } catch (err) {
         console.log(err);
       }
@@ -144,6 +146,9 @@ export default {
       if (hasPriviliges) {
         this.permissions = true;
       }
+    },
+    async imageLoadError() {
+      this.imageError = true
     }
   }
 };

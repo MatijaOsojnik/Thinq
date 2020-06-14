@@ -16,23 +16,21 @@
           >{{lectures[0].Category.name}}</span>
           <v-row style="z-index: 100" class="flex-sm-fill">
             <v-col
-              class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12  d-flex d-sm-flex d-md-block d-lg-block d-xl-block justify-center justify-sm-center"
+              class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 d-flex d-sm-flex d-md-block d-lg-block d-xl-block justify-center justify-sm-center"
               v-if="priviliges"
             >
-              <LectureCardCreateComponent :card="card"/>
+              <LectureCardCreateComponent :card="card" />
             </v-col>
             <v-col
               class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 d-flex d-sm-flex d-md-block d-lg-block d-xl-block justify-center justify-sm-center"
               v-for="lecture in lectureLimit"
               :key="lecture.id"
             >
-              <LectureCardComponent :lecture="lecture"/>
+              <LectureCardComponent :lecture="lecture" />
             </v-col>
-        <v-col
-          class="col-12 text-center"
-        >
-          <v-btn @click="limit = null" v-if="limit && lectures.length > 10">Show More</v-btn>
-        </v-col>
+            <v-col class="col-12 text-center">
+              <v-btn @click="limit = null" v-if="limit && lectures.length > 10">Show More</v-btn>
+            </v-col>
           </v-row>
         </v-container>
       </v-container>
@@ -42,8 +40,8 @@
 
 <script>
 import LectureService from "@/services/LectureService.js";
-import LectureCardComponent from '@/components/Card-Lecture'
-import LectureCardCreateComponent from '@/components/Card-Lecture-Create'
+import LectureCardComponent from "@/components/Card-Lecture";
+import LectureCardCreateComponent from "@/components/Card-Lecture-Create";
 import LecturesMetadata from "@/views/Lectures/Metadata.vue";
 export default {
   components: {
@@ -53,28 +51,28 @@ export default {
   },
   data: () => ({
     card: {
-      imageUrl: 'https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-      url: '/lectures/create/',
+      imageUrl: "https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+      url: "/lectures/create/",
     },
-    lectures: null,
-    priviliges: false,
-    limit: 10
+      lectures: null,
+      priviliges: false,
+      limit: 10
   }),
   computed: {
     lectureLimit() {
       if (this.lectures) {
-        if(this.limit){
-          const splitLectures = this.lectures.slice(0, 10)
-          return splitLectures
-        }else{
-          return this.lectures
+        if (this.limit) {
+          const splitLectures = this.lectures.slice(0, 10);
+          return splitLectures;
+        } else {
+          return this.lectures;
         }
-      }else{
-        return this.lectures
+      } else {
+        return this.lectures;
       }
     }
   },
-  mounted() {
+  created() {
     this.getLectures();
     this.checkRoles();
   },
@@ -95,7 +93,7 @@ export default {
         }
       } else {
         response = await LectureService.index();
-          this.lectures = response.data;
+        this.lectures = response.data;
       }
     },
     checkRoles() {

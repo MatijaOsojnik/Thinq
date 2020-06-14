@@ -22,10 +22,12 @@
         </div>
         <div>
           <v-text-field
-            type="password"
             label="Password"
             v-model="password"
             prepend-inner-icon="mdi-lock-outline"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showPassword = !showPassword"
+            :type="showPassword ? 'text' : 'password'"
           />
         </div>
       </form>
@@ -46,6 +48,7 @@ export default {
     password: "",
     loginSuccess: false,
     showPanel: false,
+    showPassword: false,
     error: null
   }),
   methods: {

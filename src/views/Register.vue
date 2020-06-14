@@ -75,6 +75,8 @@ export default {
     repeat_password: "",
     registerSuccess: false,
     showPanel: false,
+    // showPassword: false,
+    // showRepeatPassword: false,
     errors: []
   }),
   methods: {
@@ -85,7 +87,7 @@ export default {
           email: this.email,
           password: this.password,
           repeat_password: this.repeat_password,
-          roles: ['Lecturer']
+          roles: ["Lecturer"]
         });
         this.showPanel = true;
 

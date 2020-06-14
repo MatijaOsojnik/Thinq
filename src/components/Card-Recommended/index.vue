@@ -13,7 +13,12 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-img :src="lecture.thumbnail_url" lazy-src="@/assets/blue-error-background.jpg" height="120" class="darker-img">
+        <v-img
+          :src="imageError ? require('@/assets/blue-error-background.jpg') : lecture.thumbnail_url"
+          height="120"
+          class="darker-img"
+          @error="imageLoadError"
+        >
           <v-row class="fill-height flex-column justify-center">
             <div class="align-self-center">
               <v-btn :class="{ 'show-btns': hover }" class="invisible" icon>
@@ -37,7 +42,17 @@
 
 <script>
 export default {
-   props: ['lecture']
+  data: () => ({
+    imageError: false
+  }),
+  props: {
+    lecture: Object
+  },
+  methods: {
+    async imageLoadError() {
+      this.imageError = true;
+    }
+  }
 };
 </script>
 

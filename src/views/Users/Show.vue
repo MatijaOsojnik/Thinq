@@ -30,7 +30,6 @@
                 </v-btn>
               </div>
               <v-divider />
-              <div v-if="$route.params.id == $store.state.user.id">
                 <div class="d-flex justify-center align-center">
                   <v-btn
                     icon
@@ -75,6 +74,7 @@
                     <v-icon color="#1DA1F2">mdi-twitter</v-icon>
                   </v-btn>
                 </div>
+              <div v-if="$route.params.id == $store.state.user.id">
                 <v-btn
                   v-if="!user.title"
                   block

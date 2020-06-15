@@ -9,6 +9,7 @@ import Lecture from '@/views/Lecture'
 import LectureCreate from '@/views/Lecture/Create.vue'
 import LectureEdit from '@/views/Lecture/Edit.vue'
 import User from '@/views/Users/Show.vue'
+import Admin from '@/views/Admin'
 import UserLectures from '@/views/Users/Lectures.vue'
 import EditUser from '@/views/Users/Edit.vue'
 
@@ -94,6 +95,15 @@ const routes = [{
     }
   },
   {
+    path: '/admin',
+    name: 'admin-main',
+    component: Admin,
+    meta: {
+      onlyAdmin: true
+    }
+
+  },
+  {
     path: '*',
     redirect: 'lectures'
   },
@@ -169,7 +179,23 @@ router.beforeEach((to, from, next) => {
           name: 'lectures'
         })
       }
-    } else {
+    } else if (to.meta.onlyAdmin) {
+      if(isUserLoggedIn) {
+        if(isAdmin) {
+          next()
+        } else {
+          next({
+            name: 'lectures'
+          })
+        }
+      } else {
+        next({
+          name: 'lectures'
+        })
+      }
+    }
+    
+    else {
       next({
         name: 'lectures'
       })

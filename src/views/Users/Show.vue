@@ -54,6 +54,7 @@
                   <v-btn
                     icon
                     large
+                    v-if="user.linkedin_url"
                     class="ma-4"
                     target="_blank"
                     :href="user.linkedin_url"

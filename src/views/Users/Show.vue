@@ -31,42 +31,50 @@
               </div>
               <v-divider />
               <div v-if="$route.params.id == $store.state.user.id">
-                <v-btn
-                  icon
-                  v-if="user.facebook_url"
-                  class="mx-4"
-                  target="_blank"
-                  :href="user.facebook_url"
-                >
-                  <v-icon>mdi-facebook</v-icon>
-                </v-btn>
-                <v-btn
-                  icon
-                  v-if="user.instagram_url"
-                  class="mx-4"
-                  target="_blank"
-                  :href="user.instagram_url"
-                >
-                  <v-icon>mdi-instagram</v-icon>
-                </v-btn>
-                <v-btn
-                  icon
-                  v-if="user.linkedin_url"
-                  class="mx-4"
-                  target="_blank"
-                  :href="user.linkedin_url"
-                >
-                  <v-icon>mdi-linkedin</v-icon>
-                </v-btn>
-                <v-btn
-                  icon
-                  v-if="user.twitter_url"
-                  class="mx-4"
-                  target="_blank"
-                  :href="user.twitter_url"
-                >
-                  <v-icon>mdi-twitter</v-icon>
-                </v-btn>
+                <div class="d-flex justify-center align-center">
+                  <v-btn
+                    icon
+                    v-if="user.facebook_url"
+                    class="ma-4"
+                    large
+                    target="_blank"
+                    :href="user.facebook_url"
+                  >
+                    <v-icon color="#4267B2">mdi-facebook</v-icon>
+                  </v-btn>
+                  <v-btn
+                    icon
+                    large
+                    v-if="user.instagram_url"
+                    class="ma-4"
+                    target="_blank"
+                    :href="user.instagram_url"
+                  >
+                    <v-icon color="#4267B2">mdi-instagram</v-icon>
+                  </v-btn>
+                  <v-btn
+                    icon
+                    large
+                    v-if="user.linkedin_url"
+                    color="#2867B2"
+                    class="ma-4"
+                    target="_blank"
+                    :href="user.linkedin_url"
+                  >
+                    <v-icon color="#2867B2">mdi-linkedin</v-icon>
+                  </v-btn>
+                  <v-btn
+                    color="#1DA1F2"
+                    large
+                    icon
+                    v-if="user.twitter_url"
+                    class="ma-4"
+                    target="_blank"
+                    :href="user.twitter_url"
+                  >
+                    <v-icon color="#1DA1F2">mdi-twitter</v-icon>
+                  </v-btn>
+                </div>
                 <v-btn
                   v-if="!user.title"
                   block
@@ -96,7 +104,7 @@
             </div>
             <ProfileMetadata>
               <template v-slot:userLectures>
-                <span class="d-block about-title">My Lectures</span>
+                <span v-if="lectures.length" class="d-block about-title">My Lectures</span>
                 <v-slide-group class="pa-4" show-arrows v-if="lectures.length">
                   <v-slide-item v-for="lecture in lectures" :key="lecture.id">
                     <UserLecture :lecture="lecture" />

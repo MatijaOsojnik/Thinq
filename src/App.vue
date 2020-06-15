@@ -3,7 +3,7 @@
     <div id="app">
       <main max-width="1600px">
         <UserHeader />
-          <router-view class="main"/>
+          <router-view/>
         <Footer />
       </main>
     </div>

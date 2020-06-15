@@ -4,7 +4,7 @@ module.exports = {
     update(req, res, next) {
         const schema = Joi.object({
             title: Joi.string()
-                .pattern(new RegExp('^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$'))
+                .pattern(new RegExp("^[a-zA-Z0-9_,.!?' ]*$"))
                 .min(8)
                 .max(30)
                 .messages({
@@ -16,11 +16,11 @@ module.exports = {
                     'any.required': `Title is a required field`
                 }),
             short_description: Joi.string()
-                .pattern(new RegExp('^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$'))
+                .pattern(new RegExp("^[a-zA-Z0-9_,.!?' ]*$"))
                 .min(20)
                 .max(60)
                 .messages({
-                    'string.pattern.base': 'Short description can only contain letters, numbers, underscores and spaces',
+                    'string.pattern.base': 'Short description can only contain special characters (. / ! / ? / ,)',
                     'string.base': 'Short description should be a type of text',
                     'string.empty': `Please enter a short description`,
                     'string.min': `Short description must be at least 20 characters long`,

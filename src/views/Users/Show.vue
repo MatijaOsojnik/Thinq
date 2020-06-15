@@ -54,16 +54,13 @@
                   <v-btn
                     icon
                     large
-                    v-if="user.linkedin_url"
-                    color="#2867B2"
                     class="ma-4"
                     target="_blank"
                     :href="user.linkedin_url"
                   >
-                    <v-icon color="#2867B2">mdi-linkedin</v-icon>
+                    <v-icon color="#4267B2">mdi-linkedin</v-icon>
                   </v-btn>
                   <v-btn
-                    color="#1DA1F2"
                     large
                     icon
                     v-if="user.twitter_url"
@@ -71,7 +68,7 @@
                     target="_blank"
                     :href="user.twitter_url"
                   >
-                    <v-icon color="#1DA1F2">mdi-twitter</v-icon>
+                    <v-icon color="#4267B2">mdi-twitter</v-icon>
                   </v-btn>
                 </div>
               <div v-if="$route.params.id == $store.state.user.id">

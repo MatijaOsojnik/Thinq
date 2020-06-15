@@ -23,43 +23,51 @@ module.exports = {
                     'any.only': `E-mail entered is not valid`
                 }),
             password: Joi.string()
-            .pattern(new RegExp('^[a-zA-Z0-9]{8,}$'))
-            .messages({
-                'string.pattern.base': `Password must be longer than 8 characters`,
-                'any.base': `Password must be longer than 8 characters`,
-                'any.only': `Password must be longer than 8 characters`,
-                'string.empty': `Please enter a new password`
-            }),
+                .pattern(new RegExp('^[a-zA-Z0-9]{8,}$'))
+                .messages({
+                    'string.pattern.base': `Password must be longer than 8 characters`,
+                    'any.base': `Password must be longer than 8 characters`,
+                    'any.only': `Password must be longer than 8 characters`,
+                    'string.empty': `Please enter a new password`
+                }),
             repeat_password: Joi.any()
                 .valid(Joi.ref('password'))
                 .messages({
                     'any.only': `Passwords don't match`
                 }),
             birth_date: Joi.date()
-            .allow('', null)
-            .iso()
-            .min('1-1-1920')
-            .messages({
-                'date.base': `Please enter a valid date`,
-                'date.format': `The date you entered was in invalid format`,
-                'date.min': `You should be born after 1920`
-            }),
+                .allow('', null)
+                .iso()
+                .min('1-1-1920')
+                .messages({
+                    'date.base': `Please enter a valid date`,
+                    'date.format': `The date you entered was in invalid format`,
+                    'date.min': `You should be born after 1920`
+                }),
             phone_num: Joi.string()
-            .allow('', null)
-            .pattern(new RegExp('^[0-9]{8,}$'))
-            .messages({
-                'string.pattern.base': `The phone number you entered is invalid`,
-                'any.base': `The phone number you entered is invalid`,
-                'any.only': `The phone number you entered is invalid`
-            }),
+                .allow('', null)
+                .pattern(new RegExp('^[0-9]{8,}$'))
+                .messages({
+                    'string.pattern.base': `The phone number you entered is invalid`,
+                    'any.base': `The phone number you entered is invalid`,
+                    'any.only': `The phone number you entered is invalid`
+                }),
             title: Joi.string()
-            .allow('', null),
+                .allow('', null),
             description: Joi.string()
-            .allow('', null)
-            .max(300)
-            .messages({
-                'string.max': `Description can contain only 300 characters`
-            })
+                .allow('', null)
+                .max(300)
+                .messages({
+                    'string.max': `Description can contain only 300 characters`
+                }),
+            facebook_url: Joi.string()
+                .allow('', null),
+            twitter_url: Joi.string()
+                .allow('', null),
+            instagram_url: Joi.string()
+                .allow('', null),
+            linkedin_url: Joi.string()
+                .allow('', null),
         })
 
         const {

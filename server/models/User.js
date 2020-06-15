@@ -45,6 +45,23 @@ module.exports = (sequelize, DataTypes) => {
         description: {
             type: DataTypes.STRING,
         },
+        instagram_url: {
+            type: DataTypes.STRING
+        },
+        facebook_url: {
+            type: DataTypes.STRING
+        },
+        linkedin_url: {
+            type: DataTypes.STRING
+        },
+        twitter_url: {
+            type: DataTypes.STRING
+        },
+        isLecturer: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        }
     }, {
         hooks: {
             beforeSave: hashPassword

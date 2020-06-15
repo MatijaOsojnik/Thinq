@@ -10,6 +10,9 @@
         <v-tab>
           <v-icon left>mdi-account-cog</v-icon>Personal Info
         </v-tab>
+        <v-tab>
+          <v-icon left>mdi-tooltip-account</v-icon>Social Accounts
+        </v-tab>
         <v-divider />
         <v-tab>
           <v-icon left>mdi-account-circle</v-icon>Avatar
@@ -99,6 +102,67 @@
                   </v-alert>
                 </v-scroll-x-transition>
                 <v-btn solo :disabled="waitBeforeClick" @click="updateInfo">SUBMIT</v-btn>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item>
+          <v-card flat class="mx-4">
+            <v-card-text>
+              <v-scroll-x-transition>
+                <v-alert elevation="2" type="warning" v-if="errors.length">
+                  <ul>
+                    <li v-for="error in errors" :key="error">{{ error }}</li>
+                  </ul>
+                </v-alert>
+              </v-scroll-x-transition>
+              <v-form lazy-validation autocomplete="off">
+                <label for="facebook">Facebook</label>
+                <v-text-field
+                  id="facebook"
+                  class="mt-2"
+                  prepend-icon="mdi-facebook"
+                  solo
+                  placeholder="Facebook URL"
+                  v-model="user.facebook_url"
+                ></v-text-field>
+
+                <label for="instagram">Instagram</label>
+                <v-text-field
+                  id="instagram"
+                  class="mt-2"
+                  prepend-icon="mdi-instagram"
+                  solo
+                  placeholder="Instagram URL"
+                  v-model="user.instagram_url"
+                ></v-text-field>
+
+                <label for="linkedin">LinkedIn</label>
+                <v-text-field
+                  id="linkedin"
+                  class="mt-2"
+                  prepend-icon="mdi-linkedin"
+                  solo
+                  placeholder="LinkedIn URL"
+                  v-model="user.linkedin_url"
+                ></v-text-field>
+
+                <label for="twitter">Twitter</label>
+                <v-text-field
+                  id="twitter"
+                  class="mt-2"
+                  prepend-icon="mdi-twitter"
+                  solo
+                  placeholder="Twitter URL"
+                  v-model="user.twitter_url"
+                ></v-text-field>
+                <v-scroll-x-transition>
+                  <v-alert type="success" mode="out-in" v-if="successfulSocialUpdate">
+                    <span>You successfuly update your social links.</span>
+                  </v-alert>
+                </v-scroll-x-transition>
+
+                <v-btn solo :disabled="waitBeforeClick" @click="updateSocial">SUBMIT</v-btn>
               </v-form>
             </v-card-text>
           </v-card>
@@ -258,6 +322,7 @@ export default {
     uploadedFile: null,
     uploading: false,
     successfulInfoUpdate: false,
+    successfulSocialUpdate: false,
     successfulEmailUpdate: false,
     successfulPasswordUpdate: false,
     waitBeforeClick: false,
@@ -303,6 +368,29 @@ export default {
             this.waitBeforeClick = false;
           }, 4000);
           this.date = this.user.birth_date;
+        }
+        this.getUser();
+      } catch (err) {
+        this.errors = err.response.data;
+        setTimeout(() => (this.errors = []), 5000);
+      }
+    },
+    async updateSocial() {
+      try {
+        this.waitBeforeClick = true;
+        const userId = this.user.id;
+        const response = await UserService.put(userId, {
+          facebook_url: this.user.facebook_url,
+          instagram_url: this.user.instagram_url,
+          twitter_url: this.user.twitter_url,
+          linkedin_url: this.user.linkedin_url
+        });
+        if (response) {
+          this.successfulSocialUpdate = true;
+          setTimeout(() => {
+            this.successfulSocialUpdate = false;
+            this.waitBeforeClick = false;
+          }, 4000);
         }
         this.getUser();
       } catch (err) {

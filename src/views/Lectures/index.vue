@@ -78,7 +78,7 @@ export default {
     lectureLimit() {
       if (this.lectures) {
         if (this.limit) {
-          const splitLectures = this.lectures.slice(0, 10);
+          const splitLectures = this.lectures.slice(0, 11);
           return splitLectures;
         } else {
           return this.lectures;

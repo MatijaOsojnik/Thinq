@@ -8,61 +8,85 @@
           </v-toolbar>
           <v-card-text>
             <v-scroll-x-transition>
-              <v-alert type="warning" mode="out-in" v-if="error">{{error}}</v-alert>
+              <v-alert elevation="2" type="warning" v-if="errors.length">
+                <ul>
+                  <li v-for="error in errors" :key="error">{{ error }}</li>
+                </ul>
+              </v-alert>
             </v-scroll-x-transition>
             <v-form lazy-validation>
+               <label for="title">Title</label>
               <v-text-field
-                label="Title"
-                max-length="25"
+                id="title"
+                label="Enter a title for your lecture"
+                maxlength="30"
+                counter
+                :rules="[rules.min]"
                 solo
                 aria-autocomplete="false"
                 v-model="lecture.title"
               />
 
+              <label for="shortDescription">Short Description</label>
               <v-text-field
+                id="shortDescription"
                 :rules="[rules.short_description]"
-                label="Short Description"
+                label="Write your short description here"
                 solo
                 clearable
                 counter
-                maxlength="80"
+                maxlength="60"
                 hint="This description will be used on the Lecture card before the user clicks on it."
                 aria-autocomplete="false"
                 v-model="lecture.short_description"
               />
-
+              <label for="description">Description</label>
               <div style="margin: 0.5rem 0 2rem">
-                <tiptap-vuetify v-model="lecture.description" :extensions="extensions" />
+                <tiptap-vuetify
+                  id="description"
+                  v-model="lecture.description"
+                  :rules="[rules.description]"
+                  placeholder="Write your description here."
+                  maxlength="300"
+                  :extensions="extensions"
+                />
               </div>
 
+              <label for="thumbnailURL">Thumbnail URL</label>
               <v-text-field
-                label="Thumbnail URL"
+                id="thumbnailURL"
+                label="Enter Thumbnail URL"
                 solo
                 aria-autocomplete="false"
                 v-model="lecture.thumbnail_url"
               />
 
-              <!-- <v-file-input
-              :rules="rules"
-              accept="image/png, image/jpeg, image/bmp"
-              placeholder="Pick a thumbnail"
-              prepend-icon="mdi-camera"
-              label="Avatar"
-              solo
-              ></v-file-input>-->
-
+              <label for="category">Category</label>
               <v-select
+                id="category"
                 :items="categories"
-                label="Category"
+                label="Select Category"
                 v-model="lecture.category_id"
                 item-text="name"
                 item-value="id"
                 solo
               ></v-select>
+
             </v-form>
+            <v-scroll-x-transition>
+              <v-alert type="success" mode="out-in" v-if="successfulLectureUpdate">
+                <span>You successfuly updated a lecture</span>
+              </v-alert>
+            </v-scroll-x-transition>
           </v-card-text>
           <v-card-actions class="pa-4">
-            <v-btn color="#f0f0f0" block large @click="updateLecture">SUBMIT</v-btn>
+            <v-btn
+              color="#f0f0f0"
+              :disabled="waitBeforeClick"
+              block
+              large
+              @click="updateLecture"
+            >SUBMIT</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -99,7 +123,8 @@ export default {
         !value ||
         value.size < 2000000 ||
         "Thumbnail size should be less than 2 MB!",
-      required: value => !!value || "Required."
+      required: value => !!value || "Required.",
+            min: v => v.length >= 8 || "Min 8 characters"
     },
     lecture: {
       title: ``,
@@ -109,8 +134,10 @@ export default {
       category_id: ``,
       user_id: null
     },
+    successfulLectureUpdate: false,
+    waitBeforeClick: false,
     isOwner: false,
-    error: null,
+    errors: [],
     categories: [],
     extensions: [
       History,
@@ -139,26 +166,38 @@ export default {
   },
   methods: {
     async updateLecture() {
-      this.error = null;
+      this.waitBeforeClick = true;
       const areAllFieldsFilledIn = Object.keys(this.lecture).every(
         key => !!this.lecture[key]
       );
       if (!areAllFieldsFilledIn) {
-        this.error = "Please fill in all the fields.";
-        setTimeout(() => (this.error = null), 3000);
+        this.errors.push("Please fill in all the fields.");
+        setTimeout(() => {
+          this.errors = [];
+          this.waitBeforeClick = false;
+        }, 3000);
         return;
       }
       try {
         const lectureId = this.$route.params.id;
-        await LectureService.put(this.lecture);
-        this.$router.push({
-          name: "lecture",
-          params: {
-            id: lectureId
-          }
-        });
+        const response = await LectureService.put(this.lecture);
+        if (response) {
+          this.successfulLectureUpdate = true;
+          setTimeout(() => {
+            this.successfulLectureUpdate = false;
+            this.waitBeforeClick = false;
+            this.$router.push({
+              name: "lecture",
+              params: {
+                id: lectureId
+              }
+            });
+          }, 3000);
+        }
       } catch (err) {
-        console.log(err);
+        this.errors = err.response.data;
+        setTimeout(() => (this.waitBeforeClick = false), 3000);
+        setTimeout(() => (this.errors = []), 5000);
       }
     },
     async findCategories() {
@@ -168,32 +207,32 @@ export default {
           this.categories.push({ name: category.name, id: category.id });
         });
       } catch (err) {
-        this.error = err.response.data
+        this.error = err.response.data;
       }
     },
     async getLecture() {
       try {
         const lectureId = this.$route.params.id;
         const response = await LectureService.show(lectureId);
-          if (response.data === undefined || !response.data) {
-            this.$router.push({
-              name: "lectures"
-            });
-          }else{
-            if (this.$store.state.user) {
-              if (response.data.Users[0].id === this.$store.state.user.id) {
-                this.isOwner = true;
-                this.lecture = response.data;
-              } else {
-                this.$router.push({
-                  name: "lectures"
-                });
-              }
+        if (response.data === undefined || !response.data) {
+          this.$router.push({
+            name: "lectures"
+          });
+        } else {
+          if (this.$store.state.user) {
+            if (response.data.Users[0].id === this.$store.state.user.id) {
+              this.isOwner = true;
+              this.lecture = response.data;
+            } else {
+              this.$router.push({
+                name: "lectures"
+              });
             }
           }
-        
+        }
       } catch (err) {
-        this.error = err.response.data
+        this.errors = err.response.data;
+        setTimeout(() => (this.errors = []), 5000);
       }
     }
   }

@@ -91,7 +91,7 @@ export default {
   },
   data: () => ({
     user: null,
-    lectures: null
+    lectures: []
   }),
   mounted() {
     this.getUser();
@@ -110,7 +110,6 @@ export default {
     async getUserLectures() {
       try {
         const response = await LectureService.user(this.$route.params.id);
-        console.log(response.data);
         this.lectures = response.data;
       } catch (err) {
         console.log(err);

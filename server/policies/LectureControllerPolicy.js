@@ -34,7 +34,10 @@ module.exports = {
                     'string.max': `Display name must be shorter than 300 characters`,
                     'string.empty': `Please write something in the description field`
                 }),
-        })
+            thumbnail_url: Joi.string()
+            .allow(''),
+            category_id: Joi.allow('', null) 
+        }).unknown(true)
 
         const {
             error

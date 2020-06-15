@@ -48,6 +48,7 @@ module.exports = {
             // })
             res.send(lecture)
         } catch (error) {
+            console.log(error)
             res.status(500).send({
                 error: `An error has occured trying to create lecture`
             })

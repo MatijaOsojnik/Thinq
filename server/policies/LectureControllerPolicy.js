@@ -16,11 +16,11 @@ module.exports = {
                     'any.required': `Title is a required field`
                 }),
             short_description: Joi.string()
-                .alphanum()
+                .pattern(new RegExp('^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$'))
                 .min(20)
                 .max(60)
                 .messages({
-                    'string.alphanum': 'Short description should only contain alpha-numeric characters',
+                    'string.pattern.base': 'Short description can only contain letters, numbers, underscores and spaces',
                     'string.base': 'Short description should be a type of text',
                     'string.empty': `Please enter a short description`,
                     'string.min': `Short description must be at least 20 characters long`,

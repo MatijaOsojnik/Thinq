@@ -48,7 +48,7 @@ export default {
 
 <style scoped>
 div {
-  font-family: "Lato";
+  font-family: 'Roboto';
 }
 ul,
 li {

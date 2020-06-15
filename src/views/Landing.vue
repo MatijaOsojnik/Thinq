@@ -24,7 +24,7 @@
       <v-container fluid class="pa-12">
         <v-container class="header-container">
           <v-row class="pa-6 align-center justify-center">
-            <v-col class="col-xl-6 col-lg-6 col-md-6 col-sm-12 cols-12">
+            <v-col class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
               <div class="content-container">
                 <div>
                   <span class="content-title">FRIENDLY UI</span>
@@ -38,18 +38,18 @@
               </div>
             </v-col>
             <v-col
-              class="col-xl-6 col-lg-6 col-md-6 col-sm-12 cols-12 d-flex justify-xl-end justify-lg-end justify-md-end justify-sm-center"
+              class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 justify-xl-end justify-lg-end justify-md-end justify-sm-center justify-center d-xl-flex d-lg-flex d-md-flex d-sm-none d-none"
             >
               <img class="content-image" src="../assets/to-the-moon.svg" />
             </v-col>
           </v-row>
-          <v-row class="pa-6 align-center justify-center d-lg-flex d-xl-flex d-md-flex d-sm-none">
+          <v-row class="pa-6 align-center justify-center d-lg-flex d-xl-flex d-md-flex d-sm-none d-none">
             <v-col
-              class="col-xl-6 col-lg-6 col-md-6 col-sm-12 cols-12 d-flex justify-xl-start justify-lg-start justify-md-start justify-sm-center"
+              class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 justify-xl-start justify-lg-start justify-md-start justify-sm-center justify-center d-xl-flex d-lg-flex d-md-flex d-sm-none d-none"
             >
               <img class="content-image" src="../assets/productivity.svg" />
             </v-col>
-            <v-col class="col-xl-6 col-lg-6 col-md-6 col-sm-12 cols-12">
+            <v-col class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
               <div class="content-container">
                 <div>
                   <span class="content-title">15 Minutes a Day</span>
@@ -62,8 +62,8 @@
               </div>
             </v-col>
           </v-row>
-          <v-row class="pa-6 align-center d-lg-none d-xl-none d-md-none d-sm-flex justify-center">
-            <v-col class="col-xl-6 col-lg-6 col-md-6 col-sm-12 cols-12">
+          <v-row class="pa-6 align-center d-lg-none d-xl-none d-md-none d-sm-flex d-flex justify-center">
+            <v-col class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
               <div class="content-container">
                 <div>
                   <span class="content-title">15 Minutes a Day</span>
@@ -76,13 +76,13 @@
               </div>
             </v-col>
             <v-col
-              class="col-xl-6 col-lg-6 col-md-6 col-sm-12 cols-12 d-flex justify-xl-start justify-lg-start justify-md-start justify-sm-center"
+              class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 justify-xl-start justify-lg-start justify-md-start justify-sm-center justify-center d-xl-flex d-lg-flex d-md-flex d-sm-none d-none"
             >
               <img class="content-image" src="../assets/productivity.svg" />
             </v-col>
           </v-row>
           <v-row class="pa-6 align-center justify-center">
-            <v-col class="col-xl-6 col-lg-6 col-md-6 col-sm-12 cols-12">
+            <v-col class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
               <div class="content-container">
                 <div>
                   <span class="content-title">Collaborate With Us</span>
@@ -98,7 +98,7 @@
               </div>
             </v-col>
             <v-col
-              class="col-xl-6 col-lg-6 col-md-6 col-sm-12 cols-12 d-flex justify-xl-end justify-lg-end justify-md-end justify-sm-center"
+              class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 justify-xl-end justify-lg-end justify-md-end justify-sm-center justify-center d-xl-flex d-lg-flex d-md-flex d-sm-none d-none"
             >
               <img class="content-image" src="../assets/collaborate.svg" />
             </v-col>
@@ -136,8 +136,8 @@
     </div>
     <div class="cta-container pa-12">
       <v-container class fluid>
-        <v-row class>
-          <v-col class="col-xl-6 col-lg-6 col-md-6 col-sm-12 cols-12">
+        <v-row>
+          <v-col class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
             <div class="content-container">
               <div>
                 <span class="content-title">START YOUR JOURNEY</span>
@@ -162,7 +162,7 @@
             </div>
           </v-col>
           <v-col
-            class="col-xl-6 col-lg-6 col-md-6 col-sm-12 cols-12 d-xl-block d-lg-block d-md-block d-sm-none"
+            class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 d-xl-block d-lg-block d-md-block d-sm-none d-none"
           >
             <v-img class="cta-image" src="../assets/celebration.svg" />
           </v-col>
@@ -242,12 +242,13 @@ a {
   width: 70%;
 }
 .content-title {
-  font-family: "Patrick Hand SC", cursive;
+  font-family: 'Patrick Hand SC', cursive;
   font-size: 35px;
 }
 .content-text {
-  font-family: "Lato";
+  font-family: 'Roboto';
   font-weight: 300;
+  letter-spacing: 1.1;
   display: block;
 }
 .content-container {

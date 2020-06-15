@@ -3,7 +3,7 @@
     <div id="app">
       <main max-width="1600px">
         <UserHeader />
-          <router-view />
+          <router-view class="main"/>
         <Footer />
       </main>
     </div>
@@ -37,7 +37,7 @@ a {
 }
 
 .main {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Roboto', sans-serif;
   padding: 0;
   margin: 0;
 }

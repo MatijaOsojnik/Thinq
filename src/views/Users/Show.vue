@@ -1,7 +1,7 @@
 <template>
-  <div class="my-6">
+  <div class="py-12">
     <Header />
-    <v-card class="mx-auto mt-6" max-width="1000px" max-height="1500px">
+    <v-card class="mx-auto my-6" max-width="1000px" max-height="1500px">
       <v-container v-if="user">
         <v-row>
           <v-col class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-sm-flex justify-sm-center">
@@ -32,7 +32,7 @@
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
               </div>
-              <v-divider v-if="!user.title || !user.description || $route.params.id != $store.state.user.id" />
+              <v-divider />
               <div v-if="$route.params.id == $store.state.user.id">
                 <v-btn
                 v-if="!user.title"
@@ -45,6 +45,7 @@
                   v-if="!user.description"
                   block
                   text
+                  class="mt-3"
                   :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/edit`}"
                 >Add Description</v-btn>
               </div>
@@ -97,7 +98,14 @@ export default {
     this.getUser();
     this.getUserLectures();
   },
+  watch: {
+        $route: "getAll",
+  },
   methods: {
+    async getAll() {
+      this.getUser()
+      this.getUserLectures()
+    },
     async getUser() {
       try {
         const userId = this.$route.params.id;

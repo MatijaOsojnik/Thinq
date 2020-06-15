@@ -14,10 +14,7 @@
                   <v-img :src="user.icon_url" />
                 </v-avatar>
                 <span class="d-block my-2 text-capitalize title">{{user.display_name}}</span>
-                <span
-                  v-if="user.title"
-                  class="d-block ma-1 subtitle-2"
-                >{{user.title.toUpperCase()}}</span>
+                <span v-if="user.title" class="d-block ma-1 subtitle-2">{{user.title.toUpperCase()}}</span>
                 <v-btn
                   small
                   absolute
@@ -35,7 +32,43 @@
               <v-divider />
               <div v-if="$route.params.id == $store.state.user.id">
                 <v-btn
-                v-if="!user.title"
+                  icon
+                  v-if="user.facebook_url"
+                  class="mx-4"
+                  target="_blank"
+                  :href="user.facebook_url"
+                >
+                  <v-icon>mdi-facebook</v-icon>
+                </v-btn>
+                <v-btn
+                  icon
+                  v-if="user.instagram_url"
+                  class="mx-4"
+                  target="_blank"
+                  :href="user.instagram_url"
+                >
+                  <v-icon>mdi-instagram</v-icon>
+                </v-btn>
+                <v-btn
+                  icon
+                  v-if="user.linkedin_url"
+                  class="mx-4"
+                  target="_blank"
+                  :href="user.linkedin_url"
+                >
+                  <v-icon>mdi-linkedin</v-icon>
+                </v-btn>
+                <v-btn
+                  icon
+                  v-if="user.twitter_url"
+                  class="mx-4"
+                  target="_blank"
+                  :href="user.twitter_url"
+                >
+                  <v-icon>mdi-twitter</v-icon>
+                </v-btn>
+                <v-btn
+                  v-if="!user.title"
                   block
                   text
                   class="my-2"
@@ -99,12 +132,12 @@ export default {
     this.getUserLectures();
   },
   watch: {
-        $route: "getAll",
+    $route: "getAll"
   },
   methods: {
     async getAll() {
-      this.getUser()
-      this.getUserLectures()
+      this.getUser();
+      this.getUserLectures();
     },
     async getUser() {
       try {

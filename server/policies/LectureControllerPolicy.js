@@ -4,11 +4,11 @@ module.exports = {
     update(req, res, next) {
         const schema = Joi.object({
             title: Joi.string()
-                .pattern(new RegExp("^[a-zA-Z0-9_,.!?' ]*$"))
+                .pattern(new RegExp("^[a-zA-Z0-9_,.!?]*$"))
                 .min(8)
                 .max(30)
                 .messages({
-                    'string.pattern.base': 'Title can only contain letters, numbers, underscores and spaces',
+                    'string.pattern.base': 'Title can only contain these special characters (. / ! / ? / ,)',
                     'string.base': 'Title should be a type of text',
                     'string.empty': `Please enter a title`,
                     'string.min': `Title must be longer than 8 characters`,
@@ -20,7 +20,7 @@ module.exports = {
                 .min(20)
                 .max(60)
                 .messages({
-                    'string.pattern.base': 'Short description can only contain special characters (. / ! / ? / ,)',
+                    'string.pattern.base': 'Short description can only contain these special characters (. / ! / ? / ,)',
                     'string.base': 'Short description should be a type of text',
                     'string.empty': `Please enter a short description`,
                     'string.min': `Short description must be at least 20 characters long`,

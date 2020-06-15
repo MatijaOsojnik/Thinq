@@ -4,7 +4,7 @@ module.exports = {
     update(req, res, next) {
         const schema = Joi.object({
             title: Joi.string()
-                .pattern(new RegExp("^[a-zA-Z0-9_,.!?]*$"))
+                .pattern(new RegExp("^[a-zA-Z0-9_,.!?' ]*$"))
                 .min(8)
                 .max(30)
                 .messages({

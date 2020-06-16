@@ -60,20 +60,20 @@ export default {
       },
       { text: "Description", value: "description" },
     ],
-    editedItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0
-    },
-    defaultItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0
-    }
+    // editedItem: {
+    //   name: "",
+    //   calories: 0,
+    //   fat: 0,
+    //   carbs: 0,
+    //   protein: 0
+    // },
+    // defaultItem: {
+    //   name: "",
+    //   calories: 0,
+    //   fat: 0,
+    //   carbs: 0,
+    //   protein: 0
+    // }
   }),
   created() {
     this.getCategories();
@@ -84,7 +84,6 @@ export default {
         const response = await CategoryService.index();
         this.statistics = response.data;
         this.loading = false;
-        console.log(response.data);
       } catch (err) {
         console.log(err);
       }

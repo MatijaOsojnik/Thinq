@@ -84,7 +84,6 @@ export default {
         const response = await GeneralService.getRoles();
         this.statistics = response.data;
         this.loading = false;
-        console.log(response.data);
       } catch (err) {
         console.log(err);
       }

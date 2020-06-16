@@ -2,11 +2,11 @@
   <v-app>
     <AdminHeader />
     <v-container fluid>
-      <span class="d-block title pa-2">USERS</span>
+      <span class="d-block title pa-2">LECTURES</span>
 
       <v-card>
         <v-card-title>
-          All Users
+          All Lectures
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
@@ -34,7 +34,7 @@
           </template>
           <template v-slot:expanded-item="{ headers, item }">
 
-              <td class="pa-6" :colspan="header.length">
+              <td class="pa-6" :colspan="headers.length">
                 <span class="title">Short Description:</span>
                 <span>{{ item.short_description }}</span>
               </td>

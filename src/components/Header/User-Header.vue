@@ -1,12 +1,6 @@
 <template>
   <div>
-    <v-app-bar
-      flat
-      color="#d3fgsg"
-      elevate-on-scroll
-      scroll-target="#scrolling-target"
-      v-if="$store.state.isUserLoggedIn"
-    >
+    <v-app-bar flat color="#d3fgsg" v-if="$store.state.isUserLoggedIn">
       <v-toolbar-title>
         <router-link :to="{name: 'lectures'}" class="brand-black">Thinq</router-link>
       </v-toolbar-title>
@@ -59,7 +53,7 @@
         v-if="$store.state.isUserLoggedIn"
       >
         <template v-slot:activator="{ on }">
-          <v-btn color="indigo" v-on="on" icon style="margin-left: 30px;">
+          <v-btn color="indigo" v-on="on" icon style="margin-right: 0.3em">
             <v-avatar v-if="!$store.state.user.icon_url">
               <v-icon large>mdi-account-circle</v-icon>
             </v-avatar>
@@ -98,6 +92,16 @@
               >View profile</v-btn>
             </div>
             <v-divider />
+            <v-btn
+              v-if="adminPermissions"
+              class="my-3"
+              depressed
+              small
+              text
+              block
+              :to="{path: `/admin`}"
+            >Admin Panel</v-btn>
+            <v-divider v-if="adminPermissions" />
             <div class="d-flex justify-center align-center flex-column ma-3">
               <v-btn
                 v-if="permissions"
@@ -126,7 +130,6 @@
           </v-container>
         </v-card>
       </v-menu>
-      <div id="scrolling-target"></div>
     </v-app-bar>
   </div>
 </template>
@@ -136,50 +139,59 @@ import CategoryService from "@/services/CategoryService";
 export default {
   data: () => ({
     categories: null,
-    permissions: false
+    permissions: false,
+    adminPermissions: false,
+    isChecking: true
   }),
-  props: {
-    search: String
+  watch: {
+    $route: 'checkRoles'
   },
-  mounted() {
-    this.getCategories();
+  created() {
     this.checkRoles();
+    this.getCategories();
   },
   methods: {
     async logout() {
       this.$store.dispatch("setToken", null);
       this.$store.dispatch("setUser", null);
       this.$store.dispatch("setAuthorities", null);
+      this.permissions = false;
+      this.adminPermissions = false;
       this.$router.push({
         name: "login"
       });
     },
     async getCategories() {
-      const response = await CategoryService.index();
-      this.categories = response.data;
+      try {
+        const response = await CategoryService.index();
+        this.categories = response.data;
+      } catch (err) {
+        console.log(err);
+      }
     },
-    async checkRoles() {
-      const userAuthorities = await this.$store.state.authorities;
-      let hasPriviliges = false;
-      if (userAuthorities) {
-        for (let i = 0; i < userAuthorities.length; i++) {
-          if (
-            userAuthorities[i] === "ROLE_LECTURER" ||
-            userAuthorities[i] === "ROLE_MODERATOR" ||
-            userAuthorities[i] === "ROLE_ADMIN"
-          ) {
-            hasPriviliges = true;
+    checkRoles() {
+        const userAuthorities = this.$store.state.authorities;
+        if (userAuthorities) {
+          for (let i = 0; i < userAuthorities.length; i++) {
+            if (
+              userAuthorities[i] === "ROLE_LECTURER" ||
+              userAuthorities[i] === "ROLE_MODERATOR" ||
+              userAuthorities[i] === "ROLE_ADMIN"
+            ) {
+              this.permissions = true;
+            } else {
+              this.permissions = false;
+            }
+          }
+          for (let i = 0; i < userAuthorities.length; i++) {
+            if (userAuthorities[i] === "ROLE_ADMIN") {
+              this.adminPermissions = true;
+            } else {
+              this.adminPermissions = false;
+            }
           }
         }
-      }
-      if (hasPriviliges) {
-        this.permissions = true;
-      }
     }
-    // searchByAll() {
-    //   if (this.$router.history.current["name"] !== "lectures") {
-    //     this.$router.go();
-    //   }
   }
 };
 </script>

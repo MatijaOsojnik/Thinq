@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <div id="app">
-      <main max-width="1600px">
-        <UserHeader />
+      <main>
+        <UserHeader v-if="$router.history.current['name'] !== 'admin-login'"/>
           <router-view/>
         <Footer />
       </main>

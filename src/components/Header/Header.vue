@@ -1,8 +1,8 @@
 <template>
   <v-app-bar
     flat
-    :color="$router.history.current['path'] === '/' || $router.history.current['path'] === '/login' || $router.history.current['path'] === '/register' ? 'transparent' : '#eeeeee'"
-    :class="{'header-bar': ($router.history.current['path'] === '/' || $router.history.current['path'] === '/login' || $router.history.current['path'] === '/register')}"
+    :color="$router.history.current['path'] === '/' || $router.history.current['path'] === '/login' || $router.history.current['path'] === '/register' || $router.history.current['path'] === '/admin/login' ? 'transparent' : '#eeeeee'"
+    :class="{'header-bar': ($router.history.current['path'] === '/' || $router.history.current['path'] === '/login' || $router.history.current['path'] === '/register' || $router.history.current['path'] === '/admin/login')}"
     v-if="!$store.state.isUserLoggedIn"
   >
     <v-toolbar-title v-if="$router.history.current['path'] === '/'">
@@ -58,7 +58,7 @@
       <v-btn
         outlined
         :color="`${$router.history.current['path'] === '/' ? 'white' : '#005082'}`"
-        v-if="!$store.state.isUserLoggedIn && $router.history.current['path'] !== '/login' && $router.history.current['path'] !== '/register'"
+        v-if="!$store.state.isUserLoggedIn && $router.history.current['path'] !== '/login' && $router.history.current['path'] !== '/register' && $router.history.current['path'] !== '/admin/login'"
       >Sign in</v-btn>
     </router-link>
   </v-app-bar>

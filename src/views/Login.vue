@@ -11,11 +11,13 @@
       route-name="register"
       link-name="Sign up"
     >
-      <v-alert outlined elevation="2" v-if="error">
-        <ul>
-          <li :error="error">{{ error }}</li>
-        </ul>
-      </v-alert>
+      <v-scroll-x-transition>
+        <v-alert type="warning" elevation="2" v-if="error">
+          <ul>
+            <li :error="error">{{ error }}</li>
+          </ul>
+        </v-alert>
+      </v-scroll-x-transition>
       <form @submit.prevent="handleSubmit">
         <div>
           <v-text-field label="E-mail" v-model="email" prepend-inner-icon="mdi-email-outline" />
@@ -68,13 +70,14 @@ export default {
         setTimeout(() => {
           this.$store.dispatch("setToken", response.data.token);
           this.$store.dispatch("setUser", response.data.user);
-          this.$store.dispatch("setAuthorities", response.data.authorities)
+          this.$store.dispatch("setAuthorities", response.data.authorities);
           this.loginSuccess = false;
           this.showPanel = false;
           this.$router.push({ name: "lectures" });
         }, 2500);
       } catch (error) {
         this.error = error.response.data.error;
+        setTimeout(() => (this.error = null), 5000);
       }
     }
   }
@@ -82,8 +85,8 @@ export default {
 </script>
 
 <style scoped>
-div{
-  font-family: 'Roboto';
+div {
+  font-family: "Roboto";
 }
 ul,
 li {

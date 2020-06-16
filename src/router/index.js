@@ -10,6 +10,7 @@ import LectureCreate from '@/views/Lecture/Create.vue'
 import LectureEdit from '@/views/Lecture/Edit.vue'
 import User from '@/views/Users/Show.vue'
 import Admin from '@/views/Admin'
+import AdminLogin from '@/views/Admin/Login.vue'
 import UserLectures from '@/views/Users/Lectures.vue'
 import EditUser from '@/views/Users/Edit.vue'
 
@@ -100,8 +101,12 @@ const routes = [{
     component: Admin,
     meta: {
       onlyAdmin: true
-    }
-
+    },
+  },
+  {
+    path: '/admin/login',
+    name: 'admin-login',
+    component: AdminLogin
   },
   {
     path: '*',
@@ -149,7 +154,23 @@ router.beforeEach((to, from, next) => {
     } else {
       next()
     }
-  } else if (to.meta.onlyPrivilegedUser) {
+  } else if (to.meta.onlyAdmin) {
+    if (isUserLoggedIn) {
+      if (isAdmin) {
+        next()
+      } else {
+        next({
+          name: 'lectures'
+        })
+      }
+    } else {
+      next({
+        name: 'lectures'
+      })
+    }
+  }
+  
+  else if (to.meta.onlyPrivilegedUser) {
     if (isUserLoggedIn) {
       if (isLecturer || isModerator || isAdmin) {
         next()
@@ -158,13 +179,6 @@ router.beforeEach((to, from, next) => {
           name: 'lectures'
         })
       }
-      // if(isLecturer){
-      //   next()
-      // } else {
-      //   next({
-      //     name: 'lectures'
-      //   })
-      // }
     } else if (to.meta.belongsToUser) {
       if (isUserLoggedIn) {
         if (this.$route.params.id === this.$store.state.user.id) {
@@ -179,30 +193,15 @@ router.beforeEach((to, from, next) => {
           name: 'lectures'
         })
       }
-    } else if (to.meta.onlyAdmin) {
-      if(isUserLoggedIn) {
-        if(isAdmin) {
-          next()
-        } else {
-          next({
-            name: 'lectures'
-          })
-        }
-      } else {
-        next({
-          name: 'lectures'
-        })
-      }
-    }
-    
-    else {
+    } else {
       next({
         name: 'lectures'
       })
     }
-  } else {
-    next()
-  }
+    } else {
+      next()
+    }
+  
 })
 
 export default router

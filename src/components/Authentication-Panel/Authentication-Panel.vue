@@ -19,7 +19,7 @@
             <v-container class="form-input-container">
               <v-container>
                 <slot>No content defined.</slot>
-                <div class="sign-in-container">
+                <div class="sign-in-container" v-if="$router.history.current['path'] === '/login' || $router.history.current['path'] === '/register'">
                   <span class="sign-in-text">
                     Already have an account?
                     <span>

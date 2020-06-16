@@ -22,11 +22,13 @@
       route-name="login"
       link-name="Sign in"
     >
-      <v-alert outlined elevation="2" v-if="errors.length">
-        <ul>
-          <li v-for="error in errors" :key="error">{{ error }}</li>
-        </ul>
-      </v-alert>
+              <v-scroll-x-transition>
+                <v-alert elevation="2" type="warning" v-if="errors.length">
+                  <ul>
+                    <li v-for="error in errors" :key="error">{{ error }}</li>
+                  </ul>
+                </v-alert>
+              </v-scroll-x-transition>
       <form @submit.prevent="handleSubmit" autocomplete="off">
         <div>
           <v-text-field
@@ -87,7 +89,7 @@ export default {
           email: this.email,
           password: this.password,
           repeat_password: this.repeat_password,
-          roles: ["Lecturer"]
+          roles: ["Admin"]
         });
         this.showPanel = true;
 
@@ -102,6 +104,7 @@ export default {
         }, 2500);
       } catch (error) {
         this.errors = error.response.data;
+        setTimeout(() => (this.errors = []), 5000);
       }
     }
   }

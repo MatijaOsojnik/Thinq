@@ -14,12 +14,12 @@
             </router-link>
           </span>
           <router-link :to="{name: 'lecture-edit', params: {id: $route.params.id}}">
-            <v-btn style="margin: 1.5rem 0;" icon v-if="isOwner">
+            <v-btn style="margin: 1.5rem 0;" icon v-if="isOwner || adminPermissions">
               <v-icon medium color="black">mdi-pencil</v-icon>
             </v-btn>
           </router-link>
           <router-link :to="{name: 'lectures'}">
-            <v-btn style="margin: 1.5rem 0;" icon v-if="isOwner" @click="deleteLecture">
+            <v-btn style="margin: 1.5rem 0;" icon v-if="isOwner || adminPermissions" @click="deleteLecture">
               <v-icon medium color="black">mdi-delete-forever</v-icon>
             </v-btn>
           </router-link>
@@ -88,6 +88,7 @@ export default {
     lecture: null,
     permissions: false,
     isOwner: false,
+    adminPermissions: false,
     imageError: false,
     categoryLectures: [],
     differentLectures: []
@@ -131,7 +132,7 @@ export default {
     async deleteLecture() {
       try {
         const lectureId = this.$route.params.id;
-        if (this.permissions) {
+        if (this.isOwner || this.adminPermissions) {
           await LectureService.delete(lectureId);
         }
       } catch (err) {
@@ -139,22 +140,27 @@ export default {
       }
     },
     checkRoles() {
-      const userAuthorities = this.$store.state.authorities;
-      let hasPriviliges = false;
-      if (userAuthorities) {
-        for (let i = 0; i < userAuthorities.length; i++) {
-          if (
-            userAuthorities[i] === "ROLE_LECTURER" ||
-            userAuthorities[i] === "ROLE_MODERATOR" ||
-            userAuthorities[i] === "ROLE_ADMIN"
-          ) {
-            hasPriviliges = true;
+        const userAuthorities = this.$store.state.authorities;
+        if (userAuthorities) {
+          for (let i = 0; i < userAuthorities.length; i++) {
+            if (
+              userAuthorities[i] === "ROLE_LECTURER" ||
+              userAuthorities[i] === "ROLE_MODERATOR" ||
+              userAuthorities[i] === "ROLE_ADMIN"
+            ) {
+              this.permissions = true;
+            } else {
+              this.permissions = false;
+            }
+          }
+          for (let i = 0; i < userAuthorities.length; i++) {
+            if (userAuthorities[i] === "ROLE_ADMIN") {
+              this.adminPermissions = true;
+            } else {
+              this.adminPermissions = false;
+            }
           }
         }
-      }
-      if (hasPriviliges) {
-        this.permissions = true;
-      }
     },
     async imageLoadError() {
       this.imageError = true;

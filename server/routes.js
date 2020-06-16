@@ -3,6 +3,7 @@ const LecturesController = require('./controllers/LecturesController')
 const CategoriesController = require('./controllers/CategoriesController')
 const RolesController = require('./controllers/RolesController')
 const UsersController = require('./controllers/UsersController')
+const GeneralController = require('./controllers/GeneralController')
 
 // const authJwt = require('./middleware/authJwt')
 
@@ -91,6 +92,10 @@ module.exports = (app) => {
     // ROLE ROUTES
     app.get('/api/roles', RolesController.index)
     app.post('/api/roles', RolesController.create)
+
+    // GENERAL ROUTES
+
+    app.get('/api/admin/general/count', GeneralController.count)
 
     //FILE UPLOAD ROUTE
     // app.post('/upload', upload.single('file'), (req, res) => {

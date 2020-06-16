@@ -2,16 +2,20 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
 import Landing from '@/views/Landing'
-import Register from '@/views/Register.vue'
-import Login from '@/views/Login.vue'
+import Register from '@/views/Register'
+import Login from '@/views/Login'
 import Lectures from '@/views/Lectures'
 import Lecture from '@/views/Lecture'
-import LectureCreate from '@/views/Lecture/Create.vue'
-import LectureEdit from '@/views/Lecture/Edit.vue'
-import User from '@/views/Users/Show.vue'
+import LectureCreate from '@/views/Lecture/Create'
+import LectureEdit from '@/views/Lecture/Edit'
+import User from '@/views/Users/Show'
 import Admin from '@/views/Admin'
-import AdminLogin from '@/views/Admin/Login.vue'
-import UserLectures from '@/views/Users/Lectures.vue'
+import AdminLogin from '@/views/Admin/Login'
+import AdminUsers from '@/views/Admin/Users'
+import AdminLectures from '@/views/Admin/Lectures'
+import AdminCategories from '@/views/Admin/Categories'
+import AdminRoles from '@/views/Admin/Roles'
+import UserLectures from '@/views/Users/Lectures'
 import EditUser from '@/views/Users/Edit.vue'
 
 Vue.use(VueRouter)
@@ -109,6 +113,38 @@ const routes = [{
     component: AdminLogin
   },
   {
+    path: '/admin/users',
+    name: 'admin-users',
+    component: AdminUsers,
+    meta: {
+      onlyAdmin: true
+    },
+  },
+  {
+    path: '/admin/lectures',
+    name: 'admin-lectures',
+    component: AdminLectures,
+    meta: {
+      onlyAdmin: true
+    },
+  },
+  {
+    path: '/admin/categories',
+    name: 'admin-categories',
+    component: AdminCategories,
+    meta: {
+      onlyAdmin: true
+    },
+  },
+  {
+    path: '/admin/roles',
+    name: 'admin-roles',
+    component: AdminRoles,
+    meta: {
+      onlyAdmin: true
+    },
+  },
+  {
     path: '*',
     redirect: 'lectures'
   },
@@ -168,9 +204,7 @@ router.beforeEach((to, from, next) => {
         name: 'lectures'
       })
     }
-  }
-  
-  else if (to.meta.onlyPrivilegedUser) {
+  } else if (to.meta.onlyPrivilegedUser) {
     if (isUserLoggedIn) {
       if (isLecturer || isModerator || isAdmin) {
         next()
@@ -198,10 +232,10 @@ router.beforeEach((to, from, next) => {
         name: 'lectures'
       })
     }
-    } else {
-      next()
-    }
-  
+  } else {
+    next()
+  }
+
 })
 
 export default router

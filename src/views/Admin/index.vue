@@ -1,160 +1,64 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app temporary>
-      <v-list-item class="ma-2">
-        <v-list-item-avatar>
-          <v-icon large v-if="!$store.state.user.icon_url">mdi-account-circle</v-icon>
-          <v-img v-else :src="$store.state.user.icon_url" />
-        </v-list-item-avatar>
-        <v-list-item-content>
-          <v-list-item-title>{{$store.state.user.display_name}}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-divider />
-
-      <v-list dense>
-        <v-list-item :to="`${item.path}`" class="ma-2" v-for="item in drawerItems" :key="item">
-          <v-list-item-action>
-            <v-icon>{{item.iconName}}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{item.linkName}}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-      <template v-slot:append>
-        <div class="ma-2">
-          <v-btn block @click="logout">Log out</v-btn>
-        </div>
-      </template>
-    </v-navigation-drawer>
-
-    <v-app-bar app color="#617BE3" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>THINQ</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-menu
-        bottom
-        left
-        transition="slide-x-reverse-transition"
-        :close-on-content-click="false"
-        v-if="$store.state.isUserLoggedIn"
-      >
-        <template v-slot:activator="{ on }">
-          <v-btn color="white" v-on="on" icon style="margin-right: 0.3em">
-            <v-avatar v-if="!$store.state.user.icon_url">
-              <v-icon large>mdi-account-circle</v-icon>
-            </v-avatar>
-            <v-avatar v-else>
-              <v-img :src="$store.state.user.icon_url" />
-            </v-avatar>
-          </v-btn>
-        </template>
-
-        <v-card max-width="200px">
-          <v-container fluid>
-            <div class="d-flex justify-center align-center flex-column ma-3">
-              <router-link
-                :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/profile`}"
-              >
-                <v-avatar v-if="!$store.state.user.icon_url">
-                  <v-icon large>mdi-account-circle</v-icon>
-                </v-avatar>
-                <v-avatar v-else>
-                  <v-img :src="$store.state.user.icon_url" />
-                </v-avatar>
-              </router-link>
-              <router-link
-                class="d-block ma-2 bold"
-                style="font-size: 16px;"
-                :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/profile`}"
-              >
-                <span>{{$store.state.user.display_name}}</span>
-              </router-link>
-              <v-btn
-                depressed
-                small
-                block
-                text
-                :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/profile`}"
-              >View profile</v-btn>
-            </div>
-            <v-divider />
-            <div class="d-flex justify-center align-center flex-column ma-3">
-              <v-btn
-                class="ma-1"
-                depressed
-                small
-                text
-                block
-                :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/lectures`}"
-              >My lectures</v-btn>
-              <v-btn
-                class="ma-1"
-                depressed
-                small
-                text
-                block
-                :to="{path: `/users/${($store.state.user.display_name).toLowerCase()}/${$store.state.user.id}/edit`}"
-              >Edit account</v-btn>
-
-              <v-btn class="ma-1" depressed small text block @click="logout">Log out</v-btn>
-            </div>
-            <!-- <v-list-item @click="toPath">My lectures</v-list-item>
-                <v-list-item @click="toPath">Settings</v-list-item>
-                <v-list-item @click="logout">Log out</v-list-item>
-            </v-list>-->
-          </v-container>
-        </v-card>
-      </v-menu>
-    </v-app-bar>
-
-    <v-container class="fill-height" fluid>
+    <AdminHeader />
+    <v-container fluid>
+      <span class="d-block title pa-2">DASHBOARD</span>
       <v-row align="center" justify="center">
-        <v-col class="text-center"></v-col>
+        <v-col
+          class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-center justify-sm-center"
+          v-for="(card, index) in cards" :key="index"
+        >
+          <AdminCard :card="card"/>
+        </v-col>
       </v-row>
     </v-container>
   </v-app>
 </template>
 
 <script>
+import AdminHeader from "@/components/Header/Admin-Header";
+import AdminCard from "@/components/Card-Admin";
 export default {
+  components: {
+    AdminHeader,
+    AdminCard
+  },
   data: () => ({
-    drawer: null,
-    drawerItems: [
-      { iconName: "mdi-home", linkName: "Home", path: "/admin" },
+    cards: [
       {
-        iconName: "mdi-account-supervisor-circle",
-        linkName: "Users",
-        path: "/admin/users"
+        link: "admin-users",
+        icon: "mdi-account-supervisor-circle",
+        title: "USERS"
       },
       {
-        iconName: "mdi-animation-play",
-        linkName: "Lectures",
-        path: "/admin/lectures"
+        link: "admin-lectures",
+        icon: "mdi-animation-play",
+        title: "LECTURES"
       },
       {
-        iconName: "mdi-format-list-text",
-        linkName: "Categories",
-        path: "/admin/categories"
+        link: "admin-categories",
+        icon: "mdi-format-list-text",
+        title: "CATEGORIES"
       },
       {
-        iconName: "mdi-card-account-details",
-        linkName: "Roles",
-        path: "/admin/roles"
+        link: "admin-roles",
+        icon: "mdi-card-account-details",
+        title: "ROLES"
       }
     ]
   }),
+  created() {
+    this.countEntities();
+  },
   methods: {
-        async logout() {
+    async logout() {
       this.$store.dispatch("setToken", null);
       this.$store.dispatch("setUser", null);
       this.$store.dispatch("setAuthorities", null);
       this.$router.push({
         name: "login"
       });
-    },
+    }
   }
 };
 </script>

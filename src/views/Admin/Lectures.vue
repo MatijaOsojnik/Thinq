@@ -33,10 +33,16 @@
             <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
           </template>
           <template v-slot:expanded-item="{ headers, item }">
-              <td class="pa-6" :colspan="headers.length">
-                <span class="subtitle-2">Description:</span>
+            <td class="pa-6" :colspan="headers.length">
+              <div>
+                <span class="subtitle-2 d-block">Short Description:</span>
+                <span v-html="item.short_description"></span>
+              </div>
+              <div class="my-2">
+                <span class="subtitle-2 d-block">Description:</span>
                 <span v-html="item.description"></span>
-              </td>
+              </div>
+            </td>
           </template>
         </v-data-table>
       </v-card>
@@ -70,7 +76,7 @@ export default {
       { text: "Creator ID", value: "Users[0].id" },
       { text: "Category", value: "Category.name" },
       { text: "Actions", value: "actions", sortable: false }
-    ],
+    ]
   }),
   created() {
     this.getLectures();

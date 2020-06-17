@@ -100,7 +100,7 @@ const routes = [{
     }
   },
   {
-    path: '/admin',
+    path: '/admin/main',
     name: 'admin-main',
     component: Admin,
     meta: {

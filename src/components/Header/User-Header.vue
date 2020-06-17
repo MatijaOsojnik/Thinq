@@ -99,7 +99,7 @@
               small
               text
               block
-              :to="{path: `/admin`}"
+              :to="{name: 'admin-main'}"
             >Admin Panel</v-btn>
             <v-divider v-if="adminPermissions" />
             <div class="d-flex justify-center align-center flex-column ma-3">

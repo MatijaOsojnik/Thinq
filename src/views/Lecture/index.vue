@@ -14,7 +14,7 @@
             </router-link>
           </span>
           <router-link :to="{name: 'lecture-edit', params: {id: $route.params.id}}">
-            <v-btn style="margin: 1.5rem 0;" icon v-if="isOwner || adminPermissions">
+            <v-btn style="margin: 1.5rem 0;" icon v-if="isOwner">
               <v-icon medium color="black">mdi-pencil</v-icon>
             </v-btn>
           </router-link>
@@ -154,7 +154,7 @@ export default {
             }
           }
           for (let i = 0; i < userAuthorities.length; i++) {
-            if (userAuthorities[i] === "ROLE_ADMIN") {
+            if (userAuthorities[i] === "ROLE_ADMIN" || userAuthorities[i] === "ROLE_MODERATOR") {
               this.adminPermissions = true;
             } else {
               this.adminPermissions = false;

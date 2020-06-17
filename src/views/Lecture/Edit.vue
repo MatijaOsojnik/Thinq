@@ -161,7 +161,7 @@ export default {
   }),
   created() {
     this.getLecture();
-    this.findCategories();
+    this.getCategories();
     this.lecture.user_id = this.$route.params.id;
   },
   methods: {
@@ -200,7 +200,7 @@ export default {
         setTimeout(() => (this.errors = []), 5000);
       }
     },
-    async findCategories() {
+    async getCategories() {
       try {
         const response = await CategoryService.index();
         response.data.map(category => {

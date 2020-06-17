@@ -1,10 +1,15 @@
 const {
-    User
+    User,
+    Role
 } = require('../models')
 
 const fs = require('fs')
 
 const sharp = require('sharp')
+
+const {
+    Op
+} = require("sequelize");
 
 const bcrypt = require('bcrypt')
 
@@ -30,18 +35,43 @@ module.exports = {
             })
         }
     },
+    async allUserInfo(req, res) {
+        try {
+            const users = await User.findAll({
+                include: [{
+                    model: Role
+                }]
+            })
+            res.send(users)
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({
+                error: `An error has occured trying to fetch users`
+            })
+        }
+    },
     async put(req, res) {
         try {
             const user = await User.findByPk(req.params.userId)
             if (user.email !== req.body.email) {
+                if (req.body.roles) {
+                    const roles = await Role.findAll({
+                        where: {
+                            name: {
+                                [Op.or]: req.body.roles
+                            }
+                        }
+                    })
+                    user.setRoles(roles)
+                }
                 await user.update(req.body, {
-                    returning: true,
-                    plain: true,
-                })
-                .then(() => res.send(req.body))
-                .catch(err => {
-                    res.status(400).send([`Email is already in use`])
-                })
+                        returning: true,
+                        plain: true,
+                    })
+                    .then(() => res.send(req.body))
+                    .catch(err => {
+                        res.status(400).send([`Email is already in use`])
+                    })
             } else {
                 res.status(400).send([`Use a different email.`])
             }

@@ -27,6 +27,17 @@
             <v-list-item-title>{{item.linkName}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item
+          :to="{path: '/lectures'}"
+          class="ma-2"
+        >
+          <v-list-item-action>
+            <v-icon>mdi-apps-box</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>User Panel</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
       <template v-slot:append>
         <div class="ma-2">
@@ -118,7 +129,7 @@ export default {
   data: () => ({
     drawer: null,
     drawerItems: [
-      { iconName: "mdi-home", linkName: "Home", path: "/admin" },
+      { iconName: "mdi-home", linkName: "Home", path: "/admin/main" },
       {
         iconName: "mdi-account-supervisor-circle",
         linkName: "Users",
@@ -139,17 +150,17 @@ export default {
         linkName: "Roles",
         path: "/admin/roles"
       }
-    ],
+    ]
   }),
   methods: {
-          async logout() {
+    async logout() {
       this.$store.dispatch("setToken", null);
       this.$store.dispatch("setUser", null);
       this.$store.dispatch("setAuthorities", null);
       this.$router.push({
         name: "login"
       });
-    },
+    }
   }
 };
 </script>

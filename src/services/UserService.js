@@ -7,6 +7,9 @@ export default {
     show(userId) {
         return axios.get(`users/${userId}`)
     },
+    allUserInfo() {
+        return axios.get(`users/admin`)
+    },
     put(userId, data) {
         return axios.put(`users/${userId}`, data)
     },

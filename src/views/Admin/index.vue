@@ -48,7 +48,6 @@ export default {
     ]
   }),
   created() {
-    this.countEntities();
   },
   methods: {
     async logout() {

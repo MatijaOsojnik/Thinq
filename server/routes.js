@@ -52,6 +52,7 @@ module.exports = (app) => {
 
     //USER ROUTES
     app.get('/api/users', UsersController.index)
+    app.get('/api/users/admin', UsersController.allUserInfo)
     app.get('/api/users/:userId', UsersController.show)
     app.post('/api/users/:userId/upload', upload, UsersController.uploadFile)
 
@@ -71,7 +72,7 @@ module.exports = (app) => {
     });
 
     app.put('/api/users/:userId', UserControllerPolicy.update, UsersController.put)
-    app.delete('/api/users/:userId', isAuthenticated, UsersController.delete)
+    app.delete('/api/users/:userId', UsersController.delete)
 
     // LECTURE ROUTES
     app.get('/api/lectures', LecturesController.index)
@@ -88,10 +89,14 @@ module.exports = (app) => {
     // CATEGORY ROUTES
     app.get('/api/categories', CategoriesController.index)
     app.post('/api/categories', CategoriesController.create)
+    app.put('/api/categories', CategoriesController.update)
+    app.delete('/api/categories', CategoriesController.delete)
 
     // ROLE ROUTES
     app.get('/api/roles', RolesController.index)
     app.post('/api/roles', RolesController.create)
+    app.put('/api/roles', RolesController.update)
+    app.delete('/api/roles', RolesController.delete)
 
     // GENERAL ROUTES
 

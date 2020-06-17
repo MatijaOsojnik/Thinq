@@ -1,4 +1,5 @@
-const Joi = require('@hapi/joi')
+const Joi = require('@hapi/joi');
+const { allow } = require('@hapi/joi');
 
 module.exports = {
     update(req, res, next) {
@@ -68,7 +69,7 @@ module.exports = {
                 .allow('', null),
             linkedin_url: Joi.string()
                 .allow('', null),
-        })
+        }).unknown(allow)
 
         const {
             error

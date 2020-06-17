@@ -13,6 +13,9 @@ export default {
     put(userId, data) {
         return axios.put(`users/${userId}`, data)
     },
+    delete(userId) {
+        return axios.delete(`users/${userId}`)
+    }
     // changeAvatar(user, file) {
     //     return axios.put(`users/${user.id}`, file)
     // }

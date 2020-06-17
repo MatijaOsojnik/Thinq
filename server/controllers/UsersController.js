@@ -1,6 +1,7 @@
 const {
     User,
-    Role
+    Role,
+    Lecture
 } = require('../models')
 
 const fs = require('fs')
@@ -89,6 +90,11 @@ module.exports = {
                     id: req.params.userId
                 },
             })
+
+            const lectures = await lectures.findAll({include: [{model: User}]})
+            const userLectures = lectures.map((value) => { if(value.Users[0].id == user.id){return value}})
+
+            await userLectures.destroy({})
         } catch (error) {
             res.status(500).send({
                 error: `An error has occured trying to delete user`

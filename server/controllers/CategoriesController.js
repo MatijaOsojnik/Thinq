@@ -46,6 +46,7 @@ module.exports = {
                     id: req.body.categoryId
                 }
             })
+            res.send('Category deleted')
         } catch (error) {
             res.status(500).send({
                 error: `An error has occured trying to delete category`

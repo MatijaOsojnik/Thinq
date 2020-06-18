@@ -178,6 +178,7 @@ export default {
       const categoryId = category.id;
       confirm("Are you sure you want to delete this category?") &&
         (await CategoryService.delete(categoryId));
+      this.getCategories()
     }
   }
 };

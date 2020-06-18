@@ -51,6 +51,7 @@ module.exports = {
                     id: req.body.roleId
                 }
             })
+            res.send('role deleted')
         } catch (error) {
             res.status(500).send({
                 error: `An error has occured trying to delete selected role`

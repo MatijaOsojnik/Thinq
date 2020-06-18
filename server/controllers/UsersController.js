@@ -85,16 +85,23 @@ module.exports = {
     },
     async delete(req, res) {
         try {
-            const user = await User.destroy({
-                where: {
-                    id: req.params.userId
-                },
+            const user = await User.findByPk(req.params.userId)
+            const lectures = await Lecture.findAll({
+                include: [{
+                    model: User
+                }]
             })
-
-            const lectures = await lectures.findAll({include: [{model: User}]})
-            const userLectures = lectures.map((value) => { if(value.Users[0].id == user.id){return value}})
-
-            await userLectures.destroy({})
+            const userLectures = lectures.map((value) => {
+                if (value.Users[0].id == user.id) {
+                    return value
+                }
+            })
+            await user.removeLecture(userLectures)
+            await user.destroy({})
+            // if(userLectures.length) {
+            //     await userLectures.destroy({}).then(() => res.send('this worked')).catch((err) => console.log(err))
+            // }
+            res.send('User deleted')
         } catch (error) {
             res.status(500).send({
                 error: `An error has occured trying to delete user`

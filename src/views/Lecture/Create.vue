@@ -2,7 +2,154 @@
   <v-app>
     <v-layout>
       <v-flex xs12 justify="center" align="center">
+        <v-stepper v-model="stepper">
+    <v-stepper-header>
+      <v-stepper-step :complete="stepper> 1" editable step="1">Name of step 1</v-stepper-step>
+
+      <v-divider></v-divider>
+
+      <v-stepper-step :complete="stepper > 2" editable step="2">Name of step 2</v-stepper-step>
+
+      <v-divider></v-divider>
+
+      <v-stepper-step step="3" editable>Name of step 3</v-stepper-step>
+    </v-stepper-header>
+
+    <v-stepper-items>
+      <v-stepper-content step="1">
         <v-card class="ma-12 mx-auto" max-width="1000px">
+          <v-toolbar flat color="#617BE3" dark>
+            <v-toolbar-title>Create A New Lecture</v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
+            <v-scroll-x-transition>
+              <v-alert elevation="2" type="warning" v-if="errors.length">
+                <ul>
+                  <li v-for="error in errors" :key="error">{{ error }}</li>
+                </ul>
+              </v-alert>
+            </v-scroll-x-transition>
+            <v-form lazy-validation>
+              <label for="title">Title</label>
+              <v-text-field
+                id="title"
+                label="Enter a title for your lecture"
+                maxlength="30"
+                :rules="[rules.min]"
+                counter
+                solo
+                aria-autocomplete="false"
+                v-model="lecture.title"
+              />
+
+              <label for="shortDescription">Short Description</label>
+              <v-text-field
+                id="shortDescription"
+                :rules="[rules.short_description]"
+                label="Write your short description here"
+                solo
+                clearable
+                counter
+                maxlength="60"
+                hint="This description will be used on the Lecture card before the user clicks on it."
+                aria-autocomplete="false"
+                v-model="lecture.short_description"
+              />
+              <label for="description">Description</label>
+              <div style="margin: 0.5rem 0 2rem">
+                <tiptap-vuetify
+                  id="description"
+                  v-model="lecture.description"
+                  :rules="[rules.description]"
+                  placeholder="Write your description here."
+                  maxlength="300"
+                  :extensions="extensions"
+                />
+              </div>
+
+              <label for="thumbnailURL">Thumbnail URL</label>
+              <v-text-field
+                id="thumbnailURL"
+                label="Enter Thumbnail URL"
+                solo
+                aria-autocomplete="false"
+                v-model="lecture.thumbnail_url"
+              />
+
+              <label for="category">Category</label>
+              <v-select
+                id="category"
+                :items="categories"
+                label="Select Category"
+                v-model="lecture.category_id"
+                item-text="name"
+                item-value="id"
+                solo
+              ></v-select>
+            </v-form>
+            <!-- <v-scroll-x-transition>
+              <v-alert type="success" mode="out-in" v-if="successfulLecturePost">
+                <span>You successfuly posted a lecture</span>
+              </v-alert>
+            </v-scroll-x-transition> -->
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              color="primary"
+              :disabled="waitBeforeClick"
+              block
+              large
+              @click="stepper = 2"
+            >CONTINUE</v-btn>
+          </v-card-actions>
+        </v-card>
+
+        <!-- <v-btn
+          color="primary"
+          @click="stepper = 2"
+        >
+          Continue
+        </v-btn>
+
+        <v-btn text>Cancel</v-btn> -->
+      </v-stepper-content>
+
+      <v-stepper-content step="2">
+        <v-card
+          class="mb-12"
+          color="grey lighten-1"
+          height="200px"
+        ></v-card>
+
+        <v-btn
+          color="primary"
+          @click="stepper = 3"
+        >
+          Continue
+        </v-btn>
+
+        <v-btn text>Cancel</v-btn>
+      </v-stepper-content>
+
+      <v-stepper-content step="3">
+        <v-card
+          class="mb-12"
+          color="grey lighten-1"
+          height="200px"
+        ></v-card>
+
+        <v-btn
+          color="primary"
+          @click="complete"
+        >
+          Complete
+        </v-btn>
+
+        <v-btn text>Cancel</v-btn>
+      </v-stepper-content>
+    </v-stepper-items>
+        </v-stepper>
+        <!-- <v-card class="ma-12 mx-auto" max-width="1000px">
           <v-toolbar flat color="#617BE3" dark>
             <v-toolbar-title>Create A New Lecture</v-toolbar-title>
           </v-toolbar>
@@ -87,7 +234,7 @@
               @click="createLecture"
             >CREATE</v-btn>
           </v-card-actions>
-        </v-card>
+        </v-card> -->
       </v-flex>
     </v-layout>
   </v-app>
@@ -116,6 +263,8 @@ export default {
   },
 
   data: () => ({
+    stepper: 1,
+    steps: 3,
     rules: {
       short_description: text => text.length <= 60 || "Max 60 characters",
       description: text => text.length <= 300 || "Max 300 characters",
@@ -157,6 +306,13 @@ export default {
       HardBreak
     ]
   }),
+  watch: {
+    steps(val) {
+      if (this.stepper > val) {
+        this.stepper = val;
+      }
+    }
+  },
   mounted() {
     this.findCategories();
     this.checkUser();
@@ -208,6 +364,13 @@ export default {
             name: "lectures"
           });
         }
+      }
+    },
+    nextStep(n) {
+      if (n === this.steps) {
+        this.stepper = 1;
+      } else {
+        this.stepper = n + 1;
       }
     }
   }

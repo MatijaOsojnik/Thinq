@@ -5,21 +5,24 @@
         <v-col class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
           <h1 class="display-3" style="margin-top: 1rem;">{{lecture.title}}</h1>
           <span class="d-block mt-2">
-            By
+            By 
             <router-link
               v-if="lecture.Users[0]"
               :to="{path: `/users/${lecture.Users[0].display_name.toLowerCase()}/${lecture.Users[0].id}/profile`}"
             >
               <span class="font-weight-bold">{{lecture.Users[0].display_name}}</span>
             </router-link>
+            <span v-else class="font-weight-bold">
+              Unknown
+            </span>
           </span>
-          <router-link :to="{name: 'lecture-edit', params: {id: $route.params.id}}">
-            <v-btn style="margin: 1.5rem 0;" icon v-if="isOwner">
+          <router-link v-if="isOwner" :to="{name: 'lecture-edit', params: {id: $route.params.id}}">
+            <v-btn style="margin: 1.5rem 0;" icon>
               <v-icon medium color="black">mdi-pencil</v-icon>
             </v-btn>
           </router-link>
-          <router-link :to="{name: 'lectures'}">
-            <v-btn style="margin: 1.5rem 0;" icon v-if="isOwner || adminPermissions" @click="deleteLecture">
+          <router-link v-if="isOwner || adminPermissions" :to="{name: 'lectures'}">
+            <v-btn style="margin: 1.5rem 0;" icon  @click="deleteLecture">
               <v-icon medium color="black">mdi-delete-forever</v-icon>
             </v-btn>
           </router-link>
@@ -115,10 +118,12 @@ export default {
           lectureId
         );
         if (this.$store.state.user) {
-          if (responseLecture.data.Users[0].id === this.$store.state.user.id) {
-            this.isOwner = true;
-          } else {
-            this.isOwner = false;
+          if(responseLecture.data.Users[0]){
+            if (responseLecture.data.Users[0].id === this.$store.state.user.id) {
+              this.isOwner = true;
+            } else {
+              this.isOwner = false;
+            }
           }
         }
         this.lecture = responseLecture.data;

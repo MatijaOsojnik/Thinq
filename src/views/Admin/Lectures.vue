@@ -127,10 +127,46 @@
                 </v-flex>
               </v-layout>
             </v-dialog>
+            <v-dialog v-model="deleteDialog" max-width="200px">
+             <v-layout>
+                <v-flex xs12 justify="center" align="center">
+                  <v-card class="mx-auto">
+                    <v-card-text v-if="lecture">
+                      <span class="font-weight-bold">Are you sure you want to delete this lecture?</span>
+                      <v-scroll-x-transition>
+                        <v-alert type="success" mode="out-in" v-if="successfulLectureDelete">
+                          <span>Lecture deleted</span>
+                        </v-alert>
+                      </v-scroll-x-transition>
+                      <v-scroll-x-transition>
+                        <v-alert elevation="2" type="warning" v-if="errors.length">
+                          <ul>
+                            <li v-for="error in errors" :key="error">{{ error }}</li>
+                          </ul>
+                        </v-alert>
+                      </v-scroll-x-transition>
+                    </v-card-text>
+                    <v-card-actions class="pa-4">
+                      <v-btn
+                        color="#ff6363"
+                        :disabled="waitBeforeClick"
+                        @click="deleteLecture"
+                      >DELETE</v-btn>
+                      <v-spacer/>
+                      <v-btn
+                        color="#f4f6ff"
+                        :disabled="waitBeforeClick"
+                        @click="deleteDialog = false"
+                      >CLOSE</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+            </v-dialog>
           </template>
           <template v-slot:item.actions="{ item }">
             <v-icon small class="mr-2" @click="editLecture(item)">mdi-pencil</v-icon>
-            <v-icon small @click="deleteLecture(item)">mdi-delete</v-icon>
+            <v-icon small @click="deleteLectureDialog(item)">mdi-delete</v-icon>
           </template>
           <template v-slot:expanded-item="{ headers, item }">
             <td class="pa-6" :colspan="headers.length">
@@ -177,6 +213,7 @@ export default {
     statistics: null,
     loading: true,
     dialog: false,
+    deleteDialog: false,
     lecture: null,
     categories: [],
     errors: [],
@@ -190,6 +227,7 @@ export default {
       min: v => v.length >= 8 || "Min 8 characters"
     },
     successfulLectureUpdate: false,
+    successfulLectureDelete: false,
     waitBeforeClick: false,
     extensions: [
       History,
@@ -284,10 +322,30 @@ export default {
       this.lecture = lecture;
       this.dialog = true;
     },
-    async deleteLecture(lecture) {
-      const lectureId = lecture.id;
-      confirm("Are you sure you want to delete this lecture?") &&
-        (await LectureService.delete(lectureId));
+    deleteLectureDialog(lecture) {
+      this.lecture = lecture;
+      this.deleteDialog = true
+      // await LectureService.delete(lectureId), this.$router.go();       
+    },
+    async deleteLecture() {
+      this.waitBeforeClick = true;
+      try {
+        await LectureService.delete(this.lecture.id)
+        .then(() => {
+          this.successfulLectureDelete = true;
+          setTimeout(() => {
+            this.successfulLectureDelete = false;
+            this.waitBeforeClick = false;
+            this.deleteDialog = false;
+            this.getLectures();
+          }, 3000);
+        })
+        .catch((err) => console.log(err))
+      } catch (err) {
+        this.errors = err.response.data;
+        setTimeout(() => (this.waitBeforeClick = false), 3000);
+        setTimeout(() => (this.errors = []), 5000);
+      }
     }
   }
 };

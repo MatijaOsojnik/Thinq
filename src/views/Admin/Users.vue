@@ -351,10 +351,42 @@
                 </v-tabs>
               </v-card>
             </v-dialog>
+            <v-dialog v-model="deleteDialog" max-width="200px">
+              <v-layout>
+                <v-flex xs12 justify="center" align="center">
+                  <v-card class="mx-auto">
+                    <v-card-text v-if="user">
+                      <span class="font-weight-bold">Are you sure you want to delete this user?</span>
+                      <v-scroll-x-transition>
+                        <v-alert type="success" mode="out-in" v-if="successfulUserDelete">
+                          <span>User deleted</span>
+                        </v-alert>
+                      </v-scroll-x-transition>
+                      <v-scroll-x-transition>
+                        <v-alert elevation="2" type="warning" v-if="errors.length">
+                          <ul>
+                            <li v-for="error in errors" :key="error">{{ error }}</li>
+                          </ul>
+                        </v-alert>
+                      </v-scroll-x-transition>
+                    </v-card-text>
+                    <v-card-actions class="pa-4">
+                      <v-btn color="#ff6363" :disabled="waitBeforeClick" @click="deleteUser">DELETE</v-btn>
+                      <v-spacer />
+                      <v-btn
+                        color="#f4f6ff"
+                        :disabled="waitBeforeClick"
+                        @click="deleteDialog = false"
+                      >CLOSE</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+            </v-dialog>
           </template>
           <template v-slot:item.actions="{ item }">
             <v-icon small class="mr-2" @click="editUser(item)">mdi-pencil</v-icon>
-            <v-icon small @click="deleteUser(item)">mdi-delete</v-icon>
+            <v-icon small @click="deleteUserDialog(item)">mdi-delete</v-icon>
           </template>
         </v-data-table>
       </v-card>
@@ -415,7 +447,9 @@ export default {
     loading: true,
     search: "",
     dialog: false,
+    deleteDialog: false,
     successfulUserUpdate: false,
+    successfulUserDelete: false,
     waitBeforeClick: false,
     userRoles: null,
     headers: [
@@ -429,7 +463,7 @@ export default {
         value: "display_name"
       },
       { text: "Email", value: "email" },
-      { text: "Role", value: "Roles[0].name"},
+      { text: "Role", value: "Roles[0].name" },
       { text: "Actions", value: "actions", sortable: false }
     ]
   }),
@@ -585,10 +619,32 @@ export default {
       this.selectedRoles = user.Roles.map(value => value.name);
       this.dialog = true;
     },
-    async deleteUser(user) {
-      const userId = user.id;
-      confirm("Are you sure you want to delete this user?") &&
-        (await UserService.delete(userId));
+    deleteUserDialog(user) {
+      this.user = user;
+      this.deleteDialog = true;
+    },
+    async deleteUser() {
+      this.waitBeforeClick = true;
+      try {
+        await UserService.delete(this.user.id)
+          .then(() => {
+            this.successfulUserDelete = true;
+            setTimeout(() => {
+              this.successfulUserDelete = false;
+              this.waitBeforeClick = false;
+              this.deleteDialog = false;
+              this.$store.dispatch("setToken", null);
+              this.$store.dispatch("setUser", null);
+              this.$store.dispatch("setAuthorities", null);
+              this.getUsers();
+            }, 3000);
+          })
+          .catch(err => console.log(err));
+      } catch (err) {
+        this.errors = err.response.data;
+        setTimeout(() => (this.waitBeforeClick = false), 3000);
+        setTimeout(() => (this.errors = []), 5000);
+      }
     }
   }
 };

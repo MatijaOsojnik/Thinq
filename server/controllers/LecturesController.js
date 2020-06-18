@@ -178,6 +178,7 @@ module.exports = {
                     id: req.params.lectureId
                 }
             })
+            res.send('Successful lecture delete')
         } catch (error) {
             res.status(500).send({
                 error: `An error has occured trying fetch a lecture`

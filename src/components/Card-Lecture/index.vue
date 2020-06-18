@@ -21,6 +21,9 @@
               <v-img v-else src="@/assets/blue-error-background.jpg"></v-img>
             </v-list-item-avatar>
           </router-link>
+          <v-list-item-avatar v-else>
+            <v-img src="@/assets/blue-error-background.jpg"></v-img>
+          </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title class="title">{{lecture.title}}</v-list-item-title>
             <v-list-item-subtitle v-if="lecture.Users[0]">
@@ -31,6 +34,9 @@
               >
                 <span class="font-weight-bold">{{lecture.Users[0].display_name}}</span>
               </router-link>
+            </v-list-item-subtitle>
+            <v-list-item-subtitle v-else>
+              <span>By</span><span class="font-weight-bold"> Unknown</span>
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -57,7 +63,16 @@
         <v-card-text>
           <span style="display: block;">{{lecture.short_description}}</span>
           <div v-if="$router.history.current['name'] === 'user-lectures'">
-            <v-btn absolute dark fab small bottom left color="white" :to="{path: `/lectures/${lecture.id}/edit`}">
+            <v-btn
+              absolute
+              dark
+              fab
+              small
+              bottom
+              left
+              color="white"
+              :to="{path: `/lectures/${lecture.id}/edit`}"
+            >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
           </div>

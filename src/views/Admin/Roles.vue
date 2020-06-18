@@ -178,6 +178,7 @@ export default {
       const roleId = role.id;
       confirm("Are you sure you want to delete this role?") &&
         (await RoleService.delete(roleId));
+        this.getRoles()
     }
   }
 };

@@ -450,7 +450,7 @@ export default {
             this.date = response.data.birth_date.substr(0, 10);
           }
           this.user = response.data;
-          this.$store.dispatch("setUser", this.user);
+          this.$store.dispatch("setUser", response.data.user);
         } else {
           this.$router.push({
             name: "lectures"

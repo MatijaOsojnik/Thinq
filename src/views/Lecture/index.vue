@@ -44,8 +44,8 @@
             ></v-img>
             <v-card-text>
               <div class="d-flex justify-space-around align-center">
+                <span class="lecture-count">Tips</span>
                 <span class="lecture-count">Exercises</span>
-                <span class="lecture-count">Lectures</span>
               </div>
             </v-card-text>
             <v-card-actions class="justify-center">

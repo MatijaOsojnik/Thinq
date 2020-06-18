@@ -1,6 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
     const Sentence = sequelize.define('Sentence', {
-        sentence: {
+        english_sentence: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        },
+        slovene_sentence: {
             type: DataTypes.TEXT,
             allowNull: false
         },

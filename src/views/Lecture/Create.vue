@@ -3,238 +3,264 @@
     <v-layout>
       <v-flex xs12 justify="center" align="center">
         <v-stepper v-model="stepper">
-    <v-stepper-header>
-      <v-stepper-step :complete="stepper> 1" editable step="1">Name of step 1</v-stepper-step>
+          <v-stepper-header>
+            <v-stepper-step :complete="stepper> 1" editable step="1">Tips</v-stepper-step>
 
-      <v-divider></v-divider>
+            <v-divider></v-divider>
 
-      <v-stepper-step :complete="stepper > 2" editable step="2">Name of step 2</v-stepper-step>
+            <v-stepper-step :complete="stepper > 2" editable step="2">Exercises</v-stepper-step>
 
-      <v-divider></v-divider>
+            <v-divider></v-divider>
 
-      <v-stepper-step step="3" editable>Name of step 3</v-stepper-step>
-    </v-stepper-header>
+            <v-stepper-step step="3" editable>General Information</v-stepper-step>
+          </v-stepper-header>
 
-    <v-stepper-items>
-      <v-stepper-content step="1">
-        <v-card class="ma-12 mx-auto" max-width="1000px">
-          <v-toolbar flat color="#617BE3" dark>
-            <v-toolbar-title>Create A New Lecture</v-toolbar-title>
-          </v-toolbar>
-          <v-card-text>
-            <v-scroll-x-transition>
-              <v-alert elevation="2" type="warning" v-if="errors.length">
-                <ul>
-                  <li v-for="error in errors" :key="error">{{ error }}</li>
-                </ul>
-              </v-alert>
-            </v-scroll-x-transition>
-            <v-form lazy-validation>
-              <label for="title">Title</label>
-              <v-text-field
-                id="title"
-                label="Enter a title for your lecture"
-                maxlength="30"
-                :rules="[rules.min]"
-                counter
-                solo
-                aria-autocomplete="false"
-                v-model="lecture.title"
-              />
+          <v-stepper-items>
+            <v-stepper-content step="1">
+              <v-card class="ma-12 mx-auto" max-width="1000px">
+                <v-toolbar flat color="#617BE3" dark>
+                  <v-toolbar-title>Tips</v-toolbar-title>
+                </v-toolbar>
+                <v-card-text>
+                  <v-scroll-x-transition>
+                    <v-alert elevation="2" type="warning" v-if="errors.length">
+                      <ul>
+                        <li v-for="error in errors" :key="error">{{ error }}</li>
+                      </ul>
+                    </v-alert>
+                  </v-scroll-x-transition>
+                  <v-form lazy-validation>
+                    <label for="title">Title</label>
+                    <v-text-field
+                      id="title"
+                      label="Enter the title of your tip"
+                      maxlength="50"
+                      counter
+                      solo
+                      aria-autocomplete="false"
+                      v-model="tip.title"
+                    />
 
-              <label for="shortDescription">Short Description</label>
-              <v-text-field
-                id="shortDescription"
-                :rules="[rules.short_description]"
-                label="Write your short description here"
-                solo
-                clearable
-                counter
-                maxlength="60"
-                hint="This description will be used on the Lecture card before the user clicks on it."
-                aria-autocomplete="false"
-                v-model="lecture.short_description"
-              />
-              <label for="description">Description</label>
-              <div style="margin: 0.5rem 0 2rem">
-                <tiptap-vuetify
-                  id="description"
-                  v-model="lecture.description"
-                  :rules="[rules.description]"
-                  placeholder="Write your description here."
-                  maxlength="300"
-                  :extensions="extensions"
-                />
-              </div>
+                    <label for="description">Description</label>
+                    <div style="margin: 0.5rem 0 2rem">
+                      <tiptap-vuetify
+                        id="description"
+                        v-model="tip.content"
+                        :rules="[rules.description]"
+                        placeholder="Enter the content of your tip"
+                        maxlength="300"
+                        :extensions="extensions"
+                      />
+                    </div>
+                  </v-form>
+                  <div>
+                    <v-expansion-panels class="my-5" v-if="lecture.tips.length">
+                      <v-expansion-panel
+                        v-for="(tip, index) in lecture.tips"
+                        :key="index"
+                        class="my-3"
+                      >
+                        <v-expansion-panel-header>{{tip.title}}</v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                          <span class="d-block subtitle">Tip Content:</span>
+                          <span v-html="tip.content"></span>
+                        </v-expansion-panel-content>
+                        <v-btn
+                          color="red"
+                          @click="removeTip(index)"
+                          x-small
+                          fab
+                          absolute
+                          dark
+                          bottom
+                          left
+                        >
+                          <v-icon>mdi-close-circle</v-icon>
+                        </v-btn>
+                      </v-expansion-panel>
+                    </v-expansion-panels>
+                  </div>
+                  <v-btn color="primary" @click="addTip">ADD ANOTHER TIP</v-btn>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn color="primary" block large @click="stepper = 2">CONTINUE</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-stepper-content>
 
-              <label for="thumbnailURL">Thumbnail URL</label>
-              <v-text-field
-                id="thumbnailURL"
-                label="Enter Thumbnail URL"
-                solo
-                aria-autocomplete="false"
-                v-model="lecture.thumbnail_url"
-              />
+            <v-stepper-content step="2">
+              <v-card class="ma-12 mx-auto" max-width="1000px">
+                <v-toolbar flat color="#617BE3" dark>
+                  <v-toolbar-title>Exercises</v-toolbar-title>
+                </v-toolbar>
+                <v-card-text>
+                  <v-scroll-x-transition>
+                    <v-alert elevation="2" type="warning" v-if="errors.length">
+                      <ul>
+                        <li v-for="error in errors" :key="error">{{ error }}</li>
+                      </ul>
+                    </v-alert>
+                  </v-scroll-x-transition>
+                  <v-form lazy-validation>
+                    <label for="englishSentence">English sentence</label>
+                    <v-text-field
+                      id="englishSentence"
+                      label="Type the english sentence"
+                      maxlength="120"
+                      counter
+                      solo
+                      aria-autocomplete="false"
+                      v-model="exercise.english_sentence"
+                    />
 
-              <label for="category">Category</label>
-              <v-select
-                id="category"
-                :items="categories"
-                label="Select Category"
-                v-model="lecture.category_id"
-                item-text="name"
-                item-value="id"
-                solo
-              ></v-select>
-            </v-form>
-            <!-- <v-scroll-x-transition>
-              <v-alert type="success" mode="out-in" v-if="successfulLecturePost">
-                <span>You successfuly posted a lecture</span>
-              </v-alert>
-            </v-scroll-x-transition> -->
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              color="primary"
-              :disabled="waitBeforeClick"
-              block
-              large
-              @click="stepper = 2"
-            >CONTINUE</v-btn>
-          </v-card-actions>
-        </v-card>
+                    <label for="sloveneSentence">Slovene sentence</label>
+                    <v-text-field
+                      id="sloveneSentence"
+                      label="Type the slovene sentence"
+                      maxlength="120"
+                      counter
+                      solo
+                      aria-autocomplete="false"
+                      v-model="exercise.slovene_sentence"
+                    />
 
-        <!-- <v-btn
-          color="primary"
-          @click="stepper = 2"
-        >
-          Continue
-        </v-btn>
+                    <label for="pronounciationUrl">Slovene Sentence Pronounciation URL</label>
+                    <v-text-field
+                      id="pronounciationUrl"
+                      v-model="exercise.pronounciation_url"
+                      placeholder="Type the link here"
+                      solo
+                    />
+                  </v-form>
+                  <div>
+                    <v-expansion-panels class="my-3" v-if="lecture.exercises.length">
+                      <v-expansion-panel
+                        v-for="(exercise, index) in lecture.exercises"
+                        :key="index"
+                        class="mb-3"
+                      >
+                        <v-expansion-panel-header
+                          class="font-weight-bold"
+                        >{{exercise.english_sentence}}</v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                          <span class="d-block subtitle font-weight-bold">Slovenian sentence:</span>
+                          <span class="d-block pa-2">{{exercise.slovene_sentence}}</span>
+                          <span class="d-block subtitle font-weight-bold">pronounciation_url:</span>
+                          <span class="d-block pa-2">{{exercise.pronounciation_url}}</span>
+                        </v-expansion-panel-content>
+                        <v-btn
+                          color="red"
+                          @click="removeExercise(index)"
+                          x-small
+                          fab
+                          absolute
+                          dark
+                          bottom
+                          left
+                        >
+                          <v-icon>mdi-close-circle</v-icon>
+                        </v-btn>
+                      </v-expansion-panel>
+                    </v-expansion-panels>
+                  </div>
+                  <v-btn color="primary" @click="addExercise">ADD ANOTHER EXERCISE</v-btn>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn color="primary" block large @click="stepper = 3">CONTINUE</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-stepper-content>
 
-        <v-btn text>Cancel</v-btn> -->
-      </v-stepper-content>
+            <v-stepper-content step="3">
+              <v-card class="ma-12 mx-auto" max-width="1000px">
+                <v-toolbar flat color="#617BE3" dark>
+                  <v-toolbar-title>General Information</v-toolbar-title>
+                </v-toolbar>
+                <v-card-text>
+                  <v-form lazy-validation>
+                    <label for="title">Title</label>
+                    <v-text-field
+                      id="title"
+                      label="Enter a title for your lecture"
+                      maxlength="30"
+                      :rules="[rules.min]"
+                      counter
+                      solo
+                      aria-autocomplete="false"
+                      v-model="lecture.title"
+                    />
 
-      <v-stepper-content step="2">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-          height="200px"
-        ></v-card>
+                    <label for="shortDescription">Short Description</label>
+                    <v-text-field
+                      id="shortDescription"
+                      :rules="[rules.short_description]"
+                      label="Write your short description here"
+                      solo
+                      clearable
+                      counter
+                      maxlength="60"
+                      hint="This description will be used on the Lecture card before the user clicks on it."
+                      aria-autocomplete="false"
+                      v-model="lecture.short_description"
+                    />
+                    <label for="description">Description</label>
+                    <div style="margin: 0.5rem 0 2rem">
+                      <tiptap-vuetify
+                        id="description"
+                        v-model="lecture.description"
+                        :rules="[rules.description]"
+                        placeholder="Write your description here."
+                        maxlength="300"
+                        :extensions="extensions"
+                      />
+                    </div>
 
-        <v-btn
-          color="primary"
-          @click="stepper = 3"
-        >
-          Continue
-        </v-btn>
+                    <label for="thumbnailURL">Thumbnail URL</label>
+                    <v-text-field
+                      id="thumbnailURL"
+                      label="Enter Thumbnail URL"
+                      solo
+                      aria-autocomplete="false"
+                      v-model="lecture.thumbnail_url"
+                    />
 
-        <v-btn text>Cancel</v-btn>
-      </v-stepper-content>
-
-      <v-stepper-content step="3">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-          height="200px"
-        ></v-card>
-
-        <v-btn
-          color="primary"
-          @click="complete"
-        >
-          Complete
-        </v-btn>
-
-        <v-btn text>Cancel</v-btn>
-      </v-stepper-content>
-    </v-stepper-items>
+                    <label for="category">Category</label>
+                    <v-select
+                      id="category"
+                      :items="categories"
+                      label="Select Category"
+                      v-model="lecture.category_id"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                    ></v-select>
+                  </v-form>
+                  <v-scroll-x-transition>
+                    <v-alert elevation="2" type="warning" v-if="errors.length">
+                      <ul>
+                        <li v-for="error in errors" :key="error">{{ error }}</li>
+                      </ul>
+                    </v-alert>
+                  </v-scroll-x-transition>
+                  <v-scroll-x-transition>
+                    <v-alert type="success" mode="out-in" v-if="successfulLecturePost">
+                      <span>You successfuly posted a lecture</span>
+                    </v-alert>
+                  </v-scroll-x-transition>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn
+                    color="primary"
+                    :disabled="waitBeforeClick"
+                    block
+                    large
+                    @click="createLecture"
+                  >COMPLETE</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-stepper-content>
+          </v-stepper-items>
         </v-stepper>
-        <!-- <v-card class="ma-12 mx-auto" max-width="1000px">
-          <v-toolbar flat color="#617BE3" dark>
-            <v-toolbar-title>Create A New Lecture</v-toolbar-title>
-          </v-toolbar>
-          <v-card-text>
-            <v-scroll-x-transition>
-              <v-alert elevation="2" type="warning" v-if="errors.length">
-                <ul>
-                  <li v-for="error in errors" :key="error">{{ error }}</li>
-                </ul>
-              </v-alert>
-            </v-scroll-x-transition>
-            <v-form lazy-validation>
-              <label for="title">Title</label>
-              <v-text-field
-                id="title"
-                label="Enter a title for your lecture"
-                maxlength="30"
-                :rules="[rules.min]"
-                counter
-                solo
-                aria-autocomplete="false"
-                v-model="lecture.title"
-              />
-
-              <label for="shortDescription">Short Description</label>
-              <v-text-field
-                id="shortDescription"
-                :rules="[rules.short_description]"
-                label="Write your short description here"
-                solo
-                clearable
-                counter
-                maxlength="60"
-                hint="This description will be used on the Lecture card before the user clicks on it."
-                aria-autocomplete="false"
-                v-model="lecture.short_description"
-              />
-              <label for="description">Description</label>
-              <div style="margin: 0.5rem 0 2rem">
-                <tiptap-vuetify
-                  id="description"
-                  v-model="lecture.description"
-                  :rules="[rules.description]"
-                  placeholder="Write your description here."
-                  maxlength="300"
-                  :extensions="extensions"
-                />
-              </div>
-
-              <label for="thumbnailURL">Thumbnail URL</label>
-              <v-text-field
-                id="thumbnailURL"
-                label="Enter Thumbnail URL"
-                solo
-                aria-autocomplete="false"
-                v-model="lecture.thumbnail_url"
-              />
-
-              <label for="category">Category</label>
-              <v-select
-                id="category"
-                :items="categories"
-                label="Select Category"
-                v-model="lecture.category_id"
-                item-text="name"
-                item-value="id"
-                solo
-              ></v-select>
-            </v-form>
-            <v-scroll-x-transition>
-              <v-alert type="success" mode="out-in" v-if="successfulLecturePost">
-                <span>You successfuly posted a lecture</span>
-              </v-alert>
-            </v-scroll-x-transition>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              color="#f0f0f0"
-              :disabled="waitBeforeClick"
-              block
-              large
-              @click="createLecture"
-            >CREATE</v-btn>
-          </v-card-actions>
-        </v-card> -->
       </v-flex>
     </v-layout>
   </v-app>
@@ -275,12 +301,23 @@ export default {
       required: value => !!value || "Required.",
       min: v => v.length >= 8 || "Min 8 characters"
     },
+    tip: {
+      title: ``,
+      content: ``
+    },
+    exercise: {
+      english_sentence: ``,
+      slovene_sentence: ``,
+      pronounciation_url: ``
+    },
     lecture: {
       title: ``,
       short_description: ``,
       description: ``,
       thumbnail_url: ``,
-      category_id: ``
+      category_id: ``,
+      exercises: [],
+      tips: []
     },
     waitBeforeClick: false,
     successfulLecturePost: false,
@@ -306,18 +343,54 @@ export default {
       HardBreak
     ]
   }),
-  watch: {
-    steps(val) {
-      if (this.stepper > val) {
-        this.stepper = val;
-      }
-    }
-  },
   mounted() {
     this.findCategories();
     this.checkUser();
   },
   methods: {
+    addTip() {
+      const areAllFieldsFilledIn = Object.keys(this.tip).every(
+        key => !!this.tip[key]
+      );
+      if (!areAllFieldsFilledIn) {
+        this.errors.push("Please fill in all the fields.");
+        setTimeout(() => {
+          this.errors = [];
+          this.waitBeforeClick = false;
+        }, 3000);
+        return;
+      }
+      this.lecture.tips.push(this.tip);
+      this.tip = {
+        title: ``,
+        content: ``
+      };
+    },
+    removeTip(index) {
+      this.lecture.tips.splice(index, 1);
+    },
+    addExercise() {
+      const areAllFieldsFilledIn = Object.keys(this.exercise).every(
+        key => !!this.exercise[key]
+      );
+      if (!areAllFieldsFilledIn) {
+        this.errors.push("Please fill in all the fields.");
+        setTimeout(() => {
+          this.errors = [];
+          this.waitBeforeClick = false;
+        }, 3000);
+        return;
+      }
+      this.lecture.exercises.push(this.exercise);
+      this.exercise = {
+        slovene_sentence: ``,
+        english_sentence: ``,
+        pronounciation_url: ``
+      };
+    },
+    removeExercise(index) {
+      this.lecture.exercises.splice(index, 1);
+    },
     async createLecture() {
       this.waitBeforeClick = true;
       const areAllFieldsFilledIn = Object.keys(this.lecture).every(
@@ -364,13 +437,6 @@ export default {
             name: "lectures"
           });
         }
-      }
-    },
-    nextStep(n) {
-      if (n === this.steps) {
-        this.stepper = 1;
-      } else {
-        this.stepper = n + 1;
       }
     }
   }

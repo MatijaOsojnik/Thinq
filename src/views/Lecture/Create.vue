@@ -110,7 +110,7 @@
                       counter
                       solo
                       aria-autocomplete="false"
-                      v-model="exercise.english_sentence"
+                      v-model="sentence.english_sentence"
                     />
 
                     <label for="sloveneSentence">Slovene sentence</label>
@@ -121,36 +121,36 @@
                       counter
                       solo
                       aria-autocomplete="false"
-                      v-model="exercise.slovene_sentence"
+                      v-model="sentence.slovene_sentence"
                     />
 
                     <label for="pronounciationUrl">Slovene Sentence Pronounciation URL</label>
                     <v-text-field
                       id="pronounciationUrl"
-                      v-model="exercise.pronounciation_url"
+                      v-model="sentence.pronounciation_url"
                       placeholder="Type the link here"
                       solo
                     />
                   </v-form>
                   <div>
-                    <v-expansion-panels class="my-3" v-if="lecture.exercises.length">
+                    <v-expansion-panels class="my-3" v-if="lecture.sentences.length">
                       <v-expansion-panel
-                        v-for="(exercise, index) in lecture.exercises"
+                        v-for="(sentence, index) in lecture.sentences"
                         :key="index"
                         class="mb-3"
                       >
                         <v-expansion-panel-header
                           class="font-weight-bold"
-                        >{{exercise.english_sentence}}</v-expansion-panel-header>
+                        >{{sentence.english_sentence}}</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <span class="d-block subtitle font-weight-bold">Slovenian sentence:</span>
-                          <span class="d-block pa-2">{{exercise.slovene_sentence}}</span>
+                          <span class="d-block pa-2">{{sentence.slovene_sentence}}</span>
                           <span class="d-block subtitle font-weight-bold">pronounciation_url:</span>
-                          <span class="d-block pa-2">{{exercise.pronounciation_url}}</span>
+                          <span class="d-block pa-2">{{sentence.pronounciation_url}}</span>
                         </v-expansion-panel-content>
                         <v-btn
                           color="red"
-                          @click="removeExercise(index)"
+                          @click="removeSentence(index)"
                           x-small
                           fab
                           absolute
@@ -163,7 +163,7 @@
                       </v-expansion-panel>
                     </v-expansion-panels>
                   </div>
-                  <v-btn color="primary" @click="addExercise">ADD ANOTHER EXERCISE</v-btn>
+                  <v-btn color="primary" @click="addSentence">ADD ANOTHER EXERCISE</v-btn>
                 </v-card-text>
                 <v-card-actions>
                   <v-btn color="primary" block large @click="stepper = 3">CONTINUE</v-btn>
@@ -305,10 +305,11 @@ export default {
       title: ``,
       content: ``
     },
-    exercise: {
+    sentence: {
       english_sentence: ``,
       slovene_sentence: ``,
-      pronounciation_url: ``
+      pronounciation_url: ``,
+      is_sentence: true
     },
     lecture: {
       title: ``,
@@ -316,7 +317,7 @@ export default {
       description: ``,
       thumbnail_url: ``,
       category_id: ``,
-      exercises: [],
+      sentences: [],
       tips: []
     },
     waitBeforeClick: false,
@@ -369,9 +370,9 @@ export default {
     removeTip(index) {
       this.lecture.tips.splice(index, 1);
     },
-    addExercise() {
-      const areAllFieldsFilledIn = Object.keys(this.exercise).every(
-        key => !!this.exercise[key]
+    addSentence() {
+      const areAllFieldsFilledIn = Object.keys(this.sentence).every(
+        key => !!this.sentence[key]
       );
       if (!areAllFieldsFilledIn) {
         this.errors.push("Please fill in all the fields.");
@@ -381,15 +382,15 @@ export default {
         }, 3000);
         return;
       }
-      this.lecture.exercises.push(this.exercise);
-      this.exercise = {
+      this.lecture.sentences.push(this.sentence);
+      this.sentence = {
         slovene_sentence: ``,
         english_sentence: ``,
         pronounciation_url: ``
       };
     },
-    removeExercise(index) {
-      this.lecture.exercises.splice(index, 1);
+    removeSentence(index) {
+      this.lecture.sentences.splice(index, 1);
     },
     async createLecture() {
       this.waitBeforeClick = true;

@@ -1,7 +1,9 @@
 const {
     Lecture,
     Category,
-    User
+    User,
+    Sentence,
+    Tip
 } = require('../models')
 
 const {
@@ -29,24 +31,44 @@ module.exports = {
     },
     async post(req, res) {
         try {
-            const lecture = await Lecture.create(req.body).
-            then((lecture) => {
-                if (req.params.userId) {
-                    User.findByPk(req.params.userId).then((user) => {
-                        lecture.setUsers(user)
-                    }).catch((err) => {
-                        res.send({
-                            err: err
+            const {
+                tips,
+                sentences
+            } = req.body
+            const lecture = await Lecture.create(req.body)
+                .then((lecture) => {
+                    if (req.params.userId) {
+                        User.findByPk(req.params.userId).then((user) => {
+                            lecture.setUsers(user)
+                        }).catch((err) => {
+                            res.send({
+                                err: err
+                            })
                         })
+                    }
+                    sentences.forEach(sentence => {
+                        Sentence.create(sentence)
+                            .then((sentence) => {
+                                console.log(sentence)
+                                sentence.setLectures(lecture)
+                            }).catch((err) => {
+                                res.send({
+                                    err: err
+                                })
+                            })
                     })
-                }
-            })
-            // lecture.setUsers
-            // await LectureUsers.create({
-            //     UserId: userId,
-            //     LectureId: lecture.id
-            // })
-            res.send(lecture)
+                    tips.forEach(tip => {
+                        Tip.create(tip)
+                            .then((tip) => {
+                                tip.setLectures(lecture)
+                            }).catch((err) => {
+                                res.send({
+                                    err: err
+                                })
+                            })
+                    });
+                })
+            res.send('Successful Lecture Creation')
         } catch (error) {
             console.log(error)
             res.status(500).send({
@@ -57,9 +79,7 @@ module.exports = {
     async show(req, res) {
         try {
             const lecture = await Lecture.findByPk(req.params.lectureId, {
-                include: [
-                    User
-                ]
+                include: [User,Tip, Sentence]
             })
             res.send(lecture)
         } catch (error) {

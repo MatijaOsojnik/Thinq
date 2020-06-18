@@ -54,9 +54,9 @@
                     </div>
                   </v-form>
                   <div>
-                    <v-expansion-panels class="my-5" v-if="lecture.tips.length">
+                    <v-expansion-panels class="my-5" v-if="lecture.Tips.length">
                       <v-expansion-panel
-                        v-for="(tip, index) in lecture.tips"
+                        v-for="(tip, index) in lecture.Tips"
                         :key="index"
                         class="my-3"
                       >
@@ -133,9 +133,9 @@
                     />
                   </v-form>
                   <div>
-                    <v-expansion-panels class="my-3" v-if="lecture.sentences.length">
+                    <v-expansion-panels class="my-3" v-if="lecture.Sentences.length">
                       <v-expansion-panel
-                        v-for="(sentence, index) in lecture.sentences"
+                        v-for="(sentence, index) in lecture.Sentences"
                         :key="index"
                         class="mb-3"
                       >
@@ -317,8 +317,8 @@ export default {
       description: ``,
       thumbnail_url: ``,
       category_id: ``,
-      sentences: [],
-      tips: []
+      Sentences: [],
+      Tips: []
     },
     waitBeforeClick: false,
     successfulLecturePost: false,
@@ -361,14 +361,14 @@ export default {
         }, 3000);
         return;
       }
-      this.lecture.tips.push(this.tip);
+      this.lecture.Tips.push(this.tip);
       this.tip = {
         title: ``,
         content: ``
       };
     },
     removeTip(index) {
-      this.lecture.tips.splice(index, 1);
+      this.lecture.Tips.splice(index, 1);
     },
     addSentence() {
       const areAllFieldsFilledIn = Object.keys(this.sentence).every(
@@ -382,7 +382,7 @@ export default {
         }, 3000);
         return;
       }
-      this.lecture.sentences.push(this.sentence);
+      this.lecture.Sentences.push(this.sentence);
       this.sentence = {
         slovene_sentence: ``,
         english_sentence: ``,
@@ -390,7 +390,7 @@ export default {
       };
     },
     removeSentence(index) {
-      this.lecture.sentences.splice(index, 1);
+      this.lecture.Sentences.splice(index, 1);
     },
     async createLecture() {
       this.waitBeforeClick = true;

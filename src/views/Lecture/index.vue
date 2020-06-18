@@ -5,16 +5,14 @@
         <v-col class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
           <h1 class="display-3" style="margin-top: 1rem;">{{lecture.title}}</h1>
           <span class="d-block mt-2">
-            By 
+            By
             <router-link
               v-if="lecture.Users[0]"
               :to="{path: `/users/${lecture.Users[0].display_name.toLowerCase()}/${lecture.Users[0].id}/profile`}"
             >
               <span class="font-weight-bold">{{lecture.Users[0].display_name}}</span>
             </router-link>
-            <span v-else class="font-weight-bold">
-              Unknown
-            </span>
+            <span v-else class="font-weight-bold">Unknown</span>
           </span>
           <router-link v-if="isOwner" :to="{name: 'lecture-edit', params: {id: $route.params.id}}">
             <v-btn style="margin: 1.5rem 0;" icon>
@@ -22,7 +20,7 @@
             </v-btn>
           </router-link>
           <router-link v-if="isOwner || adminPermissions" :to="{name: 'lectures'}">
-            <v-btn style="margin: 1.5rem 0;" icon  @click="deleteLecture">
+            <v-btn style="margin: 1.5rem 0;" icon @click="deleteLecture">
               <v-icon medium color="black">mdi-delete-forever</v-icon>
             </v-btn>
           </router-link>
@@ -44,8 +42,14 @@
             ></v-img>
             <v-card-text>
               <div class="d-flex justify-space-around align-center">
-                <span class="lecture-count">Tips</span>
-                <span class="lecture-count">Exercises</span>
+                <div>
+                  <span class="d-block lecture-count font-weight-bold">{{lecture.Tips.length}}</span>
+                  <span class="subtitle">Useful tips</span>
+                </div>
+                <div>
+                  <span class="d-block lecture-count font-weight-bold">{{lecture.Sentences.length}}</span>
+                  <span class="subtitle">Interactive exercises</span>
+                </div>
               </div>
             </v-card-text>
             <v-card-actions class="justify-center">
@@ -53,7 +57,7 @@
                 <router-link
                   :to="$store.state.isUserLoggedIn ? {name: 'lectureAction'} : {name: 'register'}"
                 >
-                  <v-btn :class="`${hover ? 'cta-btn-hover' : 'cta-btn-active'}`">Get Started</v-btn>
+                  <v-btn :class="`${hover ? 'cta-btn-hover' : 'cta-btn-active'}`" class="mb-3">Get Started</v-btn>
                 </router-link>
               </v-hover>
             </v-card-actions>
@@ -118,8 +122,10 @@ export default {
           lectureId
         );
         if (this.$store.state.user) {
-          if(responseLecture.data.Users[0]){
-            if (responseLecture.data.Users[0].id === this.$store.state.user.id) {
+          if (responseLecture.data.Users[0]) {
+            if (
+              responseLecture.data.Users[0].id === this.$store.state.user.id
+            ) {
               this.isOwner = true;
             } else {
               this.isOwner = false;
@@ -145,27 +151,30 @@ export default {
       }
     },
     checkRoles() {
-        const userAuthorities = this.$store.state.authorities;
-        if (userAuthorities) {
-          for (let i = 0; i < userAuthorities.length; i++) {
-            if (
-              userAuthorities[i] === "ROLE_LECTURER" ||
-              userAuthorities[i] === "ROLE_MODERATOR" ||
-              userAuthorities[i] === "ROLE_ADMIN"
-            ) {
-              this.permissions = true;
-            } else {
-              this.permissions = false;
-            }
-          }
-          for (let i = 0; i < userAuthorities.length; i++) {
-            if (userAuthorities[i] === "ROLE_ADMIN" || userAuthorities[i] === "ROLE_MODERATOR") {
-              this.adminPermissions = true;
-            } else {
-              this.adminPermissions = false;
-            }
+      const userAuthorities = this.$store.state.authorities;
+      if (userAuthorities) {
+        for (let i = 0; i < userAuthorities.length; i++) {
+          if (
+            userAuthorities[i] === "ROLE_LECTURER" ||
+            userAuthorities[i] === "ROLE_MODERATOR" ||
+            userAuthorities[i] === "ROLE_ADMIN"
+          ) {
+            this.permissions = true;
+          } else {
+            this.permissions = false;
           }
         }
+        for (let i = 0; i < userAuthorities.length; i++) {
+          if (
+            userAuthorities[i] === "ROLE_ADMIN" ||
+            userAuthorities[i] === "ROLE_MODERATOR"
+          ) {
+            this.adminPermissions = true;
+          } else {
+            this.adminPermissions = false;
+          }
+        }
+      }
     },
     async imageLoadError() {
       this.imageError = true;
@@ -184,7 +193,7 @@ export default {
   color: #303841;
 }
 .lecture-count {
-  display: inline-block;
-  font-size: 16px;
+  color: black;
+  font-size: 20px;
 }
 </style>

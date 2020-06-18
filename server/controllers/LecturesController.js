@@ -32,8 +32,8 @@ module.exports = {
     async post(req, res) {
         try {
             const {
-                tips,
-                sentences
+                Tips,
+                Sentences
             } = req.body
             const lecture = await Lecture.create(req.body)
                 .then((lecture) => {
@@ -46,10 +46,9 @@ module.exports = {
                             })
                         })
                     }
-                    sentences.forEach(sentence => {
+                    Sentences.forEach(sentence => {
                         Sentence.create(sentence)
                             .then((sentence) => {
-                                console.log(sentence)
                                 sentence.setLectures(lecture)
                             }).catch((err) => {
                                 res.send({
@@ -57,7 +56,7 @@ module.exports = {
                                 })
                             })
                     })
-                    tips.forEach(tip => {
+                    Tips.forEach(tip => {
                         Tip.create(tip)
                             .then((tip) => {
                                 tip.setLectures(lecture)
@@ -79,7 +78,7 @@ module.exports = {
     async show(req, res) {
         try {
             const lecture = await Lecture.findByPk(req.params.lectureId, {
-                include: [User,Tip, Sentence]
+                include: [User, Tip, Sentence]
             })
             res.send(lecture)
         } catch (error) {
@@ -187,7 +186,7 @@ module.exports = {
             res.send(req.body)
         } catch (error) {
             res.status(500).send({
-                error: `An error has occured trying fetch a lecture`
+                error: `An error has occured trying to update a lecture`
             })
         }
     },

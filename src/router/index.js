@@ -8,6 +8,7 @@ import Lectures from '@/views/Lectures'
 import Lecture from '@/views/Lecture'
 import LectureCreate from '@/views/Lecture/Create'
 import LectureEdit from '@/views/Lecture/Edit'
+import LectureAction from '@/views/Lecture/Action'
 import User from '@/views/Users/Show'
 import Admin from '@/views/Admin'
 import AdminLogin from '@/views/Admin/Login'
@@ -75,6 +76,14 @@ const routes = [{
     component: LectureEdit,
     meta: {
       onlyPrivilegedUser: true
+    }
+  },
+  {
+    path: '/lectures/:id/action',
+    name: 'lecture-action',
+    component: LectureAction,
+    meta: {
+      onlyAuthUser: true
     }
   },
   {

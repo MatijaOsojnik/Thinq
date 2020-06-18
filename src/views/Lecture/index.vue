@@ -55,7 +55,7 @@
             <v-card-actions class="justify-center">
               <v-hover v-slot:default="{ hover }">
                 <router-link
-                  :to="$store.state.isUserLoggedIn ? {name: 'lectureAction'} : {name: 'register'}"
+                  :to="$store.state.isUserLoggedIn ? {name: 'lecture-action'} : {name: 'register'}"
                 >
                   <v-btn :class="`${hover ? 'cta-btn-hover' : 'cta-btn-active'}`" class="mb-3">Get Started</v-btn>
                 </router-link>

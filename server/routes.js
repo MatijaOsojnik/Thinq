@@ -101,6 +101,8 @@ module.exports = (app) => {
     // GENERAL ROUTES
 
     app.get('/api/admin/general/count', GeneralController.count)
+    app.get('/api/history/:userId', GeneralController.findHistory) //TRACK USER HISTORY
+    app.post('/api/history/:lectureId/:userId', GeneralController.postHistory)
 
     //FILE UPLOAD ROUTE
     // app.post('/upload', upload.single('file'), (req, res) => {

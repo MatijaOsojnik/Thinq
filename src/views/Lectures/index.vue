@@ -17,13 +17,33 @@
       <v-progress-circular indeterminate color="primary" class="d-block ma-5"></v-progress-circular>
     </div>
     <v-container fluid v-if="lectures && !loading">
-      <div v-if="$store.state.isUserLoggedIn">
+      <div v-if="$store.state.isUserLoggedIn && !userLectures">
         <span class="greeting-title" v-if="$store.state.isUserLoggedIn && lectures">
           Welcome
           <span class="greeting-name pa-1">{{$store.state.user.display_name}}</span>! Start Your First Class :)
         </span>
       </div>
+      <div v-else-if="$store.state.isUserLoggedIn && userLectures">
+        <span class="greeting-title">
+          Welcome back
+          <span class="greeting-name pa-1">{{$store.state.user.display_name}}</span>!
+        </span>
+      </div>
       <v-container fluid>
+        <span class="title">Completed Lectures</span>
+        <Metadata>
+          <template v-slot:completed-lectures>
+            <v-row style="z-index: 100" v-if="userLectures" class="flex-sm-fill">
+              <v-col
+                class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 d-flex d-sm-flex d-md-block d-lg-block d-xl-block justify-center justify-sm-center"
+                v-for="lecture in userLectures"
+                :key="lecture.Lecture.id"
+              >
+                <LectureCardComponent :lecture="lecture.Lecture" />
+              </v-col>
+            </v-row>
+          </template>
+        </Metadata>
         <span class="title" v-if="$router.history.current['name'] === 'lectures'">All Lectures</span>
         <span
           class="title"
@@ -55,12 +75,15 @@
 <script>
 import LectureService from "@/services/LectureService.js";
 import LectureCardComponent from "@/components/Card-Lecture";
+import GeneralService from "@/services/GeneralService";
+import Metadata from "@/views/Lectures/Metadata";
 import LectureCardCreateComponent from "@/components/Card-Lecture-Create";
 import Header from "@/components/Header/Header.vue";
 export default {
   components: {
     LectureCardComponent,
     LectureCardCreateComponent,
+    Metadata,
     Header
   },
   data: () => ({
@@ -70,6 +93,7 @@ export default {
       url: "/lectures/create/"
     },
     lectures: null,
+    userLectures: null,
     loading: false,
     priviliges: false,
     limit: 10
@@ -90,6 +114,7 @@ export default {
   },
   created() {
     this.getLectures();
+    this.getHistory();
     this.checkRoles();
   },
   watch: {
@@ -119,6 +144,15 @@ export default {
           this.loading = false;
         }
         this.lectures = response.data;
+      }
+    },
+    async getHistory() {
+      try {
+        const userId = this.$store.state.user.id;
+        const response = await GeneralService.getHistory(userId);
+        this.userLectures = response.data;
+      } catch (err) {
+        console.log(err);
       }
     },
     checkRoles() {

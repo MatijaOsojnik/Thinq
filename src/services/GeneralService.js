@@ -6,5 +6,11 @@ export default {
     },
     getRoles() {
         return axios.get('roles')
+    },
+    postHistory(userId, lectureId) {
+        return axios.post(`history/${lectureId}/${userId}`)
+    },
+    getHistory(userId) {
+        return axios.get(`history/${userId}`)
     }
 }

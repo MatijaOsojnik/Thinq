@@ -345,7 +345,7 @@ export default {
         this.getUser();
       } catch (err) {
         this.uploading = false;
-        this.errors = err.response.data;
+        this.errors.push(err.response.data.error);
         setTimeout(() => (this.errors = []), 5000);
       }
     },

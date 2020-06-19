@@ -43,11 +43,14 @@
           <v-btn color="primary" v-if="index+1 === content.length" @click="complete(item)">Finish</v-btn>
           <v-btn color="primary" v-else @click="nextStep(index, item)">Continue</v-btn>
           <v-bottom-sheet v-model="sheet">
-            <v-sheet class="text-center" height="200px">
-              <v-btn class="mt-6" text color="red" @click="sheet = !sheet">close</v-btn>
-              <div
-                class="py-3"
-              >This is a bottom sheet using the controlled by v-model instead of activator</div>
+            <v-sheet class="text-center" color="#eeeeee" height="200px">
+              <div class="py-3 mt-6">
+                <span class="d-block font-weight-bold
+                pt-6 title">
+                  You completed {{lecture.title}}! The future is bright!
+                </span>
+                </div>
+              <v-btn class="mt-6" color="success" @click="goBack">Go Back</v-btn>
             </v-sheet>
           </v-bottom-sheet>
         </v-stepper-content>
@@ -58,6 +61,7 @@
 
 <script>
 import LectureService from "@/services/LectureService.js";
+import GeneralService from "@/services/GeneralService.js";
 import VuetifyAudio from "vuetify-audio";
 export default {
   components: {
@@ -76,7 +80,6 @@ export default {
   }),
   created() {
     this.getLecture();
-    this.checkRoles();
   },
   watch: {
     // call again the method if the route changes
@@ -90,7 +93,6 @@ export default {
         this.lecture = response.data;
         response.data.Tips.forEach(value => this.content.push(value));
         response.data.Sentences.forEach(value => this.content.push(value));
-        console.log(this.content);
         this.imageError = false;
       } catch (err) {
         console.log(err);
@@ -114,20 +116,27 @@ export default {
         const partialValue = 100 / this.content.length;
         this.value += partialValue;
       }
-      this.enteredSentence = ``
+      this.enteredSentence = ``;
     },
-    complete(item) {
+    async complete(item) {
       if (item.slovene_sentence) {
         if (item.slovene_sentence === this.enteredSentence) {
           const partialValue = 100 / this.content.length;
           this.value += partialValue;
           this.sheet = true;
-          setTimeout(() => {
-            this.sheet = false;
-            this.$router.push({
-              path: `/lectures/${this.$route.params.id}`
-            });
-          }, 8000);
+          try {
+            const response = await GeneralService.postHistory(
+              this.$store.state.user.id,
+              this.lecture.id
+            );
+            if (response)
+              setTimeout(() => {
+                this.sheet = false;
+                this.$router.push({
+                  path: `/lectures/${this.$route.params.id}`
+                });
+              }, 6000);
+          } catch (err) {console.log(err)}
         } else {
           this.error = `Uh oh, you made a typo..`;
           setTimeout(() => (this.error = null), 3000);
@@ -141,9 +150,15 @@ export default {
           this.$router.push({
             path: `/lectures/${this.$route.params.id}`
           });
-        }, 8000);
+        }, 6000);
       }
-      this.enteredSentence = ``
+      this.enteredSentence = ``;
+    },
+    goBack() {
+      this.sheet = false;
+      this.$router.push({
+        path: `/lectures/${this.$route.params.id}`
+      });
     }
   }
 };

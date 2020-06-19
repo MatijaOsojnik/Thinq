@@ -74,6 +74,8 @@ module.exports = (sequelize, DataTypes) => {
 
     const Role = sequelize.models.Role;
     const Lecture = sequelize.models.Lecture;
+    const History = sequelize.models.History;
+
 
     Role.belongsToMany(User, {
         through: 'RoleUsers'
@@ -88,5 +90,15 @@ module.exports = (sequelize, DataTypes) => {
     User.belongsToMany(Lecture, {
         through: 'LectureUsers'
     })
+
+    History.belongsTo(User, {
+        foreignKey: 'user_id',
+        targetKey: 'id'
+    });
+    History.belongsTo(Lecture, {
+        foreignKey: 'lecture_id',
+        targetKey: 'id'
+    });
+    
     return User;
 }

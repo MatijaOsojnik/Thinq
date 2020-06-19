@@ -2,12 +2,9 @@ const {
     User,
     Lecture,
     Category,
-    Role
+    Role,
+    History
 } = require('../models')
-
-const {
-    Op
-} = require("sequelize");
 
 module.exports = {
     async count(req, res) {
@@ -36,4 +33,45 @@ module.exports = {
             })
         }
     },
+    async findHistory (req, res) {
+        try {
+          const userId = req.params.userId
+          const histories = await History.findAll({
+            where: {
+              user_id: userId
+            },
+            include: [
+              {
+                model: Lecture,
+                include: [User]
+              }
+            ],
+            order: [
+              ['createdAt', 'DESC']
+            ]
+          })
+          res.send(histories)
+        } catch (err) {
+          res.status(500).send({
+            error: 'an error has occured trying to fetch the history'
+          })
+        }
+      },
+    async postHistory (req, res) {
+        try {
+          const userId = req.params.userId
+          const lectureId = req.params.lectureId
+          console.log(lectureId, userId)
+          const history = await History.create({
+            lecture_id: lectureId,
+            user_id: userId
+          })
+          res.send(history)
+        } catch (err) {
+          console.log(err)
+          res.status(500).send({
+            error: 'an error has occured trying to create the history object'
+          })
+        }
+      }
 }

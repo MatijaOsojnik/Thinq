@@ -1,30 +1,78 @@
 <template>
-  <LectureMetadata>
-    <template v-slot:lecture>
-      <v-row class="ma-sm-6 ma-xl-0 ma-lg-0 ma-md-0" v-if="lecture">
-        <v-col class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-          <h1 class="display-3" style="margin-top: 1rem;">{{lecture.title}}</h1>
-          <div style="margin: 1rem 0" class="d-flex flex-column justify-space-around">
-            <div>
-              <div v-html="lecture.description"></div>
-            </div>
-          </div>
-        </v-col>
-      </v-row>
-    </template>
-  </LectureMetadata>
+  <v-card class="ma-12 mx-auto" max-width="1200px" v-if="lecture">
+    <v-progress-linear height="31" v-model="value"></v-progress-linear>
+    <v-toolbar flat color="#617BE3" dark>
+      <v-toolbar-title>{{lecture.title}}</v-toolbar-title>
+    </v-toolbar>
+    <v-stepper v-if="content.length" v-model="stepper" vertical>
+      <div v-for="(item, index) in content" :key="index">
+        <v-stepper-step :complete="stepper > 1" :step="index + 1">
+          <span v-if="item.slovene_sentence">Exercise</span>
+          <span v-else>Tip</span>
+        </v-stepper-step>
+        <v-stepper-content :step="index + 1">
+          <v-card class="ma-4 pb-6" tile min-height="200px">
+            <v-card-text>
+              <v-container>
+                <div v-if="!item.slovene_sentence">
+                  <span class="d-block display-1 text-center">{{item.title}}</span>
+                  <span class="d-block pa-6" style="font-size: 17px;" v-html="item.content"></span>
+                </div>
+                <div v-else>
+                  <span
+                    class="d-block font-weight-bold text-center pa-4"
+                    style="font-size: 22px"
+                  >English: {{item.english_sentence}}</span>
+                  <v-text-field
+                    v-model="enteredSentence"
+                    label="Please enter the slovenian translation here"
+                    solo
+                  ></v-text-field>
+                  <v-scroll-x-transition>
+                    <v-alert elevation="2" type="warning" v-if="error">
+                      <ul>
+                        <li>{{ error }}</li>
+                      </ul>
+                    </v-alert>
+                  </v-scroll-x-transition>
+                  <VuetifyAudio :file="file" color="success" />
+                </div>
+              </v-container>
+            </v-card-text>
+          </v-card>
+          <v-btn color="primary" v-if="index+1 === content.length" @click="complete(item)">Finish</v-btn>
+          <v-btn color="primary" v-else @click="nextStep(index, item)">Continue</v-btn>
+          <v-bottom-sheet v-model="sheet">
+            <v-sheet class="text-center" height="200px">
+              <v-btn class="mt-6" text color="red" @click="sheet = !sheet">close</v-btn>
+              <div
+                class="py-3"
+              >This is a bottom sheet using the controlled by v-model instead of activator</div>
+            </v-sheet>
+          </v-bottom-sheet>
+        </v-stepper-content>
+      </div>
+    </v-stepper>
+  </v-card>
 </template>
 
 <script>
 import LectureService from "@/services/LectureService.js";
-import LectureMetadata from "@/views/Lecture/Metadata.vue";
+import VuetifyAudio from "vuetify-audio";
 export default {
   components: {
-    LectureMetadata,
+    VuetifyAudio
   },
   data: () => ({
+    value: 0,
+    sheet: false,
+    file: require("@/assets/testtest.mp3"),
     lecture: null,
-    imageError: false,
+    stepper: 1,
+    enteredSentence: ``,
+    error: null,
+    content: [],
+    imageError: false
   }),
   created() {
     this.getLecture();
@@ -40,49 +88,60 @@ export default {
         const lectureId = this.$route.params.id;
         const response = await LectureService.show(lectureId);
         this.lecture = response.data;
+        response.data.Tips.forEach(value => this.content.push(value));
+        response.data.Sentences.forEach(value => this.content.push(value));
+        console.log(this.content);
         this.imageError = false;
       } catch (err) {
         console.log(err);
       }
     },
-    async deleteLecture() {
-      try {
-        const lectureId = this.$route.params.id;
-        if (this.isOwner || this.adminPermissions) {
-          await LectureService.delete(lectureId);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    checkRoles() {
-      const userAuthorities = this.$store.state.authorities;
-      if (userAuthorities) {
-        for (let i = 0; i < userAuthorities.length; i++) {
-          if (
-            userAuthorities[i] === "ROLE_LECTURER" ||
-            userAuthorities[i] === "ROLE_MODERATOR" ||
-            userAuthorities[i] === "ROLE_ADMIN"
-          ) {
-            this.permissions = true;
-          } else {
-            this.permissions = false;
-          }
-        }
-        for (let i = 0; i < userAuthorities.length; i++) {
-          if (
-            userAuthorities[i] === "ROLE_ADMIN" ||
-            userAuthorities[i] === "ROLE_MODERATOR"
-          ) {
-            this.adminPermissions = true;
-          } else {
-            this.adminPermissions = false;
-          }
-        }
-      }
-    },
     async imageLoadError() {
       this.imageError = true;
+    },
+    nextStep(index, item) {
+      if (item.slovene_sentence) {
+        if (item.slovene_sentence === this.enteredSentence) {
+          this.stepper = index + 2;
+          const partialValue = 100 / this.content.length;
+          this.value += partialValue;
+        } else {
+          this.error = `Uh oh, you made a typo..`;
+          setTimeout(() => (this.error = null), 3000);
+        }
+      } else {
+        this.stepper = index + 2;
+        const partialValue = 100 / this.content.length;
+        this.value += partialValue;
+      }
+    },
+    complete(item) {
+      if (item.slovene_sentence) {
+        if (item.slovene_sentence === this.enteredSentence) {
+          const partialValue = 100 / this.content.length;
+          this.value += partialValue;
+          this.sheet = true;
+          setTimeout(() => {
+            this.sheet = false;
+            this.$router.push({
+              path: `/lectures/${this.$route.params.id}`
+            });
+          }, 8000);
+        } else {
+          this.error = `Uh oh, you made a typo..`;
+          setTimeout(() => (this.error = null), 3000);
+        }
+      } else {
+        const partialValue = 100 / this.content.length;
+        this.value += partialValue;
+        this.sheet = true;
+        setTimeout(() => {
+          this.sheet = false;
+          this.$router.push({
+            path: `/lectures/${this.$route.params.id}`
+          });
+        }, 8000);
+      }
     }
   }
 };

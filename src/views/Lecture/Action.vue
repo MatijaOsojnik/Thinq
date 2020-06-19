@@ -114,6 +114,7 @@ export default {
         const partialValue = 100 / this.content.length;
         this.value += partialValue;
       }
+      this.enteredSentence = ``
     },
     complete(item) {
       if (item.slovene_sentence) {
@@ -142,6 +143,7 @@ export default {
           });
         }, 8000);
       }
+      this.enteredSentence = ``
     }
   }
 };

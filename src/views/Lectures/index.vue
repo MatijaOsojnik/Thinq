@@ -30,7 +30,7 @@
         </span>
       </div>
       <v-container fluid>
-        <span class="title">Completed Lectures</span>
+        <span class="title" v-if="userLectures">Completed Lectures</span>
         <Metadata>
           <template v-slot:completed-lectures>
             <v-row style="z-index: 100" v-if="userLectures" class="flex-sm-fill">

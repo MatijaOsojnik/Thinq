@@ -22,13 +22,13 @@
       route-name="login"
       link-name="Sign in"
     >
-              <v-scroll-x-transition>
-                <v-alert elevation="2" type="warning" v-if="errors.length">
-                  <ul>
-                    <li v-for="error in errors" :key="error">{{ error }}</li>
-                  </ul>
-                </v-alert>
-              </v-scroll-x-transition>
+      <v-scroll-x-transition>
+        <v-alert elevation="2" type="warning" v-if="errors.length">
+          <ul>
+            <li v-for="error in errors" :key="error">{{ error }}</li>
+          </ul>
+        </v-alert>
+      </v-scroll-x-transition>
       <form @submit.prevent="handleSubmit" autocomplete="off">
         <div>
           <v-text-field
@@ -88,7 +88,7 @@ export default {
           display_name: this.display_name,
           email: this.email,
           password: this.password,
-          repeat_password: this.repeat_password,
+          repeat_password: this.repeat_password
         });
         this.showPanel = true;
 
@@ -112,7 +112,7 @@ export default {
 
 <style scoped>
 div {
-  font-family: 'Roboto';
+  font-family: "Roboto";
 }
 ul,
 li {

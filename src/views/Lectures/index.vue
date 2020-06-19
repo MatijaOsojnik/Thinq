@@ -23,16 +23,16 @@
           <span class="greeting-name pa-1">{{$store.state.user.display_name}}</span>! Start Your First Class :)
         </span>
       </div>
-      <div v-else-if="$store.state.isUserLoggedIn && userLectures">
+      <div v-else-if="$store.state.isUserLoggedIn && userLectures.length > 0">
         <span class="greeting-title">
           Welcome back
           <span class="greeting-name pa-1">{{$store.state.user.display_name}}</span>!
         </span>
       </div>
       <v-container fluid>
-        <span class="title" v-if="userLectures">Completed Lectures</span>
         <Metadata>
           <template v-slot:completed-lectures>
+            <span class="title" v-if="userLectures.length > 0">Completed Lectures</span>
             <v-row style="z-index: 100" v-if="userLectures" class="flex-sm-fill">
               <v-col
                 class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 d-flex d-sm-flex d-md-block d-lg-block d-xl-block justify-center justify-sm-center"

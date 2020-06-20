@@ -24,7 +24,7 @@ module.exports = {
                     'any.only': `E-mail entered is not valid`
                 }),
             password: Joi.string()
-                .pattern(new RegExp('^[a-zA-Z0-9]{8,}$'))
+                .pattern(new RegExp('^[a-zA-Z0-9_!?#$]{8,}$'))
                 .messages({
                     'string.empty': `Please enter a password`,
                     'string.pattern.base': `Password must be longer than 8 characters`,

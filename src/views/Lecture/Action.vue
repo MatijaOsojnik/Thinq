@@ -125,17 +125,10 @@ export default {
           this.value += partialValue;
           this.sheet = true;
           try {
-            const response = await GeneralService.postHistory(
+            await GeneralService.postHistory(
               this.$store.state.user.id,
               this.lecture.id
             );
-            if (response)
-              setTimeout(() => {
-                this.sheet = false;
-                this.$router.push({
-                  path: `/lectures/${this.$route.params.id}`
-                });
-              }, 6000);
           } catch (err) {console.log(err)}
         } else {
           this.error = `Uh oh, you made a typo..`;
